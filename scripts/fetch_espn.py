@@ -54,7 +54,21 @@ def fetch_league(league_id: str, season: str, espn_s2: str | None, swid: str | N
     if espn_s2 and swid:
         cookies = {"espn_s2": espn_s2, "SWID": swid}
 
-    resp = requests.get(url, params=params, cookies=cookies, timeout=20)
+    # ESPN blocks requests that don't look like they're coming from a real
+    # browser (the default python-requests User-Agent gets a 403). These
+    # headers make the request look like a normal Chrome browser instead.
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+        ),
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": "https://fantasy.espn.com/",
+        "Origin": "https://fantasy.espn.com",
+    }
+
+    resp = requests.get(url, params=params, cookies=cookies, headers=headers, timeout=20)
     resp.raise_for_status()
     return resp.json()
 
