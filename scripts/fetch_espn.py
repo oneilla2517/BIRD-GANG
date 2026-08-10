@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-Pulls current-season standings from ESPN's fantasy football API and writes
-them to data.json, which index.html reads on page load to show live records.
+Pulls current-season standings from ESPN's fantasy football API (via the
+espn_api library) and writes them to data.json, which index.html reads on
+page load to show live records.
 
 Required environment variables:
   ESPN_LEAGUE_ID   - the number in your league URL, e.g. 899513
@@ -17,7 +18,7 @@ import re
 import sys
 from datetime import datetime, timezone
 
-import requests
+from espn_api.football import League
 
 # Must match the "team" names used in index.html's `teams` array (t.team),
 # mapped to that same team's `id`. Edit this if a team renames itself mid-season.
@@ -44,70 +45,36 @@ def normalize(name: str) -> str:
 NORMALIZED_MAP = {normalize(k): v for k, v in TEAM_NAME_TO_ID.items()}
 
 
-def fetch_league(league_id: str, season: str, espn_s2: str | None, swid: str | None) -> dict:
-    url = (
-        f"https://fantasy.espn.com/apis/v3/games/ffl/seasons/{season}"
-        f"/segments/0/leagues/{league_id}"
-    )
-    params = {"view": ["mTeam", "mStandings"]}
-    cookies = {}
+def main():
+    league_id = int(os.environ["ESPN_LEAGUE_ID"])
+    season = int(os.environ.get("ESPN_SEASON", datetime.now().year))
+    espn_s2 = os.environ.get("ESPN_S2")
+    swid = os.environ.get("ESPN_SWID")
+
+    kwargs = {"league_id": league_id, "year": season}
     if espn_s2 and swid:
-        cookies = {"espn_s2": espn_s2, "SWID": swid}
+        kwargs["espn_s2"] = espn_s2
+        kwargs["swid"] = swid
 
-    # ESPN blocks requests that don't look like they're coming from a real
-    # browser (the default python-requests User-Agent gets a 403). These
-    # headers make the request look like a normal Chrome browser instead.
-    headers = {
-        "User-Agent": (
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-            "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
-        ),
-        "Accept": "application/json, text/plain, */*",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Referer": "https://fantasy.espn.com/",
-        "Origin": "https://fantasy.espn.com",
-    }
+    print(f"Connecting to league {league_id}, season {season}...", file=sys.stderr)
+    league = League(**kwargs)
 
-    resp = requests.get(url, params=params, cookies=cookies, headers=headers, timeout=20)
-
-    # Debug output — shows up in the Actions log so we can see exactly what
-    # ESPN sent back if something goes wrong.
-    print(f"ESPN response status: {resp.status_code}", file=sys.stderr)
-    print(f"ESPN response body (first 500 chars): {resp.text[:500]!r}", file=sys.stderr)
-
-    resp.raise_for_status()
-    if not resp.text.strip():
-        raise RuntimeError(
-            "ESPN returned an empty response body. Double-check ESPN_LEAGUE_ID, "
-            "ESPN_SEASON, ESPN_S2, and ESPN_SWID are all set correctly."
-        )
-    return resp.json()
-
-
-def build_data_json(league_json: dict, season: str) -> dict:
     teams_out = {}
     unmatched = []
 
-    for team in league_json.get("teams", []):
-        # ESPN has used both a single "name" field and separate
-        # "location" + "nickname" fields across API versions — try both.
-        full_name = team.get("name")
-        if not full_name:
-            full_name = f'{team.get("location", "")} {team.get("nickname", "")}'.strip()
-
-        key = normalize(full_name)
+    for team in league.teams:
+        key = normalize(team.team_name)
         internal_id = NORMALIZED_MAP.get(key)
         if not internal_id:
-            unmatched.append(full_name)
+            unmatched.append(team.team_name)
             continue
 
-        record = team.get("record", {}).get("overall", {})
         teams_out[internal_id] = {
-            "wins": record.get("wins", 0),
-            "losses": record.get("losses", 0),
-            "ties": record.get("ties", 0),
-            "pointsFor": record.get("pointsFor", 0),
-            "standing": team.get("playoffSeed") or team.get("divisionId"),
+            "wins": team.wins,
+            "losses": team.losses,
+            "ties": getattr(team, "ties", 0),
+            "pointsFor": round(getattr(team, "points_for", 0), 1),
+            "standing": getattr(team, "standing", None) or getattr(team, "final_standing", None),
         }
 
     if unmatched:
@@ -117,27 +84,17 @@ def build_data_json(league_json: dict, season: str) -> dict:
             file=sys.stderr,
         )
 
-    return {
-        "season": int(season),
+    data = {
+        "season": season,
         "lastUpdated": datetime.now(timezone.utc).isoformat(),
         "teams": teams_out,
     }
-
-
-def main():
-    league_id = os.environ["ESPN_LEAGUE_ID"]
-    season = os.environ.get("ESPN_SEASON", str(datetime.now().year))
-    espn_s2 = os.environ.get("ESPN_S2")
-    swid = os.environ.get("ESPN_SWID")
-
-    league_json = fetch_league(league_id, season, espn_s2, swid)
-    data = build_data_json(league_json, season)
 
     out_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data.json")
     with open(out_path, "w") as f:
         json.dump(data, f, indent=2)
 
-    print(f"Wrote {out_path} with {len(data['teams'])} teams matched.")
+    print(f"Wrote {out_path} with {len(teams_out)} teams matched.")
 
 
 if __name__ == "__main__":
