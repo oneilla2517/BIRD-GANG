@@ -1,5 +1,90 @@
 {
   "season": 2026,
-  "lastUpdated": null,
-  "teams": {}
+  "lastUpdated": "2026-08-10T20:41:46.586158+00:00",
+  "teams": {
+    "drew": {
+      "wins": 0,
+      "losses": 0,
+      "ties": 0,
+      "pointsFor": 0.0,
+      "standing": 0
+    },
+    "mark": {
+      "wins": 0,
+      "losses": 0,
+      "ties": 0,
+      "pointsFor": 0.0,
+      "standing": 0
+    },
+    "christian": {
+      "wins": 0,
+      "losses": 0,
+      "ties": 0,
+      "pointsFor": 0.0,
+      "standing": 0
+    },
+    "roldi": {
+      "wins": 0,
+      "losses": 0,
+      "ties": 0,
+      "pointsFor": 0.0,
+      "standing": 0
+    },
+    "steve": {
+      "wins": 0,
+      "losses": 0,
+      "ties": 0,
+      "pointsFor": 0.0,
+      "standing": 0
+    },
+    "joey": {
+      "wins": 0,
+      "losses": 0,
+      "ties": 0,
+      "pointsFor": 0.0,
+      "standing": 0
+    },
+    "papo": {
+      "wins": 0,
+      "losses": 0,
+      "ties": 0,
+      "pointsFor": 0.0,
+      "standing": 0
+    },
+    "big": {
+      "wins": 0,
+      "losses": 0,
+      "ties": 0,
+      "pointsFor": 0.0,
+      "standing": 0
+    },
+    "willy": {
+      "wins": 0,
+      "losses": 0,
+      "ties": 0,
+      "pointsFor": 0.0,
+      "standing": 0
+    },
+    "robinson": {
+      "wins": 0,
+      "losses": 0,
+      "ties": 0,
+      "pointsFor": 0.0,
+      "standing": 0
+    },
+    "deamer": {
+      "wins": 0,
+      "losses": 0,
+      "ties": 0,
+      "pointsFor": 0.0,
+      "standing": 0
+    },
+    "shawno": {
+      "wins": 0,
+      "losses": 0,
+      "ties": 0,
+      "pointsFor": 0.0,
+      "standing": 0
+    }
+  }
 }
