@@ -69,7 +69,18 @@ def fetch_league(league_id: str, season: str, espn_s2: str | None, swid: str | N
     }
 
     resp = requests.get(url, params=params, cookies=cookies, headers=headers, timeout=20)
+
+    # Debug output — shows up in the Actions log so we can see exactly what
+    # ESPN sent back if something goes wrong.
+    print(f"ESPN response status: {resp.status_code}", file=sys.stderr)
+    print(f"ESPN response body (first 500 chars): {resp.text[:500]!r}", file=sys.stderr)
+
     resp.raise_for_status()
+    if not resp.text.strip():
+        raise RuntimeError(
+            "ESPN returned an empty response body. Double-check ESPN_LEAGUE_ID, "
+            "ESPN_SEASON, ESPN_S2, and ESPN_SWID are all set correctly."
+        )
     return resp.json()
 
 
