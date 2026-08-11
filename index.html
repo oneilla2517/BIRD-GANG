@@ -223,7 +223,13 @@
   .editme-table{width:100%; border-collapse:collapse; margin-top:14px; background:#fff; border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow);}
   .editme-table th{background:var(--red); color:#fff; text-align:left; padding:10px 12px; font-family:'Oswald'; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em;}
   .editme-table td{padding:10px 12px; border-top:1px solid #eee7d4; font-size:0.85rem; color:#8a8f7e; font-style:italic;}
+  .editme-table td.filled{color:var(--ink); font-style:normal;}
+  .editme-table th.live{background:var(--kelly);}
   .editme-note{font-family:'JetBrains Mono'; font-size:0.72rem; color:var(--red); margin-top:8px; display:inline-block;}
+  .season-table{width:100%; border-collapse:collapse; background:#fff; border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); min-width:500px;}
+  .season-table th{background:var(--midnight); color:var(--bone); text-align:left; padding:10px 14px; font-family:'Oswald'; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em;}
+  .season-table td{padding:10px 14px; border-top:1px solid #eee7d4; font-size:0.86rem;}
+  .season-table tr:hover td{background:#faf8f1;}
 
   /* ===== RULEBOOK ===== */
   .accordion{display:flex; flex-direction:column; gap:10px;}
@@ -295,7 +301,7 @@
   <div id="currentView" class="divisions-grid"></div>
   <div id="alltimeView" style="display:none; overflow-x:auto;">
     <table class="standings">
-      <thead><tr><th>#</th><th>Team</th><th>Owner</th><th>Record</th><th>Win%</th><th>Playoff Apps</th><th>Rings</th></tr></thead>
+      <thead><tr><th>#</th><th>Team</th><th>Owner</th><th>Record</th><th>Win%</th><th>Playoff Record</th><th>Apps</th><th>Rings</th></tr></thead>
       <tbody id="alltimeBody"></tbody>
     </table>
   </div>
@@ -305,6 +311,10 @@
   <div class="section-head"><span class="tag">Legacy</span><h2>Hall of Fame</h2></div>
   <p class="section-desc">Championship banners, hung in the rafters. Every team here has actually held the trophy.</p>
   <div class="rafters"><div class="banner-row" id="banners"></div></div>
+  <div id="seasonArchiveWrap" style="display:none; margin-top:28px;">
+    <h3 style="font-size:1.1rem; color:var(--midnight); margin-bottom:12px;">Season by Season</h3>
+    <div id="seasonArchive" style="overflow-x:auto;"></div>
+  </div>
 </section>
 
 <section id="rivalries">
@@ -334,15 +344,13 @@
     </div>
     <div>
       <div class="worst-list" id="worstList"></div>
-      <table class="editme-table">
+      <table class="editme-table" id="lastPlaceTable">
         <thead><tr><th>Season</th><th>Last Place</th><th>Wheel Result</th></tr></thead>
         <tbody>
-          <tr><td>—</td><td>Add your league's year-by-year last-place history here</td><td>—</td></tr>
-          <tr><td>—</td><td>Add your league's year-by-year last-place history here</td><td>—</td></tr>
-          <tr><td>—</td><td>Add your league's year-by-year last-place history here</td><td>—</td></tr>
+          <tr><td colspan="3">Add your league's year-by-year last-place history here</td></tr>
         </tbody>
       </table>
-      <span class="editme-note">✎ EDIT ME — swap in each year's actual last-place team + what they had to do</span>
+      <span class="editme-note" id="lastPlaceNote">✎ EDIT ME — swap in each year's actual last-place team + what they had to do, or connect the live ESPN sync to fill this in automatically</span>
     </div>
   </div>
 </section>
@@ -405,40 +413,50 @@ const divisions = ['Assholes','Dumbasses','Jerkoffs','Jackasses'];
 const rulebook = [
   {title:'Keepers', body:`
     <ul>
-      <li>A player must have started <strong>at least one regular-season game</strong> for the team keeping him. Playoff and Toilet Bowl games don't count.</li>
-      <li>Keeper cost = <strong>2 rounds higher</strong> than the round he was originally drafted (or assigned value).</li>
-      <li>Max keeper duration: <strong>2 consecutive seasons</strong> — follows the player even through a trade.</li>
-      <li>You can keep up to <strong>3 players</strong>, but only if all three are 6th round or later. If any keeper is 5th round or higher, you're capped at <strong>2 keepers</strong>.</li>
-      <li>Once drafted, a player's keeper value is <strong>locked permanently</strong> to his original round — even if dropped and re-added later.</li>
-      <li>Free agent / waiver adds are valued as a <strong>10th-round keeper</strong>, unless he finishes top-25 at his position — then he's a <strong>7th-round keeper</strong>.</li>
-      <li>Two players with the same keeper round value? You surrender that round <strong>plus one round higher</strong> for each extra same-round keeper.</li>
-      <li>Keepers must be declared <strong>2 weeks before the draft</strong> via Google Form. Once confirmed, they're locked — unless a keeper suffers an injury that costs regular season time.</li>
+      <li><strong>Eligibility:</strong> A player must have started <strong>at least one regular-season game</strong> for the team keeping him. If a player is traded and never starts a game for his new team, that team can't keep him. Playoff and Toilet Bowl games don't count toward eligibility.</li>
+      <li><strong>Keeper cost:</strong> Players are kept <strong>2 rounds higher</strong> than the round they were originally drafted (or assigned value).</li>
+      <li><strong>Max duration:</strong> A player may be kept for a <strong>maximum of 2 consecutive seasons</strong> — this limit follows him even through a trade.</li>
+      <li><strong>How many keepers:</strong> You may keep up to <strong>3 players</strong>, but only if all three have a keeper value of 6th round or later. If any one keeper is 5th round or higher, you're capped at <strong>2 keepers</strong>.</li>
+      <li><strong>Locked value:</strong> Once a player is drafted, his keeper value is <strong>permanently locked</strong> to the round he was drafted in — even if he's later dropped and re-added by any team (an 8th-round pick will always cost a 6th-round pick to keep).</li>
+      <li><strong>Free agents / waivers:</strong> Any player added off waivers or free agency is valued as a <strong>10th-round keeper</strong>, unless he finishes the season as a top-25 player at his position — then he upgrades to a <strong>7th-round keeper</strong>. If you drop a player you drafted, his original locked value stays with him for whoever picks him up next.</li>
+      <li><strong>Same-round penalty:</strong> If two or more of your keepers land on the same round value, you surrender that round <strong>plus one round higher</strong> for each extra same-round keeper (two 8th-round keepers = you use your 7th <em>and</em> 8th-round picks).</li>
+      <li><strong>Declaring keepers:</strong> Must be declared <strong>2 weeks before the draft</strong> via a shared Google Form. Once submitted and confirmed by the commissioner, keepers are locked — unless a keeper suffers an injury that costs him regular season time.</li>
     </ul>`},
   {title:'Trades', body:`
     <ul>
-      <li>Once accepted, a trade processes automatically <strong>48 hours</strong> later. Both owners can agree to process immediately.</li>
-      <li>Once accepted, owners <strong>cannot back out</strong> under any circumstances.</li>
-      <li>Any league member can call for a veto vote — needs <strong>6 of the other 10 owners</strong> to veto.</li>
-      <li>Trade deadline: <strong>30 minutes before the first Sunday NFL game</strong>. Nothing new processes until that week's games wrap.</li>
-      <li>Trading a 1st- or 2nd-round pick requires the giving team to <strong>pay next season's league fees before</strong> the trade processes.</li>
-      <li>Pick swaps don't need to be even — teams short on picks fill from waivers, teams with extra picks drop players to stay at roster size.</li>
-      <li>ESPN doesn't allow in-season pick trading, so all pick trades process manually in the offseason. Player-for-future-pick trades are allowed until the day before the draft. On draft day, trades must be even swaps.</li>
+      <li><strong>Processing:</strong> Once accepted, a trade processes automatically <strong>48 hours later</strong>. Both owners can mutually agree in writing to process it immediately instead. Once accepted, owners <strong>cannot back out</strong> under any circumstances.</li>
+      <li><strong>Vetoes:</strong> Any league member can call for a veto vote. It takes <strong>6 "yes" votes</strong> out of the other 10 owners to veto a trade.</li>
+      <li><strong>Trade deadline:</strong> Trades may be submitted until <strong>30 minutes before the first Sunday NFL game</strong>. After that, nothing new processes until that week's games are over.</li>
+      <li><strong>Draft pick trades:</strong> Trading away a 1st- or 2nd-round pick requires the giving team to <strong>pay next season's league fees before</strong> the trade processes. Pick swaps no longer need to be even — teams short on picks fill in from waivers; teams with extra picks must drop players to stay at roster size.</li>
+      <li><strong>Off-season trading:</strong> ESPN doesn't allow in-season draft-pick trading, so all pick trades process manually in the off-season. Teams may trade players for future picks only until the day before the draft. On draft day itself, trades are allowed but must be even pick-for-pick swaps so every team leaves the draft with a full set of picks.</li>
     </ul>`},
   {title:'Draft Order', body:`
     <ul>
-      <li>The <strong>Toilet Bowl winner</strong> picks their draft position first.</li>
-      <li>The other 5 Toilet Bowl teams enter a <strong>weighted lottery</strong> (300 balls: 8% / 12% / 16% / 24% / 40% odds, best to worst consolation record).</li>
-      <li>Playoff teams are seeded by final standing: Champion = 1st overall, Runner-up = 2nd, semifinal losers play for 3rd/4th, quarterfinal losers play for 5th/6th, and so on down through 9th/10th.</li>
+      <li>The <strong>Toilet Bowl winner</strong> picks their draft position first, ahead of everyone else.</li>
+      <li>The other 5 Toilet Bowl teams enter a <strong>weighted lottery</strong> — 300 balls split 8% / 12% / 16% / 24% / 40%, best to worst consolation-bracket record.</li>
+      <li>Playoff teams are seeded by final standing, including consolation games: Champion = 1st overall pick, Runner-up = 2nd. Semifinal losers play each other for 3rd/4th (winner gets 3rd). Quarterfinal losers play for 5th/6th, and so on down the bracket — the losers of the 9th/10th place game get 9th and 10th, etc.</li>
     </ul>`},
-  {title:'Punishments &amp; Fines', body:`
+  {title:'Punishments & Fines', body:`
     <ul>
-      <li><strong>Jackass Rule:</strong> Must start a full lineup every week. Any mistake — injured, bye week, whatever — is a <strong>$5 fine per mistake</strong>. Anyone ruled out before kickoff still counts as a strike.</li>
-      <li><strong>Last place</strong> in the regular season goes on the Punishment Wheel (see Hall of Shame above).</li>
-      <li>Intentional tanking (benching starters to improve draft position) is prohibited — commissioner + league vote can penalize with a worse draft slot, a lost pick, or worse lottery odds.</li>
+      <li><strong>Jackass Rule:</strong> You must start a full lineup every week. Any mistake — an injured player, a bye week, anything — is a <strong>$5 fine per mistake</strong>. A player ruled out before kickoff still counts as a strike if he's in your active lineup.</li>
+      <li><strong>Punishment Wheel:</strong> The team that finishes <strong>last in the regular season</strong> faces the Punishment Wheel in the offseason. Each year the league votes on 9–10 punishment ideas (any owner can propose a swap, needs 7/12 to pass). The last-place team picks <strong>3 punishments</strong> from that list to load on the wheel (~33% odds each) and gets <strong>one spin</strong>. Whatever it lands on must be completed with photo/video/receipt proof in the group chat before the next draft — the commissioner has final say on whether the proof counts. <strong>No proof by draft day = you forfeit your league spot</strong> and get replaced the following season.</li>
+      <li><strong>Toilet Bowl loser</strong> owes an additional <span class="mono">$25</span> on top of everything else.</li>
+      <li><strong>Tanking:</strong> Intentionally benching starters to improve draft position is prohibited. The commissioner plus a league vote can penalize an offender — worse draft slot, a lost pick, worse lottery odds, etc.</li>
+    </ul>`},
+  {title:'Payouts', body:`
+    <ul>
+      <li>League buy-in is <strong>$150</strong> per owner. The Toilet Bowl's last-place finisher owes an <strong>extra $25</strong>.</li>
+      <li>From the <strong>$1,825 pot</strong>: Champion $800 · Runner-up $300 · Most Points $175 · 1st Place Regular Season $125 · DOME $100 · Coach of the Year $50.</li>
+      <li><strong>Giant Slayer pool:</strong> $275 is set aside for weeks 11–14. If a (currently) bottom-3 team beats a top-6 team, that's a $25 reward; beating a top-2 team is $50. Whatever's left over in that pool rolls into the champion's payout.</li>
+    </ul>`},
+  {title:'Collusion, Tanking &amp; Sportsmanship', body:`
+    <ul>
+      <li>Intentional tanking — e.g. benching starters purely to improve draft position — is prohibited. The commissioner and a league vote can penalize the offending team (move their draft position back, take away a pick, worsen their draft lottery odds, etc).</li>
+      <li>Collusion between owners to manipulate trades, standings, or outcomes is against the spirit of the league and subject to the same review process.</li>
     </ul>`},
   {title:'Rule Changes &amp; Commissioner Authority', body:`
     <ul>
-      <li>Any rule change needs a <strong>majority vote (7 of 12 owners)</strong> and must be proposed at least 2 weeks before the draft.</li>
+      <li>Any rule change requires a <strong>majority vote (7 of 12 owners)</strong> and must be proposed at least <strong>2 weeks before the draft</strong>.</li>
       <li>The commissioner has final say on rule interpretations, but any owner can force a league-wide vote on major disputes.</li>
     </ul>`},
 ];
@@ -509,10 +527,63 @@ fetch('./data.json', {cache:'no-store'})
       const w = rec.wins ?? 0, l = rec.losses ?? 0, tt = rec.ties ?? 0;
       el.innerHTML = `${w}-${l}${tt ? '-' + tt : ''}<small>${rec.standing ? '#' + rec.standing + ' IN DIV' : 'CURRENT'}</small>`;
     });
+
+    renderHistory(data.history || {});
   })
   .catch(() => {
     document.getElementById('liveBadge').textContent = '○ Static data — connect scripts/fetch_espn.py for live scores';
   });
+
+function renderHistory(history){
+  const years = Object.keys(history).sort((a,b)=>b-a); // newest first
+  if(!years.length) return; // nothing synced yet — leave placeholders as-is
+
+  // ---- Season-by-season champion strip (Hall of Fame) ----
+  const archiveWrap = document.getElementById('seasonArchiveWrap');
+  const rows = years.map(y=>{
+    const season = history[y];
+    let champId=null, champStanding=99, lastId=null, lastStanding=-1;
+    Object.entries(season).forEach(([id,rec])=>{
+      const fs = rec.finalStanding ?? 99;
+      const rs = rec.standing ?? -1;
+      if(fs < champStanding){ champStanding = fs; champId = id; }
+      if(rs > lastStanding){ lastStanding = rs; lastId = id; }
+    });
+    return {year:y, champId, lastId};
+  }).filter(r=>r.champId && teamById[r.champId]);
+
+  if(rows.length){
+    archiveWrap.style.display = 'block';
+    document.getElementById('seasonArchive').innerHTML = `
+      <table class="season-table">
+        <thead><tr><th>Season</th><th>Champion</th><th>Last Place</th></tr></thead>
+        <tbody>
+          ${rows.map(r=>`
+            <tr>
+              <td class="num">${r.year}</td>
+              <td><div class="team-cell">${crest(teamById[r.champId],26)}<span class="team-name">${teamById[r.champId].team}</span></div></td>
+              <td>${r.lastId && teamById[r.lastId] ? teamById[r.lastId].team : '—'}</td>
+            </tr>`).join('')}
+        </tbody>
+      </table>`;
+  }
+
+  // ---- Fill in the Hall of Shame last-place table with real data ----
+  const lastRows = rows.filter(r=>r.lastId && teamById[r.lastId]);
+  if(lastRows.length){
+    document.getElementById('lastPlaceTable').innerHTML = `
+      <thead><tr><th>Season</th><th>Last Place</th><th>Wheel Result</th></tr></thead>
+      <tbody>
+        ${lastRows.map(r=>`
+          <tr>
+            <td class="filled">${r.year}</td>
+            <td class="filled">${teamById[r.lastId].team} (${teamById[r.lastId].owner})</td>
+            <td>Add wheel result</td>
+          </tr>`).join('')}
+      </tbody>`;
+    document.getElementById('lastPlaceNote').textContent = '✎ Last-place teams synced live from ESPN — add each year\'s actual wheel punishment in the "Wheel Result" column';
+  }
+}
 
 /* ================= ALL-TIME STANDINGS ================= */
 const ranked = [...teams].sort((a,b)=>record(b.overall).pct - record(a.overall).pct);
@@ -523,6 +594,7 @@ document.getElementById('alltimeBody').innerHTML = ranked.map((t,i)=>`
     <td>${t.owner}</td>
     <td class="num">${t.overall}</td>
     <td class="num">${(record(t.overall).pct*100).toFixed(1)}%</td>
+    <td class="num">${t.po}</td>
     <td class="num">${t.apps}</td>
     <td class="num">${t.champs>0?'🏆'.repeat(t.champs):'—'}</td>
   </tr>`).join('');
