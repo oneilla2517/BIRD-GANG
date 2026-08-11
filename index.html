@@ -185,6 +185,15 @@
   .banner .crest{margin:8px auto 0;}
   .no-champs-note{color:var(--silver); font-family:'JetBrains Mono'; font-size:0.8rem; padding:10px 4px 0; text-align:center;}
 
+  /* ===== FOUNDING SEASON CARD ===== */
+  .founding-card{
+    background:linear-gradient(135deg,#fff,#fbf6e8); border:2px solid var(--gold); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:22px 26px; margin-bottom:26px;
+  }
+  .founding-eyebrow{font-family:'JetBrains Mono'; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; color:#a5822e;}
+  .founding-title{font-family:'Oswald'; font-weight:700; font-size:1.25rem; color:var(--midnight); margin:8px 0 10px;}
+  .founding-card p{font-size:0.92rem; color:#3d423f; margin:0; line-height:1.6;}
+
   /* ===== RIVALRIES ===== */
   .rivalry-layout{display:grid; grid-template-columns:260px 1fr; gap:24px;}
   @media (max-width:760px){.rivalry-layout{grid-template-columns:1fr;}}
@@ -404,6 +413,13 @@
 <section id="fame">
   <div class="section-head"><span class="tag">Legacy</span><h2>Hall of Fame</h2></div>
   <p class="section-desc">Championship banners, hung in the rafters. Every team here has actually held the trophy.</p>
+
+  <div class="founding-card">
+    <div class="founding-eyebrow">👑 2019 · The Founding Season</div>
+    <div class="founding-title">Team Joe — The Cinderella of All Cinderella Runs</div>
+    <p>Before any of the current dynasties, there was this: the league's very first champion had the <strong>fewest points of any team in the league</strong>, backed into the playoffs as the <strong>#8 seed</strong>, then went full folk hero — knocked off the <strong>#1 seed</strong> in Round 1, beat the <strong>highest-scoring team left</strong> in the semifinals, and closed it out against the <strong>#2 seed</strong> in the championship. Oh — and the #1 and #2 seeds he ran through? <strong>Both of his sons.</strong> Andrew's dad won it all going through his own kids to do it. Nothing since has topped it.</p>
+  </div>
+
   <div class="rafters"><div class="banner-row" id="banners"></div></div>
   <div id="seasonArchiveWrap" style="display:none; margin-top:28px;">
     <h3 style="font-size:1.1rem; color:var(--midnight); margin-bottom:12px;">Season by Season</h3>
@@ -532,6 +548,123 @@ const toiletBowl = [
   {year:2025, teamId:'papo'},
 ];
 
+// Full playoff bracket archive, built from league history screenshots.
+// Where a team's owner that year is confidently known (persistent team name,
+// or explicitly confirmed), it's tagged with an id and gets a real crest.
+// Where the owner isn't certain (a one-off team name with no clear owner
+// link), it's shown by name only — no crest, no guessed attribution.
+const historicalBrackets = {
+  2019: [
+    {label:'Round 1', matchups:[
+      {a:{name:'Team Joe', legend:true}, aScore:147.86, b:{name:'Team S ONeill', id:'shawno'}, bScore:135.9},
+      {a:{name:'Nuk If You Buk'}, aScore:135.64, b:{name:'Mccaffrey Date My Mom'}, bScore:159.16},
+      {a:{name:'The Boy OVOMark', id:'mark'}, aScore:94.36, b:{name:'9-5 still alive'}, bScore:147.9},
+      {a:{name:'Biggg Biggg', id:'big'}, aScore:115.2, b:{name:'Smitty Werbenja germanjensen', id:'drew'}, bScore:191.96},
+    ]},
+    {label:'Round 2', matchups:[
+      {a:{name:'Team Joe', legend:true}, aScore:186.5, b:{name:'Mccaffrey Date My Mom'}, bScore:147.98},
+      {a:{name:'9-5 still alive'}, aScore:119.94, b:{name:'Smitty Werbenja germanjensen', id:'drew'}, bScore:142.68},
+    ]},
+    {label:'Championship', matchups:[
+      {a:{name:'Team Joe', legend:true}, aScore:147.42, b:{name:'Smitty Werbenja germanjensen', id:'drew'}, bScore:131.46},
+    ]},
+  ],
+  2020: [
+    {label:'Round 1', matchups:[
+      {bye:true, a:{name:'R.I.P Pop Smoke'}},
+      {a:{name:'The Custodians'}, aScore:106.62, b:{name:'Team Yahoo', id:'joey'}, bScore:145.24},
+      {a:{name:'Fantasy Roldi', id:'roldi'}, aScore:155.32, b:{name:"F*ck your Roldi"}, bScore:155.1},
+      {bye:true, a:{name:'Like Mike'}},
+    ]},
+    {label:'Round 2', matchups:[
+      {a:{name:'Team Yahoo', id:'joey'}, aScore:136.14, b:{name:'R.I.P Pop Smoke'}, bScore:127.14},
+      {a:{name:'Fantasy Roldi', id:'roldi'}, aScore:132.26, b:{name:'Like Mike'}, bScore:105.7},
+    ]},
+    {label:'Championship', matchups:[
+      {a:{name:'Fantasy Roldi', id:'roldi'}, aScore:123.22, b:{name:'Team Yahoo', id:'joey'}, bScore:116.04},
+    ]},
+  ],
+  2021: [
+    {label:'Round 1', matchups:[
+      {bye:true, a:{name:'Team Papo', id:'papo'}},
+      {a:{name:'OVO Mark', id:'mark'}, aScore:101.96, b:{name:'Team Yahoo', id:'joey'}, bScore:125.78},
+      {a:{name:'The Mayor of Poundtown'}, aScore:114.64, b:{name:'Johnny Football'}, bScore:162.8},
+      {bye:true, a:{name:'Team S ONeill', id:'shawno'}},
+    ]},
+    {label:'Round 2', matchups:[
+      {a:{name:'Team Yahoo', id:'joey'}, aScore:192.0, b:{name:'Team Papo', id:'papo'}, bScore:157.86},
+      {a:{name:'Johnny Football'}, aScore:123.22, b:{name:'Team S ONeill', id:'shawno'}, bScore:164.3},
+    ]},
+    {label:'Championship', matchups:[
+      {a:{name:'Team Yahoo', id:'joey'}, aScore:146.24, b:{name:'Team S ONeill', id:'shawno'}, bScore:156.02},
+    ]},
+  ],
+  2022: [
+    {label:'Round 1', matchups:[
+      {bye:true, a:{name:"F*ck by Roldi"}},
+      {a:{name:'Team S ONeill', id:'shawno'}, aScore:120.52, b:{name:'Govna of Poundtown', id:'drew'}, bScore:158.4},
+      {a:{name:'Nut God Peanut', id:'robinson'}, aScore:126.9, b:{name:'Team Yahoo', id:'joey'}, bScore:116.3},
+      {bye:true, a:{name:'Sleepy Stoners', id:'roldi'}},
+    ]},
+    {label:'Round 2', matchups:[
+      {a:{name:'Govna of Poundtown', id:'drew'}, aScore:155.2, b:{name:"F*ck by Roldi"}, bScore:103.66},
+      {a:{name:'Nut God Peanut', id:'robinson'}, aScore:125.46, b:{name:'Sleepy Stoners', id:'roldi'}, bScore:97.88},
+    ]},
+    {label:'Championship', matchups:[
+      {a:{name:'Nut God Peanut', id:'robinson'}, aScore:156.58, b:{name:'Govna of Poundtown', id:'drew'}, bScore:110.76},
+    ]},
+  ],
+  2023: [
+    {label:'Round 1', matchups:[
+      {bye:true, a:{name:'Howie hinkie Sixersin6', id:'deamer'}},
+      {a:{name:'Browning My Pants'}, aScore:164.06, b:{name:"I'm All-en *poker face*"}, bScore:182.26},
+      {a:{name:'Walsh My Balls', id:'big'}, aScore:164.2, b:{name:'OVO Mark', id:'mark'}, bScore:128.98},
+      {bye:true, a:{name:'Mr.reseed', id:'steve'}},
+    ]},
+    {label:'Round 2', matchups:[
+      {a:{name:"I'm All-en *poker face*"}, aScore:123.48, b:{name:'Howie hinkie Sixersin6', id:'deamer'}, bScore:155.5},
+      {a:{name:'Walsh My Balls', id:'big'}, aScore:145.12, b:{name:'Mr.reseed', id:'steve'}, bScore:121.5},
+    ]},
+    {label:'Championship', matchups:[
+      {a:{name:'Walsh My Balls', id:'big'}, aScore:124.56, b:{name:'Howie hinkie Sixersin6', id:'deamer'}, bScore:122.5},
+    ]},
+  ],
+  2024: [
+    {label:'Round 1', matchups:[
+      {bye:true, a:{name:'The Prince That Was Promised'}},
+      {a:{name:'Nut God', id:'robinson'}, aScore:59.84, b:{name:'Walsh My Balls', id:'big'}, bScore:172.58},
+      {a:{name:'Mahomeless Kids', id:'willy'}, aScore:182.86, b:{name:'Mr.reseed', id:'steve'}, bScore:155.7},
+      {bye:true, a:{name:'Team S ONeill', id:'shawno'}},
+    ]},
+    {label:'Round 2', matchups:[
+      {a:{name:'Walsh My Balls', id:'big'}, aScore:154.76, b:{name:'The Prince That Was Promised'}, bScore:136.58},
+      {a:{name:'Mahomeless Kids', id:'willy'}, aScore:207.14, b:{name:'Team S ONeill', id:'shawno'}, bScore:180.08},
+    ]},
+    {label:'Championship', matchups:[
+      {a:{name:'Mahomeless Kids', id:'willy'}, aScore:152.16, b:{name:'Walsh My Balls', id:'big'}, bScore:164.08},
+    ]},
+  ],
+  2025: [
+    {label:'Round 1', matchups:[
+      {bye:true, a:{name:'Team S ONeill', id:'shawno'}},
+      {a:{name:'Seed', id:'drew'}, aScore:207.42, b:{name:'Mr.reseed', id:'steve'}, bScore:142.4},
+      {a:{name:'Walsh My Balls', id:'big'}, aScore:110.9, b:{name:'Team Yahoo', id:'joey'}, bScore:91.38},
+      {bye:true, a:{name:'OVO Mark', id:'mark'}},
+    ]},
+    {label:'Round 2', matchups:[
+      {a:{name:'Seed', id:'drew'}, aScore:172.46, b:{name:'Team S ONeill', id:'shawno'}, bScore:116.02},
+      {a:{name:'Walsh My Balls', id:'big'}, aScore:189.0, b:{name:'OVO Mark', id:'mark'}, bScore:171.0},
+    ]},
+    {label:'Championship', matchups:[
+      {a:{name:'Walsh My Balls', id:'big'}, aScore:198.3, b:{name:'Seed', id:'drew'}, bScore:84.96},
+    ]},
+  ],
+};
+
+// Seed of the championship-game winner, read off each bracket above —
+// powers the "seed magic" stat.
+const championSeeds = {2019:8, 2020:6, 2021:2, 2022:6, 2023:6, 2024:4, 2025:6};
+
 const rulebook = [
   {title:'Keepers', body:`
     <ul>
@@ -609,7 +742,7 @@ const teamById = Object.fromEntries(teams.map(t=>[t.id,t]));
 const totalRings = teams.reduce((s,t)=>s+t.champs,0);
 document.getElementById('heroStats').innerHTML = `
   <div class="hstat"><div class="num">${teams.length}</div><div class="lbl">Teams</div></div>
-  <div class="hstat"><div class="num">${totalRings}</div><div class="lbl">Rings</div></div>
+  <div class="hstat"><div class="num">1</div><div class="lbl">Ring</div></div>
   <div class="hstat"><div class="num">$1,825</div><div class="lbl">In The Pot</div></div>
   <div class="hstat"><div class="num">∞</div><div class="lbl">Bragging Rights</div></div>
 `;
@@ -680,7 +813,6 @@ fetch('./data.json', {cache:'no-store'})
 
     renderHistory(data.history || {});
     renderRecords(data.weeklyScores || [], teams);
-    renderBrackets(data.playoffBrackets || {});
   })
   .catch(() => {
     document.getElementById('liveBadge').textContent = '○ Static data — connect scripts/fetch_espn.py for live scores';
@@ -763,56 +895,57 @@ function seasonScoringLeader(year){
 
 function renderRecords(weeklyScores, teamsData){
   window._weeklyScores = weeklyScores;
-  if(!weeklyScores || !weeklyScores.length) return;
-
-  const regular = weeklyScores.filter(s => !s.isPlayoff);
-
-  // Single game high / low
-  const highGame = [...regular].sort((a,b)=>b.score-a.score)[0];
-  const lowGame = [...regular].sort((a,b)=>a.score-b.score)[0];
-
-  // Season totals & PPG per team-season
-  const seasonTotals = {}; // key: `${season}|${teamId}` -> {total, games}
-  regular.forEach(s=>{
-    const key = `${s.season}|${s.teamId}`;
-    if(!seasonTotals[key]) seasonTotals[key] = {season:s.season, teamId:s.teamId, total:0, games:0};
-    seasonTotals[key].total += s.score;
-    seasonTotals[key].games += 1;
-  });
-  const seasonList = Object.values(seasonTotals);
-  const highSeasonTotal = [...seasonList].sort((a,b)=>b.total-a.total)[0];
-  const highPPG = [...seasonList].filter(s=>s.games>=6).sort((a,b)=>(b.total/b.games)-(a.total/a.games))[0];
-
-  // Playoff wins per team (from weeklyScores, deduped by matchup via teamId+score>oppScore)
-  const playoffWins = {};
-  weeklyScores.filter(s=>s.isPlayoff && s.oppScore!=null).forEach(s=>{
-    if(s.score > s.oppScore) playoffWins[s.teamId] = (playoffWins[s.teamId]||0) + 1;
-  });
-  const topPlayoffWinner = Object.entries(playoffWins).sort((a,b)=>b[1]-a[1])[0];
-
   const cards = [];
-  if(highGame && teamById[highGame.teamId]) cards.push({
-    label:'Single-Game High', value:`${highGame.score.toFixed(1)} pts`,
-    detail:`${teamById[highGame.teamId].team} · ${highGame.season}, Wk ${highGame.week}`
-  });
-  if(lowGame && teamById[lowGame.teamId]) cards.push({
-    label:'Single-Game Low', value:`${lowGame.score.toFixed(1)} pts`,
-    detail:`${teamById[lowGame.teamId].team} · ${lowGame.season}, Wk ${lowGame.week}`
-  });
-  if(highSeasonTotal && teamById[highSeasonTotal.teamId]) cards.push({
-    label:'Highest Scoring Reg. Season', value:`${highSeasonTotal.total.toFixed(1)} pts`,
-    detail:`${teamById[highSeasonTotal.teamId].team} · ${highSeasonTotal.season}`
-  });
-  if(highPPG && teamById[highPPG.teamId]) cards.push({
-    label:'Highest PPG (Season)', value:`${(highPPG.total/highPPG.games).toFixed(1)} ppg`,
-    detail:`${teamById[highPPG.teamId].team} · ${highPPG.season}`
-  });
-  if(topPlayoffWinner && teamById[topPlayoffWinner[0]]) cards.push({
-    label:'Most Playoff Wins', value:`${topPlayoffWinner[1]} wins`,
-    detail:teamById[topPlayoffWinner[0]].team
-  });
 
-  // Always-available cards from the base teams array (don't need live sync)
+  if(weeklyScores && weeklyScores.length){
+    const regular = weeklyScores.filter(s => !s.isPlayoff);
+
+    // Single game high / low
+    const highGame = [...regular].sort((a,b)=>b.score-a.score)[0];
+    const lowGame = [...regular].sort((a,b)=>a.score-b.score)[0];
+
+    // Season totals & PPG per team-season
+    const seasonTotals = {}; // key: `${season}|${teamId}` -> {total, games}
+    regular.forEach(s=>{
+      const key = `${s.season}|${s.teamId}`;
+      if(!seasonTotals[key]) seasonTotals[key] = {season:s.season, teamId:s.teamId, total:0, games:0};
+      seasonTotals[key].total += s.score;
+      seasonTotals[key].games += 1;
+    });
+    const seasonList = Object.values(seasonTotals);
+    const highSeasonTotal = [...seasonList].sort((a,b)=>b.total-a.total)[0];
+    const highPPG = [...seasonList].filter(s=>s.games>=6).sort((a,b)=>(b.total/b.games)-(a.total/a.games))[0];
+
+    // Playoff wins per team (from weeklyScores, deduped by matchup via teamId+score>oppScore)
+    const playoffWins = {};
+    weeklyScores.filter(s=>s.isPlayoff && s.oppScore!=null).forEach(s=>{
+      if(s.score > s.oppScore) playoffWins[s.teamId] = (playoffWins[s.teamId]||0) + 1;
+    });
+    const topPlayoffWinner = Object.entries(playoffWins).sort((a,b)=>b[1]-a[1])[0];
+
+    if(highGame && teamById[highGame.teamId]) cards.push({
+      label:'Single-Game High', value:`${highGame.score.toFixed(1)} pts`,
+      detail:`${teamById[highGame.teamId].team} · ${highGame.season}, Wk ${highGame.week}`
+    });
+    if(lowGame && teamById[lowGame.teamId]) cards.push({
+      label:'Single-Game Low', value:`${lowGame.score.toFixed(1)} pts`,
+      detail:`${teamById[lowGame.teamId].team} · ${lowGame.season}, Wk ${lowGame.week}`
+    });
+    if(highSeasonTotal && teamById[highSeasonTotal.teamId]) cards.push({
+      label:'Highest Scoring Reg. Season', value:`${highSeasonTotal.total.toFixed(1)} pts`,
+      detail:`${teamById[highSeasonTotal.teamId].team} · ${highSeasonTotal.season}`
+    });
+    if(highPPG && teamById[highPPG.teamId]) cards.push({
+      label:'Highest PPG (Season)', value:`${(highPPG.total/highPPG.games).toFixed(1)} ppg`,
+      detail:`${teamById[highPPG.teamId].team} · ${highPPG.season}`
+    });
+    if(topPlayoffWinner && teamById[topPlayoffWinner[0]]) cards.push({
+      label:'Most Playoff Wins', value:`${topPlayoffWinner[1]} wins`,
+      detail:teamById[topPlayoffWinner[0]].team
+    });
+  }
+
+  // Always-available cards — don't need live sync
   const mostTitles = [...teamsData].sort((a,b)=>b.champs-a.champs)[0];
   if(mostTitles && mostTitles.champs>0) cards.push({
     label:'Most Titles', value:`${mostTitles.champs} ring${mostTitles.champs>1?'s':''}`, detail:mostTitles.team
@@ -822,6 +955,18 @@ function renderRecords(weeklyScores, teamsData){
     label:'Best All-Time Win%', value:`${(record(bestWinPct.overall).pct*100).toFixed(1)}%`, detail:bestWinPct.team
   });
 
+  // Seed magic — how often has each seed won it all, from the bracket archive
+  const seedCounts = {};
+  Object.values(championSeeds).forEach(seed=>{ seedCounts[seed] = (seedCounts[seed]||0) + 1; });
+  const topSeed = Object.entries(seedCounts).sort((a,b)=>b[1]-a[1])[0];
+  if(topSeed){
+    const totalTitles = Object.values(championSeeds).length;
+    cards.push({
+      label:'Seed Magic', value:`#${topSeed[0]} Seed`,
+      detail:`${topSeed[1]} of ${totalTitles} titles won as the #${topSeed[0]} seed`
+    });
+  }
+
   document.getElementById('recordsGrid').innerHTML = cards.map(c=>`
     <div class="record-card">
       <div class="rc-label">${c.label}</div>
@@ -830,9 +975,20 @@ function renderRecords(weeklyScores, teamsData){
     </div>`).join('');
 }
 
-function renderBrackets(brackets){
-  if(!brackets || !Object.keys(brackets).length) return;
-  const years = Object.keys(brackets).sort((a,b)=>b-a);
+function bracketTeamLabel(entry, isWinner){
+  if(entry.id && teamById[entry.id]){
+    const t = teamById[entry.id];
+    return `<div class="bm-team ${isWinner?'winner':''}">${crest(t,26)}<span class="team-name">${t.team}</span></div>`;
+  }
+  if(entry.legend){
+    return `<div class="bm-team ${isWinner?'winner':''}"><div class="crest" style="background:var(--gold); color:var(--midnight-dark);">👑</div><span class="team-name">${entry.name}</span></div>`;
+  }
+  return `<div class="bm-team ${isWinner?'winner':''}"><div class="crest" style="background:#c9c2a8;">?</div><span class="team-name">${entry.name}</span></div>`;
+}
+
+function renderBrackets(){
+  const years = Object.keys(historicalBrackets).sort((a,b)=>b-a);
+  if(!years.length) return;
   document.getElementById('bracketWrap').style.display = 'block';
 
   const tabsEl = document.getElementById('bracketTabs');
@@ -840,20 +996,27 @@ function renderBrackets(brackets){
 
   function showYear(year){
     tabsEl.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b.dataset.year===year));
-    const rounds = brackets[year];
+    const rounds = historicalBrackets[year];
     document.getElementById('bracketBody').innerHTML = rounds.map(r=>`
       <div class="bracket-round">
-        <h4>Week ${r.week}</h4>
+        <h4>${r.label}</h4>
         ${r.matchups.map(m=>{
-          const t = teamById[m.teamId], o = teamById[m.oppId];
-          if(!t || !o) return '';
+          if(m.bye){
+            return `
+            <div class="bracket-matchup">
+              ${bracketTeamLabel(m.a, false)}
+              <div class="bm-score mono" style="color:var(--silver);">BYE</div>
+              <div></div><div></div>
+            </div>`;
+          }
+          const aWins = m.aScore > m.bScore;
           return `
           <div class="bracket-matchup">
-            <div class="bm-team ${m.winnerId===m.teamId?'winner':''}">${crest(t,26)}<span class="team-name">${t.team}</span></div>
-            <div class="bm-score">${m.score.toFixed(1)}</div>
+            ${bracketTeamLabel(m.a, aWins)}
+            <div class="bm-score">${m.aScore.toFixed(1)}</div>
             <div class="bm-vs">vs</div>
-            <div class="bm-score">${m.oppScore.toFixed(1)}</div>
-            <div class="bm-team ${m.winnerId===m.oppId?'winner':''}" style="justify-content:flex-end; text-align:right;"><span class="team-name">${o.team}</span>${crest(o,26)}</div>
+            <div class="bm-score">${m.bScore.toFixed(1)}</div>
+            ${bracketTeamLabel(m.b, !aWins).replace('<div class="bm-team', '<div style="justify-content:flex-end; text-align:right;" class="bm-team')}
           </div>`;
         }).join('')}
       </div>`).join('');
@@ -980,6 +1143,10 @@ document.getElementById('toiletBowlStrip').innerHTML = toiletBowl
         <div class="tb-owner">${t.owner}</div>
       </div>`;
   }).join('');
+
+/* ================= PLAYOFF BRACKET ARCHIVE (static, from screenshots) ================= */
+renderBrackets();
+renderRecords([], teams);
 
 /* ================= RULEBOOK ================= */
 document.getElementById('accordion').innerHTML = rulebook.map((r,i)=>`
