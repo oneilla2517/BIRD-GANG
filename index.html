@@ -811,74 +811,52 @@ fetch('./data.json', {cache:'no-store'})
       el.innerHTML = `${w}-${l}${tt ? '-' + tt : ''}<small>${rec.standing ? '#' + rec.standing + ' IN DIV' : 'CURRENT'}</small>`;
     });
 
-    renderHistory(data.history || {});
     renderRecords(data.weeklyScores || [], teams);
   })
   .catch(() => {
     document.getElementById('liveBadge').textContent = '○ Static data — connect scripts/fetch_espn.py for live scores';
   });
 
-function renderHistory(history){
-  const years = Object.keys(history).sort((a,b)=>b-a); // newest first
-  if(!years.length) return; // nothing synced yet — leave placeholders as-is
-
-  // ---- Season-by-season champion strip (Hall of Fame) ----
+function renderHistory(){
+  // Sourced from historicalBrackets — hand-verified against your screenshots —
+  // instead of the live ESPN sync, which can't reliably match old team names
+  // across seasons and was producing wrong runner-ups.
+  const years = Object.keys(historicalBrackets).sort((a,b)=>b-a);
   const archiveWrap = document.getElementById('seasonArchiveWrap');
+
   const rows = years.map(y=>{
-    const season = history[y];
-    let champId=null, champStanding=99, runnerUpId=null, runnerUpStanding=99, lastId=null, lastStanding=-1;
-    Object.entries(season).forEach(([id,rec])=>{
-      const fs = rec.finalStanding ?? 99;
-      const rs = rec.standing ?? -1;
-      if(fs < champStanding){ champStanding = fs; champId = id; }
-      if(rs > lastStanding){ lastStanding = rs; lastId = id; }
-    });
-    Object.entries(season).forEach(([id,rec])=>{
-      const fs = rec.finalStanding ?? 99;
-      if(id !== champId && fs < runnerUpStanding){ runnerUpStanding = fs; runnerUpId = id; }
-    });
-    const lastRec = (lastId && season[lastId])
-      ? `${season[lastId].wins}-${season[lastId].losses}${season[lastId].ties ? '-' + season[lastId].ties : ''}`
-      : null;
-    return {year:y, champId, runnerUpId, lastId, lastRec};
-  }).filter(r=>r.champId && teamById[r.champId]);
+    const rounds = historicalBrackets[y];
+    const champRound = rounds[rounds.length - 1]; // Championship is always last
+    const finalMatch = champRound.matchups[0];
+    const aWins = finalMatch.aScore > finalMatch.bScore;
+    return {
+      year: y,
+      champEntry: aWins ? finalMatch.a : finalMatch.b,
+      runnerUpEntry: aWins ? finalMatch.b : finalMatch.a,
+    };
+  });
 
-  if(rows.length){
-    archiveWrap.style.display = 'block';
-    document.getElementById('seasonArchive').innerHTML = `
-      <table class="season-table">
-        <thead><tr><th>Season</th><th>Champion</th><th>Runner-up</th><th>Highest Scorer</th></tr></thead>
-        <tbody>
-          ${rows.map(r=>{
-            const leader = seasonScoringLeader(r.year);
-            return `
-            <tr>
-              <td class="num">${r.year}</td>
-              <td><div class="team-cell">${crest(teamById[r.champId],26)}<span class="team-name">${teamById[r.champId].team}</span></div></td>
-              <td>${r.runnerUpId && teamById[r.runnerUpId] ? teamById[r.runnerUpId].team : '—'}</td>
-              <td>${leader ? `${teamById[leader.teamId].team} <span class="mono">(${leader.total.toFixed(1)})</span>` : '—'}</td>
-            </tr>`;
-          }).join('')}
-        </tbody>
-      </table>`;
-  }
-
-  // ---- Fill in the Hall of Shame last-place table with real data ----
-  const lastRows = rows.filter(r=>r.lastId && teamById[r.lastId]);
-  if(lastRows.length){
-    document.getElementById('lastPlaceTable').innerHTML = `
-      <thead><tr><th>Season</th><th>Last Place</th><th>Record</th><th>Wheel Result</th></tr></thead>
+  archiveWrap.style.display = 'block';
+  document.getElementById('seasonArchive').innerHTML = `
+    <table class="season-table">
+      <thead><tr><th>Season</th><th>Champion</th><th>Runner-up</th></tr></thead>
       <tbody>
-        ${lastRows.map(r=>`
+        ${rows.map(r=>{
+          const champLabel = (r.champEntry.id && teamById[r.champEntry.id])
+            ? `<div class="team-cell">${crest(teamById[r.champEntry.id],26)}<span class="team-name">${teamById[r.champEntry.id].team}</span></div>`
+            : `<div class="team-cell">${r.champEntry.legend ? '👑 ' : ''}${r.champEntry.name}</div>`;
+          const runnerLabel = (r.runnerUpEntry.id && teamById[r.runnerUpEntry.id])
+            ? teamById[r.runnerUpEntry.id].team
+            : r.runnerUpEntry.name;
+          return `
           <tr>
-            <td class="filled">${r.year}</td>
-            <td class="filled">${teamById[r.lastId].team} (${teamById[r.lastId].owner})</td>
-            <td class="filled mono">${r.lastRec || '—'}</td>
-            <td>Add wheel result</td>
-          </tr>`).join('')}
-      </tbody>`;
-    document.getElementById('lastPlaceNote').textContent = '✎ Last-place teams synced live from ESPN — add each year\'s actual wheel punishment in the "Wheel Result" column';
-  }
+            <td class="num">${r.year}</td>
+            <td>${champLabel}</td>
+            <td>${runnerLabel}</td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>`;
 }
 
 function seasonScoringLeader(year){
@@ -1152,6 +1130,7 @@ document.getElementById('toiletBowlStrip').innerHTML = toiletBowl
 
 /* ================= PLAYOFF BRACKET ARCHIVE (static, from screenshots) ================= */
 renderBrackets();
+renderHistory();
 renderRecords([], teams);
 
 /* ================= RULEBOOK ================= */
