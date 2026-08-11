@@ -101,13 +101,24 @@ def weekly_data(league, season: int):
         if not box_scores:
             break
 
-        is_playoff = week > reg_weeks
         week_matchups = []
 
         for m in box_scores:
             home, away = getattr(m, "home_team", None), getattr(m, "away_team", None)
             home_score, away_score = getattr(m, "home_score", None), getattr(m, "away_score", None)
             hid, aid = id_for(home), id_for(away)
+
+            # Prefer ESPN's own matchup_type flag (WINNERS_BRACKET, LOSERS_BRACKET,
+            # WINNERS_CONSOLATION_LADDER, etc. vs NONE for regular season) — this is
+            # ESPN's actual record of what kind of game it was. Only fall back to
+            # "week number > regular season length" guessing if that field isn't
+            # present on this matchup, since the guess can be wrong for seasons
+            # with a non-standard regular-season length.
+            matchup_type = getattr(m, "matchup_type", None)
+            if matchup_type is not None:
+                is_playoff = str(matchup_type).upper() != "NONE"
+            else:
+                is_playoff = week > reg_weeks
 
             if hid and home_score is not None:
                 scores.append({
@@ -129,7 +140,7 @@ def weekly_data(league, season: int):
                     "winnerId": hid if home_score > away_score else aid,
                 })
 
-        if is_playoff and week_matchups:
+        if week_matchups:
             bracket.append({"week": week, "matchups": week_matchups})
 
     return scores, bracket
