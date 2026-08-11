@@ -147,6 +147,10 @@
   .owner-name{font-size:0.74rem; color:#8a8f7e;}
   .team-record{font-family:'JetBrains Mono'; font-size:0.82rem; color:var(--ink); text-align:right; white-space:nowrap;}
   .team-record small{display:block; font-size:0.62rem; color:#9aa19a; letter-spacing:0.05em;}
+  .div-leader-tag{
+    display:inline-block; font-family:'JetBrains Mono'; font-size:0.62rem; letter-spacing:0.05em;
+    color:var(--gold); background:rgba(4,55,60,0.9); padding:2px 7px; border-radius:10px; margin-top:2px;
+  }
 
   /* ===== ALL TIME TABLE ===== */
   table.standings{width:100%; border-collapse:collapse; background:#fff; border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow);}
@@ -256,6 +260,34 @@
   .bm-score{font-family:'JetBrains Mono'; font-weight:600;}
   .bm-vs{color:var(--silver); font-family:'JetBrains Mono'; font-size:0.75rem;}
 
+  /* ===== TOILET BOWL ===== */
+  .tb-strip{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px;}
+  .tb-card{
+    background:linear-gradient(160deg,#fff,#fbf6e8); border-radius:var(--radius); box-shadow:var(--shadow);
+    padding:18px; text-align:center; border:2px solid var(--gold); position:relative;
+  }
+  .tb-card .tb-year{font-family:'JetBrains Mono'; font-size:0.72rem; color:#8a8f7e; letter-spacing:0.08em;}
+  .tb-card .tb-icon{font-size:1.6rem; margin:6px 0;}
+  .tb-card .tb-team{font-family:'Oswald'; font-weight:700; font-size:1.02rem; color:var(--midnight);}
+  .tb-card .tb-owner{font-size:0.76rem; color:#8a8f7e; margin-top:2px;}
+
+  /* ===== 2025 RECAP ===== */
+  .recap-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px;}
+  .recap-card{
+    background:#fff; border-radius:var(--radius); box-shadow:var(--shadow); padding:20px;
+    border-left:4px solid var(--kelly);
+  }
+  .recap-card.headline{
+    background:linear-gradient(160deg,var(--midnight),var(--midnight-dark)); color:var(--bone);
+    border-left:4px solid var(--gold); grid-column:1 / -1;
+  }
+  .recap-card.headline p{color:var(--bone-dim,#cfd6d4);}
+  .recap-card.headline .recap-score{color:var(--gold);}
+  .recap-eyebrow{font-family:'JetBrains Mono'; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.06em; color:#8a8f7e;}
+  .recap-card.headline .recap-eyebrow{color:var(--gold);}
+  .recap-score{font-family:'Oswald'; font-weight:700; font-size:1.3rem; color:var(--midnight); margin:6px 0 10px;}
+  .recap-card p{font-size:0.9rem; color:#3d423f; margin:0;}
+
   /* ===== RULEBOOK ===== */
   .accordion{display:flex; flex-direction:column; gap:10px;}
   .acc-item{background:#fff; border-radius:8px; box-shadow:var(--shadow); overflow:hidden; border:1px solid #eee7d4;}
@@ -297,10 +329,12 @@
     </a>
     <div class="nav-links">
       <a href="#standings">Standings</a>
+      <a href="#recap2025">2025 Recap</a>
       <a href="#fame">Hall of Fame</a>
       <a href="#records">Records</a>
       <a href="#rivalries">Rivalries</a>
       <a href="#shame">Hall of Shame</a>
+      <a href="#toiletbowl">Toilet Bowl</a>
       <a href="#rulebook">Rulebook</a>
       <a href="#payouts">Payouts</a>
     </div>
@@ -316,12 +350,45 @@
   </div>
 </header>
 
+<section id="recap2025">
+  <div class="section-head"><span class="tag">2025</span><h2>Season Recap: The Empire Strikes Again</h2></div>
+  <p class="section-desc">Poundtown → A Nutty World → BEEEEGLIEVELAND. Three names for three different eras of dominance — and 2025 cemented the third one for good.</p>
+  <div class="recap-grid">
+    <div class="recap-card headline">
+      <div class="recap-eyebrow">🏆 Three-Peat Sealed</div>
+      <div class="recap-score">Big 198.3 — Seed 84.96</div>
+      <p>Walsh My Balls didn't just win the championship — he ended it. A <strong>113-point</strong> beatdown in the title game to complete the three-peat. That's not a close game, that's a statement.</p>
+    </div>
+    <div class="recap-card">
+      <div class="recap-eyebrow">⚡ The Cinderella Run</div>
+      <div class="recap-score">Seed's Wild Ride</div>
+      <p>Andrew O'Neill's <strong>Seed</strong> snuck into the playoffs at 8-6, then went berserker — torched Mr.reseed <strong>207.42–142.4</strong> in Round 1, then knocked off the <strong>#1 overall seed</strong> Team S O'Neill <strong>172.46–116.02</strong> to reach the championship. Then ran face-first into the buzzsaw.</p>
+    </div>
+    <div class="recap-card">
+      <div class="recap-eyebrow">💥 Single-Game Monster</div>
+      <div class="recap-score">Deamer's 216.38</div>
+      <p>Pat Deamer's <strong>Howie hinkie Sixersin6</strong> dropped the single highest score of the entire season — <strong>216.38 points</strong> — in the Round 1 playoff win over Chill Dunny. Highest output of anyone all year, including the championship game. Still only bought one more week; bounced in Round 2 by YN NUT.</p>
+    </div>
+    <div class="recap-card">
+      <div class="recap-eyebrow">🤡 Stats Don't Matter</div>
+      <div class="recap-score">Matos's 206.86, on a 4-10 Team</div>
+      <p>Will Matos and <strong>Unsolicited Dak Pics</strong> dropped a monstrous <strong>206.86</strong> in Week 4 — the second-highest score of the entire regular season — on a team that finished dead last at 4-10. Truly, points don't matter if the record doesn't follow.</p>
+    </div>
+    <div class="recap-card">
+      <div class="recap-eyebrow">🚽 Best of the Worst</div>
+      <div class="recap-score">Papo Takes the Toilet Bowl</div>
+      <p>Down in the muck, <strong>Papo</strong> won the consolation bracket — earning the privilege of picking his draft position first next season. Small mercies.</p>
+    </div>
+  </div>
+</section>
+
 <section id="standings">
   <div class="section-head"><span class="tag">2026</span><h2>Standings</h2></div>
   <p class="section-desc">Regular season hasn't kicked off yet — divisions are set, records are clean. Flip to all-time to see who actually has bragging rights.</p>
   <div class="view-toggle">
     <button class="active" data-view="current">2026 Divisions</button>
     <button data-view="alltime">All-Time Standings</button>
+    <button data-view="division">Division Records</button>
   </div>
   <div id="liveBadge" style="font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--silver); margin-bottom:14px;"></div>
   <div id="currentView" class="divisions-grid"></div>
@@ -331,6 +398,7 @@
       <tbody id="alltimeBody"></tbody>
     </table>
   </div>
+  <div id="divisionView" class="divisions-grid" style="display:none;"></div>
 </section>
 
 <section id="fame">
@@ -384,14 +452,20 @@
     <div>
       <div class="worst-list" id="worstList"></div>
       <table class="editme-table" id="lastPlaceTable">
-        <thead><tr><th>Season</th><th>Last Place</th><th>Wheel Result</th></tr></thead>
+        <thead><tr><th>Season</th><th>Last Place</th><th>Record</th><th>Wheel Result</th></tr></thead>
         <tbody>
-          <tr><td colspan="3">Add your league's year-by-year last-place history here</td></tr>
+          <tr><td colspan="4">Add your league's year-by-year last-place history here</td></tr>
         </tbody>
       </table>
       <span class="editme-note" id="lastPlaceNote">✎ EDIT ME — swap in each year's actual last-place team + what they had to do, or connect the live ESPN sync to fill this in automatically</span>
     </div>
   </div>
+</section>
+
+<section id="toiletbowl">
+  <div class="section-head"><span class="tag">Consolation</span><h2>The Toilet Bowl Trophy</h2></div>
+  <p class="section-desc">Winner of the consolation bracket. Best of the worst — and the reward is real: first pick of next year's draft, ahead of everyone else in the league.</p>
+  <div class="tb-strip" id="toiletBowlStrip"></div>
 </section>
 
 <section id="rulebook">
@@ -415,7 +489,7 @@
 <script>
 /* ================= DATA ================= */
 const teams = [
-  {id:'drew', team:'Seed', division:'Jackasses', owner:'Drew', apps:5, champs:0, po:'6-5', overall:'61-39',
+  {id:'drew', team:'Seed', division:'Jackasses', owner:"Andrew O'Neill", apps:5, champs:0, po:'6-5', overall:'61-39',
     h2h:{christian:'9-4',big:'7-4',robinson:'5-4',papo:'7-3',mark:'7-3',shawno:'6-6',steve:'7-1',roldi:'4-5',joey:'2-4',willy:'3-4',deamer:'4-1'}},
   {id:'mark', team:'OVO Mark', division:'Jackasses', owner:'Mark Scarpa', apps:4, champs:0, po:'0-4', overall:'37-46',
     h2h:{drew:'3-7',papo:'5-6',steve:'4-2',shawno:'3-4',big:'5-6',robinson:'4-3',christian:'3-5',roldi:'3-4',joey:'3-3',willy:'2-3',deamer:'2-3'}},
@@ -427,9 +501,9 @@ const teams = [
     h2h:{drew:'1-7',mark:'2-4',christian:'4-3',shawno:'3-6',papo:'3-3',big:'5-6',robinson:'5-1',roldi:'7-5',deamer:'5-4',joey:'5-5',willy:'7-3'}},
   {id:'roldi', team:'SleepyStoners', division:'Jerkoffs', owner:'Mike Maroldo', apps:2, champs:1, po:'4-1', overall:'32-51',
     h2h:{drew:'5-4',mark:'4-3',christian:'2-6',steve:'5-7',shawno:'1-4',papo:'4-5',robinson:'2-4',big:'3-4',deamer:'2-3',joey:'0-6',willy:'4-5'}},
-  {id:'papo', team:"Adrian's Astounding Team", division:'Jackasses', owner:'Adrian Torres', apps:3, champs:0, po:'0-3', overall:'48-44',
+  {id:'papo', team:"Adrian's Astounding Team", division:'Jackasses', owner:'Papo', apps:3, champs:0, po:'0-3', overall:'48-44',
     h2h:{drew:'3-7',mark:'6-5',christian:'6-3',steve:'3-3',shawno:'6-2',robinson:'5-5',big:'3-4',joey:'3-6',roldi:'5-4',deamer:'5-1',willy:'3-4'}},
-  {id:'big', team:'Walsh My Balls', division:'Dumbasses', owner:'John Walsh', apps:5, champs:3, po:'10-2', overall:'56-45',
+  {id:'big', team:'Walsh My Balls', division:'Dumbasses', owner:'Big', apps:5, champs:3, po:'10-2', overall:'56-45',
     h2h:{drew:'4-7',mark:'6-5',christian:'6-1',steve:'7-4',shawno:'2-7',papo:'4-3',robinson:'3-5',deamer:'9-4',roldi:'4-3',willy:'4-2',joey:'7-4'}},
   {id:'willy', team:'Unsolicited Dak Pics', division:'Jerkoffs', owner:'Will Matos', apps:3, champs:0, po:'2-3', overall:'41-56',
     h2h:{drew:'4-3',mark:'3-2',christian:'6-4',steve:'3-7',shawno:'4-3',papo:'4-3',robinson:'1-7',big:'2-4',deamer:'3-4',roldi:'5-4',joey:'2-5'}},
@@ -448,6 +522,15 @@ const colors = {
 };
 
 const divisions = ['Assholes','Dumbasses','Jerkoffs','Jackasses'];
+
+const toiletBowl = [
+  {year:2020, teamId:'big'},
+  {year:2021, teamId:'willy'},
+  {year:2022, teamId:'christian'},
+  {year:2023, teamId:'drew'},
+  {year:2024, teamId:'christian'},
+  {year:2025, teamId:'papo'},
+];
 
 const rulebook = [
   {title:'Keepers', body:`
@@ -548,6 +631,35 @@ divisions.forEach(div=>{
     </div>`;
 });
 
+/* ================= DIVISION RECORDS (all-time, intra-division) ================= */
+const divEl = document.getElementById('divisionView');
+divisions.forEach(div=>{
+  const list = teams.filter(t=>t.division===div);
+  const withDivRecord = list.map(t=>{
+    let w=0, l=0;
+    list.filter(o=>o.id!==t.id).forEach(o=>{
+      const h2h = t.h2h[o.id];
+      if(h2h){ const [hw,hl] = h2h.split('-').map(Number); w+=hw; l+=hl; }
+    });
+    return {...t, divW:w, divL:l, divPct:(w/(w+l))||0};
+  }).sort((a,b)=>b.divPct-a.divPct);
+
+  divEl.innerHTML += `
+    <div class="division-card">
+      <div class="division-head"><h3>${div}</h3><span>All-Time</span></div>
+      ${withDivRecord.map((t,i)=>`
+        <div class="team-row">
+          ${crest(t)}
+          <div class="team-meta">
+            <div class="team-name">${t.team}</div>
+            <div class="owner-name">${t.owner}</div>
+            ${i===0 ? `<div class="div-leader-tag">👑 Runs the Division</div>` : ''}
+          </div>
+          <div class="team-record">${t.divW}-${t.divL}<small>${(t.divPct*100).toFixed(1)}% DIV WIN%</small></div>
+        </div>`).join('')}
+    </div>`;
+});
+
 /* ================= LIVE ESPN DATA (optional) =================
    If data.json exists next to this file (written by scripts/fetch_espn.py
    via the GitHub Actions workflow), overlay real current-season records.
@@ -590,7 +702,10 @@ function renderHistory(history){
       if(fs < champStanding){ champStanding = fs; champId = id; }
       if(rs > lastStanding){ lastStanding = rs; lastId = id; }
     });
-    return {year:y, champId, lastId};
+    const lastRec = (lastId && season[lastId])
+      ? `${season[lastId].wins}-${season[lastId].losses}${season[lastId].ties ? '-' + season[lastId].ties : ''}`
+      : null;
+    return {year:y, champId, lastId, lastRec};
   }).filter(r=>r.champId && teamById[r.champId]);
 
   if(rows.length){
@@ -617,12 +732,13 @@ function renderHistory(history){
   const lastRows = rows.filter(r=>r.lastId && teamById[r.lastId]);
   if(lastRows.length){
     document.getElementById('lastPlaceTable').innerHTML = `
-      <thead><tr><th>Season</th><th>Last Place</th><th>Wheel Result</th></tr></thead>
+      <thead><tr><th>Season</th><th>Last Place</th><th>Record</th><th>Wheel Result</th></tr></thead>
       <tbody>
         ${lastRows.map(r=>`
           <tr>
             <td class="filled">${r.year}</td>
             <td class="filled">${teamById[r.lastId].team} (${teamById[r.lastId].owner})</td>
+            <td class="filled mono">${r.lastRec || '—'}</td>
             <td>Add wheel result</td>
           </tr>`).join('')}
       </tbody>`;
@@ -767,6 +883,7 @@ document.querySelectorAll('.view-toggle button').forEach(btn=>{
     const v = btn.dataset.view;
     document.getElementById('currentView').style.display = v==='current' ? 'grid' : 'none';
     document.getElementById('alltimeView').style.display = v==='alltime' ? 'block' : 'none';
+    document.getElementById('divisionView').style.display = v==='division' ? 'grid' : 'none';
   });
 });
 
@@ -845,6 +962,21 @@ document.getElementById('worstList').innerHTML = worst.map((t,i)=>`
     <div class="team-meta"><div class="team-name">${t.team}</div><div class="owner-name">${t.owner}</div></div>
     <div class="team-record">${t.overall}<small>${(record(t.overall).pct*100).toFixed(1)}% ALL-TIME</small></div>
   </div>`).join('');
+
+/* ================= TOILET BOWL ================= */
+document.getElementById('toiletBowlStrip').innerHTML = toiletBowl
+  .sort((a,b)=>b.year-a.year)
+  .map(tb=>{
+    const t = teamById[tb.teamId];
+    if(!t) return '';
+    return `
+      <div class="tb-card">
+        <div class="tb-year">${tb.year}</div>
+        <div class="tb-icon">🚽🏆</div>
+        <div class="tb-team">${t.team}</div>
+        <div class="tb-owner">${t.owner}</div>
+      </div>`;
+  }).join('');
 
 /* ================= RULEBOOK ================= */
 document.getElementById('accordion').innerHTML = rulebook.map((r,i)=>`
