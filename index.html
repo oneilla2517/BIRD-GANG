@@ -607,12 +607,11 @@ const teamById = Object.fromEntries(teams.map(t=>[t.id,t]));
 
 /* ================= HERO STATS ================= */
 const totalRings = teams.reduce((s,t)=>s+t.champs,0);
-const totalApps = teams.reduce((s,t)=>s+t.apps,0);
 document.getElementById('heroStats').innerHTML = `
-  <div class="hstat"><div class="num">${teams.length}</div><div class="lbl">Owners</div></div>
-  <div class="hstat"><div class="num">${totalRings}</div><div class="lbl">Championships</div></div>
-  <div class="hstat"><div class="num">${totalApps}</div><div class="lbl">Playoff Berths</div></div>
+  <div class="hstat"><div class="num">${teams.length}</div><div class="lbl">Teams</div></div>
+  <div class="hstat"><div class="num">${totalRings}</div><div class="lbl">Rings</div></div>
   <div class="hstat"><div class="num">$1,825</div><div class="lbl">In The Pot</div></div>
+  <div class="hstat"><div class="num">∞</div><div class="lbl">Bragging Rights</div></div>
 `;
 
 /* ================= CURRENT (2026) DIVISIONS ================= */
@@ -695,24 +694,28 @@ function renderHistory(history){
   const archiveWrap = document.getElementById('seasonArchiveWrap');
   const rows = years.map(y=>{
     const season = history[y];
-    let champId=null, champStanding=99, lastId=null, lastStanding=-1;
+    let champId=null, champStanding=99, runnerUpId=null, runnerUpStanding=99, lastId=null, lastStanding=-1;
     Object.entries(season).forEach(([id,rec])=>{
       const fs = rec.finalStanding ?? 99;
       const rs = rec.standing ?? -1;
       if(fs < champStanding){ champStanding = fs; champId = id; }
       if(rs > lastStanding){ lastStanding = rs; lastId = id; }
     });
+    Object.entries(season).forEach(([id,rec])=>{
+      const fs = rec.finalStanding ?? 99;
+      if(id !== champId && fs < runnerUpStanding){ runnerUpStanding = fs; runnerUpId = id; }
+    });
     const lastRec = (lastId && season[lastId])
       ? `${season[lastId].wins}-${season[lastId].losses}${season[lastId].ties ? '-' + season[lastId].ties : ''}`
       : null;
-    return {year:y, champId, lastId, lastRec};
+    return {year:y, champId, runnerUpId, lastId, lastRec};
   }).filter(r=>r.champId && teamById[r.champId]);
 
   if(rows.length){
     archiveWrap.style.display = 'block';
     document.getElementById('seasonArchive').innerHTML = `
       <table class="season-table">
-        <thead><tr><th>Season</th><th>Champion</th><th>Last Place</th><th>Highest Scorer</th></tr></thead>
+        <thead><tr><th>Season</th><th>Champion</th><th>Runner-up</th><th>Highest Scorer</th></tr></thead>
         <tbody>
           ${rows.map(r=>{
             const leader = seasonScoringLeader(r.year);
@@ -720,7 +723,7 @@ function renderHistory(history){
             <tr>
               <td class="num">${r.year}</td>
               <td><div class="team-cell">${crest(teamById[r.champId],26)}<span class="team-name">${teamById[r.champId].team}</span></div></td>
-              <td>${r.lastId && teamById[r.lastId] ? teamById[r.lastId].team : '—'}</td>
+              <td>${r.runnerUpId && teamById[r.runnerUpId] ? teamById[r.runnerUpId].team : '—'}</td>
               <td>${leader ? `${teamById[leader.teamId].team} <span class="mono">(${leader.total.toFixed(1)})</span>` : '—'}</td>
             </tr>`;
           }).join('')}
@@ -873,7 +876,7 @@ document.getElementById('alltimeBody').innerHTML = ranked.map((t,i)=>`
     <td class="num">${(record(t.overall).pct*100).toFixed(1)}%</td>
     <td class="num">${t.po}</td>
     <td class="num">${t.apps}</td>
-    <td class="num">${t.champs>0?'🏆'.repeat(t.champs):'—'}</td>
+    <td class="num">${t.champs>0?`🏆 ${t.champs}`:'—'}</td>
   </tr>`).join('');
 
 document.querySelectorAll('.view-toggle button').forEach(btn=>{
