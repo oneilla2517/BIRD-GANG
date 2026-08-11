@@ -939,7 +939,6 @@ function renderRecords(weeklyScores, teamsData){
     weeklyScores.filter(s=>s.isPlayoff && s.oppScore!=null).forEach(s=>{
       if(s.score > s.oppScore) playoffWins[s.teamId] = (playoffWins[s.teamId]||0) + 1;
     });
-    const topPlayoffWinner = Object.entries(playoffWins).sort((a,b)=>b[1]-a[1])[0];
 
     if(highGame && teamById[highGame.teamId]) cards.push({
       label:'Single-Game High', value:`${highGame.score.toFixed(1)} pts`,
@@ -957,10 +956,6 @@ function renderRecords(weeklyScores, teamsData){
       label:'Highest PPG (Season)', value:`${(highPPG.total/highPPG.games).toFixed(1)} ppg`,
       detail:`${teamById[highPPG.teamId].team} · ${highPPG.season}`
     });
-    if(topPlayoffWinner && teamById[topPlayoffWinner[0]]) cards.push({
-      label:'Most Playoff Wins', value:`${topPlayoffWinner[1]} wins`,
-      detail:teamById[topPlayoffWinner[0]].team
-    });
   }
 
   // Always-available cards — don't need live sync
@@ -971,6 +966,25 @@ function renderRecords(weeklyScores, teamsData){
   const bestWinPct = [...teamsData].sort((a,b)=>record(b.overall).pct-record(a.overall).pct)[0];
   cards.push({
     label:'Best All-Time Win%', value:`${(record(bestWinPct.overall).pct*100).toFixed(1)}%`, detail:bestWinPct.team
+  });
+
+  // Most playoff wins — computed from the verified bracket archive, not the
+  // live sync (which can't reliably tell playoff games from regular season
+  // games across years with different-length seasons).
+  const playoffWinCounts = {};
+  Object.values(historicalBrackets).forEach(rounds=>{
+    rounds.forEach(round=>{
+      round.matchups.forEach(m=>{
+        if(m.bye) return;
+        const winner = m.aScore > m.bScore ? m.a : m.b;
+        if(winner.id) playoffWinCounts[winner.id] = (playoffWinCounts[winner.id]||0) + 1;
+      });
+    });
+  });
+  const topPlayoffWinner = Object.entries(playoffWinCounts).sort((a,b)=>b[1]-a[1])[0];
+  if(topPlayoffWinner && teamById[topPlayoffWinner[0]]) cards.push({
+    label:'Most Playoff Wins', value:`${topPlayoffWinner[1]} wins`,
+    detail:`${teamById[topPlayoffWinner[0]].team} · all-time, 2019–2025`
   });
 
   // Seed magic — how often has each seed won it all, from the bracket archive
