@@ -1,90 +1,430 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-08-10T22:23:44.405787+00:00",
+  "lastUpdated": "2026-08-11T14:56:07.592391+00:00",
   "teams": {
     "drew": {
       "wins": 0,
       "losses": 0,
       "ties": 0,
       "pointsFor": 0.0,
-      "standing": 0
+      "standing": 0,
+      "finalStanding": 0
     },
     "mark": {
       "wins": 0,
       "losses": 0,
       "ties": 0,
       "pointsFor": 0.0,
-      "standing": 0
+      "standing": 0,
+      "finalStanding": 0
     },
     "christian": {
       "wins": 0,
       "losses": 0,
       "ties": 0,
       "pointsFor": 0.0,
-      "standing": 0
+      "standing": 0,
+      "finalStanding": 0
     },
     "roldi": {
       "wins": 0,
       "losses": 0,
       "ties": 0,
       "pointsFor": 0.0,
-      "standing": 0
+      "standing": 0,
+      "finalStanding": 0
     },
     "steve": {
       "wins": 0,
       "losses": 0,
       "ties": 0,
       "pointsFor": 0.0,
-      "standing": 0
+      "standing": 0,
+      "finalStanding": 0
     },
     "joey": {
       "wins": 0,
       "losses": 0,
       "ties": 0,
       "pointsFor": 0.0,
-      "standing": 0
+      "standing": 0,
+      "finalStanding": 0
     },
     "papo": {
       "wins": 0,
       "losses": 0,
       "ties": 0,
       "pointsFor": 0.0,
-      "standing": 0
+      "standing": 0,
+      "finalStanding": 0
     },
     "big": {
       "wins": 0,
       "losses": 0,
       "ties": 0,
       "pointsFor": 0.0,
-      "standing": 0
+      "standing": 0,
+      "finalStanding": 0
     },
     "willy": {
       "wins": 0,
       "losses": 0,
       "ties": 0,
       "pointsFor": 0.0,
-      "standing": 0
+      "standing": 0,
+      "finalStanding": 0
     },
     "robinson": {
       "wins": 0,
       "losses": 0,
       "ties": 0,
       "pointsFor": 0.0,
-      "standing": 0
+      "standing": 0,
+      "finalStanding": 0
     },
     "deamer": {
       "wins": 0,
       "losses": 0,
       "ties": 0,
       "pointsFor": 0.0,
-      "standing": 0
+      "standing": 0,
+      "finalStanding": 0
     },
     "shawno": {
       "wins": 0,
       "losses": 0,
       "ties": 0,
       "pointsFor": 0.0,
-      "standing": 0
+      "standing": 0,
+      "finalStanding": 0
+    }
+  },
+  "history": {
+    "2025": {
+      "drew": {
+        "wins": 8,
+        "losses": 6,
+        "ties": 0,
+        "pointsFor": 2020.7,
+        "standing": 5,
+        "finalStanding": 2
+      },
+      "mark": {
+        "wins": 9,
+        "losses": 5,
+        "ties": 0,
+        "pointsFor": 1989.7,
+        "standing": 2,
+        "finalStanding": 3
+      },
+      "christian": {
+        "wins": 5,
+        "losses": 9,
+        "ties": 0,
+        "pointsFor": 1528.1,
+        "standing": 10,
+        "finalStanding": 9
+      },
+      "roldi": {
+        "wins": 4,
+        "losses": 10,
+        "ties": 0,
+        "pointsFor": 1425.7,
+        "standing": 12,
+        "finalStanding": 12
+      },
+      "steve": {
+        "wins": 7,
+        "losses": 7,
+        "ties": 0,
+        "pointsFor": 1714.2,
+        "standing": 4,
+        "finalStanding": 6
+      },
+      "joey": {
+        "wins": 9,
+        "losses": 5,
+        "ties": 0,
+        "pointsFor": 1697.4,
+        "standing": 3,
+        "finalStanding": 5
+      },
+      "big": {
+        "wins": 8,
+        "losses": 6,
+        "ties": 0,
+        "pointsFor": 1866.3,
+        "standing": 6,
+        "finalStanding": 1
+      },
+      "willy": {
+        "wins": 4,
+        "losses": 10,
+        "ties": 0,
+        "pointsFor": 1670.9,
+        "standing": 11,
+        "finalStanding": 11
+      },
+      "robinson": {
+        "wins": 6,
+        "losses": 8,
+        "ties": 0,
+        "pointsFor": 1467.2,
+        "standing": 9,
+        "finalStanding": 8
+      },
+      "deamer": {
+        "wins": 7,
+        "losses": 7,
+        "ties": 0,
+        "pointsFor": 1612.9,
+        "standing": 8,
+        "finalStanding": 10
+      },
+      "shawno": {
+        "wins": 10,
+        "losses": 4,
+        "ties": 0,
+        "pointsFor": 1918.6,
+        "standing": 1,
+        "finalStanding": 4
+      }
+    },
+    "2024": {
+      "mark": {
+        "wins": 3,
+        "losses": 11,
+        "ties": 0,
+        "pointsFor": 1393.4,
+        "standing": 12,
+        "finalStanding": 12
+      },
+      "christian": {
+        "wins": 7,
+        "losses": 7,
+        "ties": 0,
+        "pointsFor": 1745.4,
+        "standing": 8,
+        "finalStanding": 7
+      },
+      "roldi": {
+        "wins": 5,
+        "losses": 9,
+        "ties": 0,
+        "pointsFor": 1558.1,
+        "standing": 10,
+        "finalStanding": 11
+      },
+      "steve": {
+        "wins": 8,
+        "losses": 6,
+        "ties": 0,
+        "pointsFor": 1801.9,
+        "standing": 3,
+        "finalStanding": 6
+      },
+      "joey": {
+        "wins": 6,
+        "losses": 8,
+        "ties": 0,
+        "pointsFor": 1683.3,
+        "standing": 9,
+        "finalStanding": 8
+      },
+      "big": {
+        "wins": 8,
+        "losses": 6,
+        "ties": 0,
+        "pointsFor": 1945.7,
+        "standing": 4,
+        "finalStanding": 1
+      },
+      "deamer": {
+        "wins": 7,
+        "losses": 7,
+        "ties": 0,
+        "pointsFor": 1714.9,
+        "standing": 7,
+        "finalStanding": 9
+      },
+      "shawno": {
+        "wins": 10,
+        "losses": 4,
+        "ties": 0,
+        "pointsFor": 2079.5,
+        "standing": 2,
+        "finalStanding": 4
+      }
+    },
+    "2023": {
+      "mark": {
+        "wins": 9,
+        "losses": 5,
+        "ties": 0,
+        "pointsFor": 1741.1,
+        "standing": 3,
+        "finalStanding": 5
+      },
+      "steve": {
+        "wins": 9,
+        "losses": 5,
+        "ties": 0,
+        "pointsFor": 1855.4,
+        "standing": 2,
+        "finalStanding": 3
+      },
+      "joey": {
+        "wins": 7,
+        "losses": 7,
+        "ties": 0,
+        "pointsFor": 1663.9,
+        "standing": 8,
+        "finalStanding": 10
+      },
+      "big": {
+        "wins": 8,
+        "losses": 6,
+        "ties": 0,
+        "pointsFor": 1676.8,
+        "standing": 6,
+        "finalStanding": 1
+      },
+      "deamer": {
+        "wins": 11,
+        "losses": 3,
+        "ties": 0,
+        "pointsFor": 2051.3,
+        "standing": 1,
+        "finalStanding": 2
+      },
+      "shawno": {
+        "wins": 5,
+        "losses": 9,
+        "ties": 0,
+        "pointsFor": 1654.1,
+        "standing": 11,
+        "finalStanding": 11
+      }
+    },
+    "2022": {
+      "mark": {
+        "wins": 3,
+        "losses": 11,
+        "ties": 0,
+        "pointsFor": 1534.7,
+        "standing": 12,
+        "finalStanding": 11
+      },
+      "roldi": {
+        "wins": 11,
+        "losses": 3,
+        "ties": 0,
+        "pointsFor": 1927.0,
+        "standing": 2,
+        "finalStanding": 4
+      },
+      "joey": {
+        "wins": 10,
+        "losses": 4,
+        "ties": 0,
+        "pointsFor": 1832.5,
+        "standing": 3,
+        "finalStanding": 5
+      },
+      "big": {
+        "wins": 5,
+        "losses": 9,
+        "ties": 0,
+        "pointsFor": 1314.5,
+        "standing": 9,
+        "finalStanding": 10
+      },
+      "deamer": {
+        "wins": 3,
+        "losses": 11,
+        "ties": 0,
+        "pointsFor": 1519.3,
+        "standing": 11,
+        "finalStanding": 12
+      },
+      "shawno": {
+        "wins": 9,
+        "losses": 5,
+        "ties": 0,
+        "pointsFor": 1791.2,
+        "standing": 5,
+        "finalStanding": 6
+      }
+    },
+    "2021": {
+      "mark": {
+        "wins": 10,
+        "losses": 4,
+        "ties": 0,
+        "pointsFor": 1897.0,
+        "standing": 5,
+        "finalStanding": 6
+      },
+      "roldi": {
+        "wins": 3,
+        "losses": 11,
+        "ties": 0,
+        "pointsFor": 1705.5,
+        "standing": 10,
+        "finalStanding": 9
+      },
+      "joey": {
+        "wins": 7,
+        "losses": 7,
+        "ties": 0,
+        "pointsFor": 1834.1,
+        "standing": 4,
+        "finalStanding": 2
+      },
+      "shawno": {
+        "wins": 9,
+        "losses": 5,
+        "ties": 0,
+        "pointsFor": 1900.0,
+        "standing": 2,
+        "finalStanding": 1
+      }
+    },
+    "2020": {
+      "joey": {
+        "wins": 8,
+        "losses": 5,
+        "ties": 0,
+        "pointsFor": 1638.0,
+        "standing": 4,
+        "finalStanding": 2
+      },
+      "shawno": {
+        "wins": 6,
+        "losses": 7,
+        "ties": 0,
+        "pointsFor": 1760.8,
+        "standing": 7,
+        "finalStanding": 10
+      }
+    },
+    "2019": {
+      "joey": {
+        "wins": 4,
+        "losses": 9,
+        "ties": 0,
+        "pointsFor": 1716.2,
+        "standing": 12,
+        "finalStanding": 10
+      },
+      "shawno": {
+        "wins": 10,
+        "losses": 3,
+        "ties": 0,
+        "pointsFor": 1741.2,
+        "standing": 1,
+        "finalStanding": 7
+      }
     }
   }
 }
