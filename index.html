@@ -194,6 +194,23 @@
   .founding-title{font-family:'Oswald'; font-weight:700; font-size:1.25rem; color:var(--midnight); margin:8px 0 10px;}
   .founding-card p{font-size:0.92rem; color:#3d423f; margin:0; line-height:1.6;}
 
+  /* ===== CAREER PROFILES ===== */
+  .career-stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:12px; margin-bottom:22px;}
+  .career-stat{background:#faf8f1; border-radius:8px; padding:12px; text-align:center; border:1px solid #eee7d4;}
+  .career-stat .cs-num{font-family:'JetBrains Mono'; font-weight:700; font-size:1.15rem; color:var(--midnight);}
+  .career-stat .cs-lbl{font-family:'JetBrains Mono'; font-size:0.62rem; text-transform:uppercase; letter-spacing:0.05em; color:#8a8f7e; margin-top:2px;}
+  .timeline-item{
+    display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:8px;
+    background:#faf8f1; border:1px solid #eee7d4; margin-bottom:8px;
+  }
+  .timeline-item .ti-year{font-family:'JetBrains Mono'; font-weight:700; color:var(--midnight); min-width:44px;}
+  .timeline-item .ti-badge{font-size:1.1rem;}
+  .timeline-item .ti-label{font-size:0.88rem; color:#3d423f;}
+  .timeline-item.champ{border-left:3px solid var(--gold);}
+  .timeline-item.runnerup{border-left:3px solid var(--silver);}
+  .timeline-item.toilet{border-left:3px solid var(--red);}
+  .timeline-item.last{border-left:3px solid #8a2f2f;}
+
   /* ===== RIVALRIES ===== */
   .rivalry-layout{display:grid; grid-template-columns:260px 1fr; gap:24px;}
   @media (max-width:760px){.rivalry-layout{grid-template-columns:1fr;}}
@@ -342,6 +359,7 @@
       <a href="#fame">Hall of Fame</a>
       <a href="#records">Records</a>
       <a href="#rivalries">Rivalries</a>
+      <a href="#careers">Careers</a>
       <a href="#shame">Hall of Shame</a>
       <a href="#toiletbowl">Toilet Bowl</a>
       <a href="#rulebook">Rulebook</a>
@@ -446,6 +464,15 @@
   <div class="rivalry-layout">
     <div class="team-picker" id="teamPicker"></div>
     <div class="rival-panel" id="rivalPanel"></div>
+  </div>
+</section>
+
+<section id="careers">
+  <div class="section-head"><span class="tag">Legacy</span><h2>Career Profiles</h2></div>
+  <p class="section-desc">Every owner's full body of work — record, rings, and every notable moment on file.</p>
+  <div class="rivalry-layout">
+    <div class="team-picker" id="careerPicker"></div>
+    <div class="rival-panel" id="careerPanel"></div>
   </div>
 </section>
 
@@ -664,6 +691,19 @@ const historicalBrackets = {
 // Seed of the championship-game winner, read off each bracket above —
 // powers the "seed magic" stat.
 const championSeeds = {2019:8, 2020:6, 2021:2, 2022:6, 2023:6, 2024:4, 2025:6};
+
+// Last place by regular-season record (not final standing, which includes
+// playoffs) — verified against full standings screenshots for each year.
+// Ties are listed as multiple teams for that season.
+const lastPlaceHistory = [
+  {year:2019, record:'4-9',  teams:[{id:'joey', name:'Team Yahoo'}]},
+  {year:2020, record:'3-10', teams:[{name:'Funktown 69ers'}]},
+  {year:2021, record:'2-12', teams:[{id:'deamer', name:'#sixersin6 Sixersin6'}]},
+  {year:2022, record:'3-11', teams:[{id:'mark', name:'OVO Mark'}, {id:'deamer', name:'Howie hinkie Sixersin6'}]},
+  {year:2023, record:'1-13', teams:[{name:'Joe Biden'}]},
+  {year:2024, record:'3-11', teams:[{id:'mark', name:'OVO Mark'}]},
+  {year:2025, record:'4-10', teams:[{id:'willy', name:'Unsolicited Dak Pics'}, {id:'roldi', name:'SleepyStoners'}]},
+];
 
 const rulebook = [
   {title:'Keepers', body:`
@@ -1132,6 +1172,90 @@ document.getElementById('toiletBowlStrip').innerHTML = toiletBowl
 renderBrackets();
 renderHistory();
 renderRecords([], teams);
+
+/* ================= LAST PLACE HISTORY (Hall of Shame) ================= */
+function teamLabel(entry){
+  if(entry.id && teamById[entry.id]) return teamById[entry.id].team + ' (' + teamById[entry.id].owner + ')';
+  return entry.name;
+}
+document.getElementById('lastPlaceTable').innerHTML = `
+  <thead><tr><th>Season</th><th>Last Place</th><th>Record</th><th>Wheel Result</th></tr></thead>
+  <tbody>
+    ${lastPlaceHistory.map(r=>`
+      <tr>
+        <td class="filled">${r.year}</td>
+        <td class="filled">${r.teams.map(teamLabel).join(' & ')}${r.teams.length>1 ? ' <span class="mono" style="font-size:0.7rem;">(tied)</span>' : ''}</td>
+        <td class="filled mono">${r.record}</td>
+        <td>Add wheel result</td>
+      </tr>`).join('')}
+  </tbody>`;
+document.getElementById('lastPlaceNote').textContent = '✎ Last place is by regular-season record, ties shown together — add each year\'s actual wheel punishment in the "Wheel Result" column';
+
+/* ================= CAREER PROFILES ================= */
+const careerPickerEl = document.getElementById('careerPicker');
+const careerPanelEl = document.getElementById('careerPanel');
+careerPickerEl.innerHTML = teams.map(t=>`
+  <button class="pick-btn" data-id="${t.id}">
+    ${crest(t,32)}
+    <div><div class="team-name">${t.team}</div><div class="owner-name">${t.owner}</div></div>
+  </button>`).join('');
+
+function buildTimeline(id){
+  const items = [];
+  Object.entries(historicalBrackets).forEach(([year, rounds])=>{
+    const finalMatch = rounds[rounds.length-1].matchups[0];
+    const aWins = finalMatch.aScore > finalMatch.bScore;
+    const champEntry = aWins ? finalMatch.a : finalMatch.b;
+    const runnerEntry = aWins ? finalMatch.b : finalMatch.a;
+    if(champEntry.id === id) items.push({year:+year, type:'champ', badge:'🏆', label:'League Champion'});
+    if(runnerEntry.id === id) items.push({year:+year, type:'runnerup', badge:'🥈', label:'Runner-Up'});
+  });
+  toiletBowl.forEach(tb=>{
+    if(tb.teamId === id) items.push({year:tb.year, type:'toilet', badge:'🚽', label:'Toilet Bowl Champion'});
+  });
+  lastPlaceHistory.forEach(lp=>{
+    if(lp.teams.some(t=>t.id===id)) items.push({year:lp.year, type:'last', badge:'💀', label:`Last Place (${lp.record})`});
+  });
+  return items.sort((a,b)=>b.year-a.year);
+}
+
+function renderCareer(id){
+  const t = teamById[id];
+  document.querySelectorAll('#careerPicker .pick-btn').forEach(b=>b.classList.toggle('active', b.dataset.id===id));
+  const timeline = buildTimeline(id);
+  const rec = record(t.overall);
+
+  careerPanelEl.innerHTML = `
+    <div class="rival-panel-head">
+      ${crest(t,56)}
+      <div>
+        <div class="team-name" style="font-size:1.3rem;">${t.team}</div>
+        <div class="owner-name">${t.owner} · ${t.division}</div>
+      </div>
+    </div>
+    <div class="career-stats">
+      <div class="career-stat"><div class="cs-num">${t.overall}</div><div class="cs-lbl">All-Time</div></div>
+      <div class="career-stat"><div class="cs-num">${(rec.pct*100).toFixed(1)}%</div><div class="cs-lbl">Win%</div></div>
+      <div class="career-stat"><div class="cs-num">${t.champs>0 ? '🏆'.repeat(Math.min(t.champs,5)) : '—'}</div><div class="cs-lbl">Rings</div></div>
+      <div class="career-stat"><div class="cs-num">${t.apps}</div><div class="cs-lbl">Playoff Apps</div></div>
+      <div class="career-stat"><div class="cs-num">${t.po}</div><div class="cs-lbl">Playoff Record</div></div>
+    </div>
+    ${timeline.length ? `
+      <div>
+        ${timeline.map(item=>`
+          <div class="timeline-item ${item.type}">
+            <span class="ti-year">${item.year}</span>
+            <span class="ti-badge">${item.badge}</span>
+            <span class="ti-label">${item.label}</span>
+          </div>`).join('')}
+      </div>` : `<p style="color:#8a8f7e; font-size:0.88rem;">No documented championship, runner-up, toilet bowl, or last-place finishes yet — this owner's had a run of respectable, forgettable seasons.</p>`}
+  `;
+}
+careerPickerEl.addEventListener('click', e=>{
+  const btn = e.target.closest('.pick-btn');
+  if(btn) renderCareer(btn.dataset.id);
+});
+renderCareer(teams[0].id);
 
 /* ================= RULEBOOK ================= */
 document.getElementById('accordion').innerHTML = rulebook.map((r,i)=>`
