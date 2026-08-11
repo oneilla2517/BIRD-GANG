@@ -231,6 +231,31 @@
   .season-table td{padding:10px 14px; border-top:1px solid #eee7d4; font-size:0.86rem;}
   .season-table tr:hover td{background:#faf8f1;}
 
+  /* ===== RECORDS / SUPERLATIVES ===== */
+  .records-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px;}
+  .record-card{background:#fff; border-radius:var(--radius); box-shadow:var(--shadow); padding:20px; border-top:4px solid var(--kelly);}
+  .record-card .rc-label{font-family:'JetBrains Mono'; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.06em; color:#8a8f7e;}
+  .record-card .rc-value{font-family:'Oswald'; font-weight:700; font-size:1.3rem; color:var(--midnight); margin-top:6px;}
+  .record-card .rc-detail{font-size:0.8rem; color:#8a8f7e; margin-top:3px;}
+
+  /* ===== PLAYOFF BRACKETS ===== */
+  .bracket-tabs{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:16px;}
+  .bracket-tabs button{
+    font-family:'JetBrains Mono'; font-size:0.78rem; padding:7px 14px; border-radius:16px;
+    border:1px solid var(--midnight); background:#fff; color:var(--midnight); cursor:pointer;
+  }
+  .bracket-tabs button.active{background:var(--midnight); color:var(--bone);}
+  .bracket-round{margin-bottom:16px;}
+  .bracket-round h4{font-family:'Oswald'; font-size:0.85rem; color:#8a8f7e; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;}
+  .bracket-matchup{
+    display:flex; align-items:center; justify-content:space-between; background:#fff;
+    border-radius:8px; box-shadow:var(--shadow); padding:10px 16px; margin-bottom:8px; gap:12px;
+  }
+  .bm-team{display:flex; align-items:center; gap:8px; flex:1; font-size:0.88rem;}
+  .bm-team.winner .team-name{font-weight:700; color:var(--kelly);}
+  .bm-score{font-family:'JetBrains Mono'; font-weight:600;}
+  .bm-vs{color:var(--silver); font-family:'JetBrains Mono'; font-size:0.75rem;}
+
   /* ===== RULEBOOK ===== */
   .accordion{display:flex; flex-direction:column; gap:10px;}
   .acc-item{background:#fff; border-radius:8px; box-shadow:var(--shadow); overflow:hidden; border:1px solid #eee7d4;}
@@ -273,6 +298,7 @@
     <div class="nav-links">
       <a href="#standings">Standings</a>
       <a href="#fame">Hall of Fame</a>
+      <a href="#records">Records</a>
       <a href="#rivalries">Rivalries</a>
       <a href="#shame">Hall of Shame</a>
       <a href="#rulebook">Rulebook</a>
@@ -314,6 +340,19 @@
   <div id="seasonArchiveWrap" style="display:none; margin-top:28px;">
     <h3 style="font-size:1.1rem; color:var(--midnight); margin-bottom:12px;">Season by Season</h3>
     <div id="seasonArchive" style="overflow-x:auto;"></div>
+  </div>
+</section>
+
+<section id="records">
+  <div class="section-head"><span class="tag">Numbers</span><h2>Records &amp; Superlatives</h2></div>
+  <p class="section-desc">The all-time leaderboard. Updates automatically once the live sync has run.</p>
+  <div class="records-grid" id="recordsGrid">
+    <div class="record-card"><div class="rc-label">Sync live data to populate records</div></div>
+  </div>
+  <div id="bracketWrap" style="display:none; margin-top:36px;">
+    <h3 style="font-size:1.1rem; color:var(--midnight); margin-bottom:12px;">Playoff Brackets by Season</h3>
+    <div class="bracket-tabs" id="bracketTabs"></div>
+    <div id="bracketBody"></div>
   </div>
 </section>
 
@@ -529,6 +568,8 @@ fetch('./data.json', {cache:'no-store'})
     });
 
     renderHistory(data.history || {});
+    renderRecords(data.weeklyScores || [], teams);
+    renderBrackets(data.playoffBrackets || {});
   })
   .catch(() => {
     document.getElementById('liveBadge').textContent = '○ Static data — connect scripts/fetch_espn.py for live scores';
@@ -556,14 +597,18 @@ function renderHistory(history){
     archiveWrap.style.display = 'block';
     document.getElementById('seasonArchive').innerHTML = `
       <table class="season-table">
-        <thead><tr><th>Season</th><th>Champion</th><th>Last Place</th></tr></thead>
+        <thead><tr><th>Season</th><th>Champion</th><th>Last Place</th><th>Highest Scorer</th></tr></thead>
         <tbody>
-          ${rows.map(r=>`
+          ${rows.map(r=>{
+            const leader = seasonScoringLeader(r.year);
+            return `
             <tr>
               <td class="num">${r.year}</td>
               <td><div class="team-cell">${crest(teamById[r.champId],26)}<span class="team-name">${teamById[r.champId].team}</span></div></td>
               <td>${r.lastId && teamById[r.lastId] ? teamById[r.lastId].team : '—'}</td>
-            </tr>`).join('')}
+              <td>${leader ? `${teamById[leader.teamId].team} <span class="mono">(${leader.total.toFixed(1)})</span>` : '—'}</td>
+            </tr>`;
+          }).join('')}
         </tbody>
       </table>`;
   }
@@ -583,6 +628,122 @@ function renderHistory(history){
       </tbody>`;
     document.getElementById('lastPlaceNote').textContent = '✎ Last-place teams synced live from ESPN — add each year\'s actual wheel punishment in the "Wheel Result" column';
   }
+}
+
+function seasonScoringLeader(year){
+  if(!window._weeklyScores) return null;
+  const totals = {};
+  window._weeklyScores
+    .filter(s => String(s.season) === String(year) && !s.isPlayoff)
+    .forEach(s => { totals[s.teamId] = (totals[s.teamId] || 0) + s.score; });
+  const entries = Object.entries(totals);
+  if(!entries.length) return null;
+  const [teamId, total] = entries.sort((a,b)=>b[1]-a[1])[0];
+  return teamById[teamId] ? {teamId, total} : null;
+}
+
+function renderRecords(weeklyScores, teamsData){
+  window._weeklyScores = weeklyScores;
+  if(!weeklyScores || !weeklyScores.length) return;
+
+  const regular = weeklyScores.filter(s => !s.isPlayoff);
+
+  // Single game high / low
+  const highGame = [...regular].sort((a,b)=>b.score-a.score)[0];
+  const lowGame = [...regular].sort((a,b)=>a.score-b.score)[0];
+
+  // Season totals & PPG per team-season
+  const seasonTotals = {}; // key: `${season}|${teamId}` -> {total, games}
+  regular.forEach(s=>{
+    const key = `${s.season}|${s.teamId}`;
+    if(!seasonTotals[key]) seasonTotals[key] = {season:s.season, teamId:s.teamId, total:0, games:0};
+    seasonTotals[key].total += s.score;
+    seasonTotals[key].games += 1;
+  });
+  const seasonList = Object.values(seasonTotals);
+  const highSeasonTotal = [...seasonList].sort((a,b)=>b.total-a.total)[0];
+  const highPPG = [...seasonList].filter(s=>s.games>=6).sort((a,b)=>(b.total/b.games)-(a.total/a.games))[0];
+
+  // Playoff wins per team (from weeklyScores, deduped by matchup via teamId+score>oppScore)
+  const playoffWins = {};
+  weeklyScores.filter(s=>s.isPlayoff && s.oppScore!=null).forEach(s=>{
+    if(s.score > s.oppScore) playoffWins[s.teamId] = (playoffWins[s.teamId]||0) + 1;
+  });
+  const topPlayoffWinner = Object.entries(playoffWins).sort((a,b)=>b[1]-a[1])[0];
+
+  const cards = [];
+  if(highGame && teamById[highGame.teamId]) cards.push({
+    label:'Single-Game High', value:`${highGame.score.toFixed(1)} pts`,
+    detail:`${teamById[highGame.teamId].team} · ${highGame.season}, Wk ${highGame.week}`
+  });
+  if(lowGame && teamById[lowGame.teamId]) cards.push({
+    label:'Single-Game Low', value:`${lowGame.score.toFixed(1)} pts`,
+    detail:`${teamById[lowGame.teamId].team} · ${lowGame.season}, Wk ${lowGame.week}`
+  });
+  if(highSeasonTotal && teamById[highSeasonTotal.teamId]) cards.push({
+    label:'Highest Scoring Reg. Season', value:`${highSeasonTotal.total.toFixed(1)} pts`,
+    detail:`${teamById[highSeasonTotal.teamId].team} · ${highSeasonTotal.season}`
+  });
+  if(highPPG && teamById[highPPG.teamId]) cards.push({
+    label:'Highest PPG (Season)', value:`${(highPPG.total/highPPG.games).toFixed(1)} ppg`,
+    detail:`${teamById[highPPG.teamId].team} · ${highPPG.season}`
+  });
+  if(topPlayoffWinner && teamById[topPlayoffWinner[0]]) cards.push({
+    label:'Most Playoff Wins', value:`${topPlayoffWinner[1]} wins`,
+    detail:teamById[topPlayoffWinner[0]].team
+  });
+
+  // Always-available cards from the base teams array (don't need live sync)
+  const mostTitles = [...teamsData].sort((a,b)=>b.champs-a.champs)[0];
+  if(mostTitles && mostTitles.champs>0) cards.push({
+    label:'Most Titles', value:`${mostTitles.champs} ring${mostTitles.champs>1?'s':''}`, detail:mostTitles.team
+  });
+  const bestWinPct = [...teamsData].sort((a,b)=>record(b.overall).pct-record(a.overall).pct)[0];
+  cards.push({
+    label:'Best All-Time Win%', value:`${(record(bestWinPct.overall).pct*100).toFixed(1)}%`, detail:bestWinPct.team
+  });
+
+  document.getElementById('recordsGrid').innerHTML = cards.map(c=>`
+    <div class="record-card">
+      <div class="rc-label">${c.label}</div>
+      <div class="rc-value">${c.value}</div>
+      <div class="rc-detail">${c.detail}</div>
+    </div>`).join('');
+}
+
+function renderBrackets(brackets){
+  if(!brackets || !Object.keys(brackets).length) return;
+  const years = Object.keys(brackets).sort((a,b)=>b-a);
+  document.getElementById('bracketWrap').style.display = 'block';
+
+  const tabsEl = document.getElementById('bracketTabs');
+  tabsEl.innerHTML = years.map((y,i)=>`<button data-year="${y}" class="${i===0?'active':''}">${y}</button>`).join('');
+
+  function showYear(year){
+    tabsEl.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b.dataset.year===year));
+    const rounds = brackets[year];
+    document.getElementById('bracketBody').innerHTML = rounds.map(r=>`
+      <div class="bracket-round">
+        <h4>Week ${r.week}</h4>
+        ${r.matchups.map(m=>{
+          const t = teamById[m.teamId], o = teamById[m.oppId];
+          if(!t || !o) return '';
+          return `
+          <div class="bracket-matchup">
+            <div class="bm-team ${m.winnerId===m.teamId?'winner':''}">${crest(t,26)}<span class="team-name">${t.team}</span></div>
+            <div class="bm-score">${m.score.toFixed(1)}</div>
+            <div class="bm-vs">vs</div>
+            <div class="bm-score">${m.oppScore.toFixed(1)}</div>
+            <div class="bm-team ${m.winnerId===m.oppId?'winner':''}" style="justify-content:flex-end; text-align:right;"><span class="team-name">${o.team}</span>${crest(o,26)}</div>
+          </div>`;
+        }).join('')}
+      </div>`).join('');
+  }
+  tabsEl.addEventListener('click', e=>{
+    const btn = e.target.closest('button');
+    if(btn) showYear(btn.dataset.year);
+  });
+  showYear(years[0]);
 }
 
 /* ================= ALL-TIME STANDINGS ================= */
