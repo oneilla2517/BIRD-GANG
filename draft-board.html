@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bird Gang · 2026 Draft Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --midnight:#04373C;
+  --midnight-dark:#022023;
+  --kelly:#046A38;
+  --bone:#F4F1E8;
+  --bone-dim:#E9E4D6;
+  --ink:#0B0E0F;
+  --silver:#A5ACAF;
+  --gold:#C8A951;
+  --red:#B3282D;
+  --radius:10px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--bone-dim); color:var(--ink);
+  font-family:'Inter',sans-serif;
+}
+.mono{font-family:'JetBrains Mono',monospace;}
+header{
+  background:linear-gradient(160deg, var(--midnight) 0%, var(--midnight-dark) 100%);
+  color:var(--bone); padding:36px 20px 28px; text-align:center;
+  border-bottom:4px solid var(--gold);
+}
+header .eyebrow{
+  font-family:'JetBrains Mono'; font-size:0.72rem; letter-spacing:0.22em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:10px;
+}
+header h1{
+  font-family:'Oswald'; font-weight:700; font-size:2.4rem; margin:0 0 6px; letter-spacing:0.01em;
+}
+header p{margin:6px auto 0; max-width:640px; color:var(--silver); font-size:0.92rem; line-height:1.5;}
+
+.legend{
+  display:flex; gap:18px; justify-content:center; flex-wrap:wrap; margin-top:18px;
+  font-family:'JetBrains Mono'; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em;
+}
+.legend-item{display:flex; align-items:center; gap:6px; color:var(--bone-dim);}
+.legend-swatch{width:12px; height:12px; border-radius:3px;}
+.sw-keeper{background:var(--gold);}
+.sw-traded{background:var(--red);}
+.sw-live{background:var(--kelly);}
+
+.filter-bar{
+  position:sticky; top:0; z-index:10; background:var(--midnight); padding:12px 16px;
+  display:flex; gap:8px; flex-wrap:wrap; justify-content:center; box-shadow:0 4px 14px rgba(0,0,0,0.25);
+}
+.tchip{
+  font-family:'Oswald'; font-weight:500; font-size:0.72rem; letter-spacing:0.03em; text-transform:uppercase;
+  background:var(--midnight-dark); color:var(--bone-dim); border:1px solid rgba(244,241,232,0.15);
+  padding:7px 12px; border-radius:20px; cursor:pointer; transition:all .15s ease;
+}
+.tchip:hover{border-color:var(--gold); color:var(--gold);}
+.tchip.active{background:var(--gold); color:var(--midnight-dark); border-color:var(--gold);}
+.tchip.reset{background:transparent; border-style:dashed;}
+
+main{max-width:1400px; margin:0 auto; padding:24px 16px 60px;}
+
+.board{overflow-x:auto; padding-bottom:8px;}
+.round-row{display:flex; gap:8px; margin-bottom:8px; min-width:1180px;}
+.round-label{
+  width:64px; flex-shrink:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  background:var(--midnight); color:var(--bone); border-radius:var(--radius);
+}
+.round-label .rnum{font-family:'Oswald'; font-weight:700; font-size:0.78rem;}
+.round-label .rdir{font-family:'JetBrains Mono'; color:var(--gold); font-size:0.85rem; margin-top:2px;}
+.round-cells{display:grid; grid-template-columns:repeat(12,1fr); gap:6px; flex:1;}
+
+.cell{
+  background:#fff; border:1px solid rgba(4,55,60,0.12); border-radius:8px; padding:6px 7px;
+  min-height:64px; display:flex; flex-direction:column; justify-content:flex-start;
+  transition:opacity .15s ease, transform .15s ease; position:relative;
+}
+.cell-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;}
+.ov{font-family:'JetBrains Mono'; font-size:0.6rem; color:var(--silver);}
+.cell-team{font-family:'Oswald'; font-weight:600; font-size:0.72rem; color:var(--midnight); letter-spacing:0.01em; line-height:1.15;}
+.tag{font-family:'JetBrains Mono'; font-size:0.52rem; letter-spacing:0.05em; padding:1px 4px; border-radius:4px; color:#fff;}
+.tag-keeper{background:var(--gold); color:var(--midnight-dark); font-weight:700;}
+.tag-traded{background:var(--red); cursor:help;}
+.kp-player{font-family:'Inter'; font-weight:600; font-size:0.66rem; margin-top:3px; color:var(--midnight); line-height:1.15;}
+.kp-pos{font-family:'JetBrains Mono'; font-size:0.56rem; color:var(--silver); margin-top:1px;}
+.via{font-family:'JetBrains Mono'; font-size:0.56rem; color:var(--red); margin-top:3px;}
+
+.is-keeper{background:#FFF9EC; border-color:var(--gold);}
+.is-traded{background:#FBEEEE; border-color:var(--red);}
+
+.board.focused .cell{opacity:0.25; transform:scale(0.98);}
+.board.focused .cell.focus-match{opacity:1; transform:scale(1); box-shadow:0 0 0 2px var(--gold);}
+
+.panels-head{
+  margin:56px 0 18px; text-align:center;
+}
+.panels-head h2{font-family:'Oswald'; font-weight:700; font-size:1.5rem; color:var(--midnight); margin:0 0 6px;}
+.panels-head p{color:#5b6360; font-size:0.85rem; margin:0;}
+
+.panels{display:none; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px;}
+.panels.show{display:grid;}
+.panel{background:#fff; border-radius:var(--radius); padding:16px 18px; border:1px solid rgba(4,55,60,0.1);}
+.panel h3{font-family:'Oswald'; font-weight:600; font-size:1rem; color:var(--midnight); margin:0 0 10px;}
+.panel h3 .owner{display:block; font-family:'JetBrains Mono'; font-size:0.65rem; color:var(--silver); font-weight:400; margin-top:2px; text-transform:uppercase; letter-spacing:0.04em;}
+.panel-table{width:100%; border-collapse:collapse; font-size:0.78rem;}
+.panel-table td{padding:5px 4px; border-bottom:1px solid var(--bone-dim);}
+.panel-table td.rd{font-family:'JetBrains Mono'; color:var(--kelly); font-weight:700; width:34px;}
+.panel-table td.pk{font-family:'JetBrains Mono'; color:var(--silver); width:44px;}
+.pill{font-family:'JetBrains Mono'; font-size:0.6rem; padding:1px 5px; border-radius:4px; margin-left:5px;}
+.pill-k{background:var(--gold); color:var(--midnight-dark);}
+.pill-t{background:var(--red); color:#fff;}
+.pospill{font-family:'JetBrains Mono'; font-size:0.65rem; color:var(--silver);}
+
+.trades-note{
+  max-width:760px; margin:50px auto 0; background:#fff; border-radius:var(--radius); padding:20px 22px;
+  border-left:4px solid var(--red);
+}
+.trades-note h3{font-family:'Oswald'; font-size:1rem; margin:0 0 10px; color:var(--midnight);}
+.trades-note ul{margin:0; padding-left:18px; font-size:0.84rem; line-height:1.7; color:#3a3f3d;}
+
+footer{text-align:center; padding:30px 16px 50px; color:var(--silver); font-family:'JetBrains Mono'; font-size:0.68rem; letter-spacing:0.05em;}
+
+@media (max-width: 720px){
+  header h1{font-size:1.7rem;}
+  .round-label{width:52px;}
+  .cell{min-height:56px; padding:5px 5px;}
+  .cell-team{font-size:0.62rem;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Bird Gang · 41-33 · 12 Teams</div>
+  <h1>2026 Draft Board</h1>
+  <p>16 rounds, full snake order, every keeper slotted in place. A few pick trades this offseason moved rounds around — trades and keepers are both flagged right on the board.</p>
+  <div class="legend">
+    <div class="legend-item"><span class="legend-swatch sw-live"></span>Live Pick</div>
+    <div class="legend-item"><span class="legend-swatch sw-keeper"></span>Keeper Slot</div>
+    <div class="legend-item"><span class="legend-swatch sw-traded"></span>Traded Pick</div>
+  </div>
+</header>
+
+<div class="filter-bar">
+  <button class="tchip reset active" data-team="__all" onclick="setFocus(null)">All Teams</button>
+  <button class="tchip" data-team="papo" onclick="setFocus('papo')">ADRIAN</button>
+<button class="tchip" data-team="willy" onclick="setFocus('willy')">WILLY</button>
+<button class="tchip" data-team="roldi" onclick="setFocus('roldi')">ROLDI</button>
+<button class="tchip" data-team="deamer" onclick="setFocus('deamer')">DEAMER</button>
+<button class="tchip" data-team="steve" onclick="setFocus('steve')">STEVE</button>
+<button class="tchip" data-team="joey" onclick="setFocus('joey')">JOEY</button>
+<button class="tchip" data-team="mark" onclick="setFocus('mark')">MARK</button>
+<button class="tchip" data-team="shawno" onclick="setFocus('shawno')">SHAWN O</button>
+<button class="tchip" data-team="drew" onclick="setFocus('drew')">DREW</button>
+<button class="tchip" data-team="big" onclick="setFocus('big')">BIG</button>
+<button class="tchip" data-team="christian" onclick="setFocus('christian')">CHRISTIAN</button>
+<button class="tchip" data-team="robinson" onclick="setFocus('robinson')">SHAWN R</button>
+</div>
+
+<main>
+  <div class="board" id="board">
+    
+    <div class="round-row">
+      <div class="round-label"><span class="rnum">RD 1</span><span class="rdir">→</span></div>
+      <div class="round-cells"><div class="cell team-papo" data-team="papo">
+          <div class="cell-top"><span class="ov">#1</span></div>
+          <div class="cell-team">ADRIAN</div>
+          
+        </div><div class="cell team-willy" data-team="willy">
+          <div class="cell-top"><span class="ov">#2</span></div>
+          <div class="cell-team">WILLY</div>
+          
+        </div><div class="cell team-roldi" data-team="roldi">
+          <div class="cell-top"><span class="ov">#3</span></div>
+          <div class="cell-team">ROLDI</div>
+          
+        </div><div class="cell team-deamer" data-team="deamer">
+          <div class="cell-top"><span class="ov">#4</span></div>
+          <div class="cell-team">DEAMER</div>
+          
+        </div><div class="cell team-steve" data-team="steve">
+          <div class="cell-top"><span class="ov">#5</span></div>
+          <div class="cell-team">STEVE</div>
+          
+        </div><div class="cell team-joey" data-team="joey">
+          <div class="cell-top"><span class="ov">#6</span></div>
+          <div class="cell-team">JOEY</div>
+          
+        </div><div class="cell team-christian is-traded" data-team="christian">
+          <div class="cell-top"><span class="ov">#7</span><span class="tag tag-traded" title="Mark's R1 & R6 traded to Christian for Christian's R15 & R16 (Ja'Marr Chase deal)">TRADE</span></div>
+          <div class="cell-team">CHRISTIAN</div>
+          <div class='via'>via MARK</div>
+        </div><div class="cell team-shawno" data-team="shawno">
+          <div class="cell-top"><span class="ov">#8</span></div>
+          <div class="cell-team">SHAWN O</div>
+          
+        </div><div class="cell team-drew" data-team="drew">
+          <div class="cell-top"><span class="ov">#9</span></div>
+          <div class="cell-team">DREW</div>
+          
+        </div><div class="cell team-big" data-team="big">
+          <div class="cell-top"><span class="ov">#10</span></div>
+          <div class="cell-team">BIG</div>
+          
+        </div><div class="cell team-christian" data-team="christian">
+          <div class="cell-top"><span class="ov">#11</span></div>
+          <div class="cell-team">CHRISTIAN</div>
+          
+        </div><div class="cell team-robinson" data-team="robinson">
+          <div class="cell-top"><span class="ov">#12</span></div>
+          <div class="cell-team">SHAWN R</div>
+          
+        </div></div>
+    </div>
+
+    <div class="round-row">
+      <div class="round-label"><span class="rnum">RD 2</span><span class="rdir">←</span></div>
+      <div class="round-cells"><div class="cell team-robinson" data-team="robinson">
+          <div class="cell-top"><span class="ov">#13</span></div>
+          <div class="cell-team">SHAWN R</div>
+          
+        </div><div class="cell team-christian" data-team="christian">
+          <div class="cell-top"><span class="ov">#14</span></div>
+          <div class="cell-team">CHRISTIAN</div>
+          
+        </div><div class="cell team-big" data-team="big">
+          <div class="cell-top"><span class="ov">#15</span></div>
+          <div class="cell-team">BIG</div>
+          
+        </div><div class="cell team-drew" data-team="drew">
+          <div class="cell-top"><span class="ov">#16</span></div>
+          <div class="cell-team">DREW</div>
+          
+        </div><div class="cell team-shawno is-keeper" data-team="shawno">
+          <div class="cell-top"><span class="ov">#17</span><span class="tag tag-keeper">KEEPER</span></div>
+          <div class="cell-team">SHAWN O</div>
+          <div class='kp-player'>Jaxon Smith-Njigba</div><div class='kp-pos'>SEA WR</div>
+        </div><div class="cell team-mark" data-team="mark">
+          <div class="cell-top"><span class="ov">#18</span></div>
+          <div class="cell-team">MARK</div>
+          
+        </div><div class="cell team-joey" data-team="joey">
+          <div class="cell-top"><span class="ov">#19</span></div>
+          <div class="cell-team">JOEY</div>
+          
+        </div><div class="cell team-steve" data-team="steve">
+          <div class="cell-top"><span class="ov">#20</span></div>
+          <div class="cell-team">STEVE</div>
+          
+        </div><div class="cell team-deamer" data-team="deamer">
+          <div class="cell-top"><span class="ov">#21</span></div>
+          <div class="cell-team">DEAMER</div>
+          
+        </div><div class="cell team-roldi" data-team="roldi">
+          <div class="cell-top"><span class="ov">#22</span></div>
+          <div class="cell-team">ROLDI</div>
+          
+        </div><div class="cell team-willy" data-team="willy">
+          <div class="cell-top"><span class="ov">#23</span></div>
+          <div class="cell-team">WILLY</div>
+          
+        </div><div class="cell team-papo" data-team="papo">
+          <div class="cell-top"><span class="ov">#24</span></div>
+          <div class="cell-team">ADRIAN</div>
+          
+        </div></div>
+    </div>
+
+    <div class="round-row">
+      <div class="round-label"><span class="rnum">RD 3</span><span class="rdir">→</span></div>
+      <div class="round-cells"><div class="cell team-papo" data-team="papo">
+          <div class="cell-top"><span class="ov">#25</span></div>
+          <div class="cell-team">ADRIAN</div>
+          
+        </div><div class="cell team-willy" data-team="willy">
+          <div class="cell-top"><span class="ov">#26</span></div>
+          <div class="cell-team">WILLY</div>
+          
+        </div><div class="cell team-roldi is-keeper" data-team="roldi">
+          <div class="cell-top"><span class="ov">#27</span><span class="tag tag-keeper">KEEPER</span></div>
+          <div class="cell-team">ROLDI</div>
+          <div class='kp-player'>Javonte Williams</div><div class='kp-pos'>DAL RB</div>
+        </div><div class="cell team-deamer" data-team="deamer">
+          <div class="cell-top"><span class="ov">#28</span></div>
+          <div class="cell-team">DEAMER</div>
+          
+        </div><div class="cell team-steve" data-team="steve">
+          <div class="cell-top"><span class="ov">#29</span></div>
+          <div class="cell-team">STEVE</div>
+          
+        </div><div class="cell team-joey is-keeper" data-team="joey">
+          <div class="cell-top"><span class="ov">#30</span><span class="tag tag-keeper">KEEPER</span></div>
+          <div class="cell-team">JOEY</div>
+          <div class='kp-player'>George Pickens</div><div class='kp-pos'>DAL WR</div>
+        </div><div class="cell team-mark" data-team="mark">
+          <div class="cell-top"><span class="ov">#31</span></div>
+          <div class="cell-team">MARK</div>
+          
+        </div><div class="cell team-shawno" data-team="shawno">
+          <div class="cell-top"><span class="ov">#32</span></div>
+          <div class="cell-team">SHAWN O</div>
+          
+        </div><div class="cell team-drew" data-team="drew">
+          <div class="cell-top"><span class="ov">#33</span></div>
+          <div class="cell-team">DREW</div>
+          
+        </div><div class="cell team-big" data-team="big">
+          <div class="cell-top"><span class="ov">#34</span></div>
+          <div class="cell-team">BIG</div>
+          
+        </div><div class="cell team-christian" data-team="christian">
+          <div class="cell-top"><span class="ov">#35</span></div>
+          <div class="cell-team">CHRISTIAN</div>
+          
+        </div><div class="cell team-robinson" data-team="robinson">
+          <div class="cell-top"><span class="ov">#36</span></div>
+          <div class="cell-team">SHAWN R</div>
+          
+        </div></div>
+    </div>
+
+    <div class="round-row">
+      <div class="round-label"><span class="rnum">RD 4</span><span class="rdir">←</span></div>
+      <div class="round-cells"><div class="cell team-robinson" data-team="robinson">
+          <div class="cell-top"><span class="ov">#37</span></div>
+          <div class="cell-team">SHAWN R</div>
+          
+        </div><div class="cell team-christian" data-team="christian">
+          <div class="cell-top"><span class="ov">#38</span></div>
+          <div class="cell-team">CHRISTIAN</div>
+          
+        </div><div class="cell team-big is-keeper" data-team="big">
+          <div class="cell-top"><span class="ov">#39</span><span class="tag tag-keeper">KEEPER</span></div>
+          <div class="cell-team">BIG</div>
+          <div class='kp-player'>Brock Bowers</div><div class='kp-pos'>LV TE</div>
+        </div><div class="cell team-drew" data-team="drew">
+          <div class="cell-top"><span class="ov">#40</span></div>
+          <div class="cell-team">DREW</div>
+          
+        </div><div class="cell team-shawno" data-team="shawno">
+          <div class="cell-top"><span class="ov">#41</span></div>
+          <div class="cell-team">SHAWN O</div>
+          
+        </div><div class="cell team-mark" data-team="mark">
+          <div class="cell-top"><span class="ov">#42</span></div>
+          <div class="cell-team">MARK</div>
+          
+        </div><div class="cell team-willy is-traded" data-team="willy">
+          <div class="cell-top"><span class="ov">#43</span><span class="tag tag-traded" title="Joey's R4 traded to Willy for Willy's R12 (Pickens trade)">TRADE</span></div>
+          <div class="cell-team">WILLY</div>
+          <div class='via'>via JOEY</div>
+        </div><div class="cell team-steve" data-team="steve">
+          <div class="cell-top"><span class="ov">#44</span></div>
+          <div class="cell-team">STEVE</div>
+          
+        </div><div class="cell team-deamer" data-team="deamer">
+          <div class="cell-top"><span class="ov">#45</span></div>
+          <div class="cell-team">DEAMER</div>
+          
+        </div><div class="cell team-roldi" data-team="roldi">
+          <div class="cell-top"><span class="ov">#46</span></div>
+          <div class="cell-team">ROLDI</div>
+          
+        </div><div class="cell team-willy" data-team="willy">
+          <div class="cell-top"><span class="ov">#47</span></div>
+          <div class="cell-team">WILLY</div>
+          
+        </div><div class="cell team-papo" data-team="papo">
+          <div class="cell-top"><span class="ov">#48</span></div>
+          <div class="cell-team">ADRIAN</div>
+          
+        </div></div>
+    </div>
+
+    <div class="round-row">
+      <div class="round-label"><span class="rnum">RD 5</span><span class="rdir">→</span></div>
+      <div class="round-cells"><div class="cell team-papo" data-team="papo">
+          <div class="cell-top"><span class="ov">#49</span></div>
+          <div class="cell-team">ADRIAN</div>
+          
+        </div><div class="cell team-willy" data-team="willy">
+          <div class="cell-top"><span class="ov">#50</span></div>
+          <div class="cell-team">WILLY</div>
+          
+        </div><div class="cell team-roldi" data-team="roldi">
+          <div class="cell-top"><span class="ov">#51</span></div>
+          <div class="cell-team">ROLDI</div>
+          
+        </div><div class="cell team-willy is-traded" data-team="willy">
+          <div class="cell-top"><span class="ov">#52</span><span class="tag tag-traded" title="Deamer's R5 traded to Willy for Willy's R16 (RJ Harvey trade)">TRADE</span></div>
+          <div class="cell-team">WILLY</div>
+          <div class='via'>via DEAMER</div>
+        </div><div class="cell team-steve" data-team="steve">
+          <div class="cell-top"><span class="ov">#53</span></div>
+          <div class="cell-team">STEVE</div>
+          
+        </div><div class="cell team-joey" data-team="joey">
+          <div class="cell-top"><span class="ov">#54</span></div>
+          <div class="cell-team">JOEY</div>
+          
+        </div><div class="cell team-mark" data-team="mark">
+          <div class="cell-top"><span class="ov">#55</span></div>
+          <div class="cell-team">MARK</div>
+          
+        </div><div class="cell team-papo is-traded" data-team="papo">
+          <div class="cell-top"><span class="ov">#56</span><span class="tag tag-traded" title="Shawn O's R5 traded to Papo for Papo's R15">TRADE</span></div>
+          <div class="cell-team">ADRIAN</div>
+          <div class='via'>via SHAWN O</div>
+        </div><div class="cell team-drew" data-team="drew">
+          <div class="cell-top"><span class="ov">#57</span></div>
+          <div class="cell-team">DREW</div>
+          
+        </div><div class="cell team-big" data-team="big">
+          <div class="cell-top"><span class="ov">#58</span></div>
+          <div class="cell-team">BIG</div>
+          
+        </div><div class="cell team-christian" data-team="christian">
+          <div class="cell-top"><span class="ov">#59</span></div>
+          <div class="cell-team">CHRISTIAN</div>
+          
+        </div><div class="cell team-robinson" data-team="robinson">
+          <div class="cell-top"><span class="ov">#60</span></div>
+          <div class="cell-team">SHAWN R</div>
+          
+        </div></div>
+    </div>
+
+    <div class="round-row">
+      <div class="round-label"><span class="rnum">RD 6</span><span class="rdir">←</span></div>
+      <div class="round-cells"><div class="cell team-robinson is-keeper" data-team="robinson">
+          <div class="cell-top"><span class="ov">#61</span><span class="tag tag-keeper">KEEPER</span></div>
+          <div class="cell-team">SHAWN R</div>
+          <div class='kp-player'>Michael Pittman Jr.</div><div class='kp-pos'>PIT WR</div>
+        </div><div class="cell team-christian is-keeper" data-team="christian">
+          <div class="cell-top"><span class="ov">#62</span><span class="tag tag-keeper">KEEPER</span></div>
+          <div class="cell-team">CHRISTIAN</div>
+          <div class='kp-player'>Cam Skattebo</div><div class='kp-pos'>NYG RB</div>
+        </div><div class="cell team-big" data-team="big">
+          <div class="cell-top"><span class="ov">#63</span></div>
+          <div class="cell-team">BIG</div>
+          
+        </div><div class="cell team-drew" data-team="drew">
+          <div class="cell-top"><span class="ov">#64</span></div>
+          <div class="cell-team">DREW</div>
+          
+        </div><div class="cell team-willy is-traded" data-team="willy">
+          <div class="cell-top"><span class="ov">#65</span><span class="tag tag-traded" title="Shawn O's R6 traded to Willy for Willy's R10 (Odunze trade)">TRADE</span></div>
+          <div class="cell-team">WILLY</div>
+          <div class='via'>via SHAWN O</div>
+        </div><div class="cell team-christian is-traded" data-team="christian">
+          <div class="cell-top"><span class="ov">#66</span><span class="tag tag-traded" title="Mark's R1 & R6 traded to Christian for Christian's R15 & R16 (Ja'Marr Chase deal)">TRADE</span></div>
+          <div class="cell-team">CHRISTIAN</div>
+          <div class='via'>via MARK</div>
+        </div><div class="cell team-joey" data-team="joey">
+          <div class="cell-top"><span class="ov">#67</span></div>
+          <div class="cell-team">JOEY</div>
+          
+        </div><div class="cell team-steve" data-team="steve">
+          <div class="cell-top"><span class="ov">#68</span></div>
+          <div class="cell-team">STEVE</div>
+          
+        </div><div class="cell team-deamer" data-team="deamer">
+          <div class="cell-top"><span class="ov">#69</span></div>
+          <div class="cell-team">DEAMER</div>
+          
+        </div><div class="cell team-roldi" data-team="roldi">
+          <div class="cell-top"><span class="ov">#70</span></div>
+          <div class="cell-team">ROLDI</div>
+          
+        </div><div class="cell team-willy" data-team="willy">
+          <div class="cell-top"><span class="ov">#71</span></div>
+          <div class="cell-team">WILLY</div>
+          
+        </div><div class="cell team-papo" data-team="papo">
+          <div class="cell-top"><span class="ov">#72</span></div>
+          <div class="cell-team">ADRIAN</div>
+          
+        </div></div>
+    </div>
+
+    <div class="round-row">
+      <div class="round-label"><span class="rnum">RD 7</span><span class="rdir">→</span></div>
+      <div class="round-cells"><div class="cell team-papo is-keeper" data-team="papo">
+          <div class="cell-top"><span class="ov">#73</span><span class="tag tag-keeper">KEEPER</span></div>
+          <div class="cell-team">ADRIAN</div>
+          <div class='kp-player'>Chase Brown</div><div class='kp-pos'>CIN RB</div>
+        </div><div class="cell team-willy" data-team="willy">
+          <div class="cell-top"><span class="ov">#74</span></div>
+          <div class="cell-team">WILLY</div>
+          
+        </div><div class="cell team-roldi" data-team="roldi">
+          <div class="cell-top"><span class="ov">#75</span></div>
+          <div class="cell-team">ROLDI</div>
+          
+        </div><div class="cell team-deamer" data-team="deamer">
+          <div class="cell-top"><span class="ov">#76</span></div>
+          <div class="cell-team">DEAMER</div>
+          
+        </div><div class="cell team-steve" data-team="steve">
+          <div class="cell-top"><span class="ov">#77</span></div>
+          <div class="cell-team">STEVE</div>
+          
+        </div><div class="cell team-joey" data-team="joey">
+          <div class="cell-top"><span class="ov">#78</span></div>
+          <div class="cell-team">JOEY</div>
+          
+        </div><div class="cell team-mark" data-team="mark">
+          <div class="cell-top"><span class="ov">#79</span></div>
+          <div class="cell-team">MARK</div>
+          
+        </div><div class="cell team-shawno is-keeper" data-team="shawno">
+          <div class="cell-top"><span class="ov">#80</span><span class="tag tag-keeper">KEEPER</span></div>
+          <div class="cell-team">SHAWN O</div>
+          <div class='kp-player'>Colston Loveland</div><div class='kp-pos'>CHI TE</div>
+        </div><div class="cell team-drew" data-team="drew">
+          <div class="cell-top"><span class="ov">#81</span></div>
+          <div class="cell-team">DREW</div>
+          
+        </div><div class="cell team-big" data-team="big">
+          <div class="cell-top"><span class="ov">#82</span></div>
+          <div class="cell-team">BIG</div>
+          
+        </div><div class="cell team-christian" data-team="christian">
+          <div class="cell-top"><span class="ov">#83</span></div>
+          <div class="cell-team">CHRISTIAN</div>
+          
+        </div><div class="cell team-robinson" data-team="robinson">
+          <div class="cell-top"><span class="ov">#84</span></div>
+          <div class="cell-team">SHAWN R</div>
+          
+        </div></div>
+    </div>
+
+    <div class="round-row">
+      <div class="round-label"><span class="rnum">RD 8</span><span class="rdir">←</span></div>
+      <div class="round-cells"><div class="cell team-robinson" data-team="robinson">
+          <div class="cell-top"><span class="ov">#85</span></div>
+          <div class="cell-team">SHAWN R</div>
+          
+        </div><div class="cell team-christian is-keeper" data-team="christian">
+          <div class="cell-top"><span class="ov">#86</span><span class="tag tag-keeper">KEEPER</span></div>
+          <div class="cell-team">CHRISTIAN</div>
+          <div class='kp-player'>Alec Pierce</div><div class='kp-pos'>IND WR</div>
+        </div><div class="cell team-big" data-team="big">
+          <div class="cell-top"><span class="ov">#87</span></div>
+          <div class="cell-team">BIG</div>
+          
+        </div><div class="cell team-drew is-keeper" data-team="drew">
+          <div class="cell-top"><span class="ov">#88</span><span class="tag tag-keeper">KEEPER</span></div>
+          <div class="cell-team">DREW</div>
+          <div class='kp-player'>Jayden Daniels</div><div class='kp-pos'>WSH QB</div>
+        </div><div class="cell team-shawno" data-team="shawno">
+          <div class="cell-top"><span class="ov">#89</span></div>
+          <div class="cell-team">SHAWN O</div>
+          
+        </div><div class="cell team-mark" data-team="mark">
+          <div class="cell-top"><span class="ov">#90</span></div>
+          <div class="cell-team">MARK</div>
+          
+        </div><div class="cell team-joey" data-team="joey">
+          <div class="cell-top"><span class="ov">#91</span></div>
+          <div class="cell-team">JOEY</div>
+          
+        </div><div class="cell team-steve" data-team="steve">
+          <div class="cell-top"><span class="ov">#92</span></div>
+          <div class="cell-team">STEVE</div>
+          
+        </div><div class="cell team-deamer is-keeper" data-team="deamer">
+          <div class="cell-top"><span class="ov">#93</span><span class="tag tag-keeper">KEEPER</span></div>
+          <div class="cell-team">DEAMER</div>
+          <div class='kp-player'>Bucky Irving</div><div class='kp-pos'>TB RB</div>
+        </div><div class="cell team-roldi" data-team="roldi">
+          <div class="cell-top"><span class="ov">#94</span></div>
+          <div class="cell-team">ROLDI</div>
+          
+        </div><div class="cell team-willy" data-team="willy">
+          <div class="cell-top"><span class="ov">#95</span></div>
+          <div class="cell-team">WILLY</div>
+          
+        </div><div class="cell team-christian is-traded" data-team="christian">
+          <div class="cell-top"><span class="ov">#96</span><span class="tag tag-traded" title="Papo's R8 traded to Christian for Christian's R10">TRADE</span></div>
+          <div class="cell-team">CHRISTIAN</div>
+          <div class='via'>via ADRIAN</div>
+        </div></div>
+    </div>
+
+    <div class="round-row">
+      <div class="round-label"><span class="rnum">RD 9</span><span class="rdir">→</span></div>
+      <div class="round-cells"><div class="cell team-papo" data-team="papo">
+          <div class="cell-top"><span class="ov">#97</span></div>
+          <div class="cell-team">ADRIAN</div>
+          
+        </div><div class="cell team-willy is-keeper" data-team="willy">
+          <div class="cell-top"><span class="ov">#98</span><span class="tag tag-keeper">KEEPER</span></div>
+          <div class="cell-team">WILLY</div>
+          <div class='kp-player'>Christian Watson</div><div class='kp-pos'>GB WR</div>
+        </div><div class="cell team-roldi" data-team="roldi">
+          <div class="cell-top"><span class="ov">#99</span></div>
+          <div class="cell-team">ROLDI</div>
+          
+        </div><div class="cell team-deamer" data-team="deamer">
+          <div class="cell-top"><span class="ov">#100</span></div>
+          <div class="cell-team">DEAMER</div>
+          
+        </div><div class="cell team-steve is-keeper" data-team="steve">
+          <div class="cell-top"><span class="ov">#101</span><span class="tag tag-keeper">KEEPER</span></div>
+          <div class="cell-team">STEVE</div>
+          <div class='kp-player'>Drake Maye</div><div class='kp-pos'>NE QB</div>
+        </div><div class="cell team-joey" data-team="joey">
+          <div class="cell-top"><span class="ov">#102</span></div>
+          <div class="cell-team">JOEY</div>
+          
+        </div><div class="cell team-mark" data-team="mark">
+          <div class="cell-top"><span class="ov">#103</span></div>
+          <div class="cell-team">MARK</div>
+          
+        </div><div class="cell team-shawno" data-team="shawno">
+          <div class="cell-top"><span class="ov">#104</span></div>
+          <div class="cell-team">SHAWN O</div>
+          
+        </div><div class="cell team-drew" data-team="drew">
+          <div class="cell-top"><span class="ov">#105</span></div>
+          <div class="cell-team">DREW</div>
+          
+        </div><div class="cell team-big" data-team="big">
+          <div class="cell-top"><span class="ov">#106</span></div>
+          <div class="cell-team">BIG</div>
+          
+        </div><div class="cell team-christian is-keeper" data-team="christian">
+          <div class="cell-top"><span class="ov">#107</span><span class="tag tag-keeper">KEEPER</span></div>
+          <div class="cell-team">CHRISTIAN</div>
+          <div class='kp-player'>Kyle Monangai</div><div class='kp-pos'>CHI RB</div>
+        </div><div class="cell team-robinson" data-team="robinson">
+          <div class="cell-top"><span class="ov">#108</span></div>
+          <div class="cell-team">SHAWN R</div>
+          
+        </div></div>
+    </div>
+
+    <div class="round-row">
+      <div class="round-label"><span class="rnum">RD 10</span><span class="rdir">←</span></div>
+      <div class="round-cells"><div class="cell team-robinson" data-team="robinson">
+          <div class="cell-top"><span class="ov">#109</span></div>
+          <div class="cell-team">SHAWN R</div>
+          
+        </div><div class="cell team-papo is-traded" data-team="papo">
+          <div class="cell-top"><span class="ov">#110</span><span class="tag tag-traded" title="Christian's R10 traded to Papo for Papo's R8">TRADE</span></div>
+          <div class="cell-team">ADRIAN</div>
+          <div class='via'>via CHRISTIAN</div>
+        </div><div class="cell team-big is-keeper" data-team="big">
+          <div class="cell-top"><span class="ov">#111</span><span class="tag tag-keeper">KEEPER</span></div>
+          <div class="cell-team">BIG</div>
+          <div class='kp-player'>Rico Dowdle</div><div class='kp-pos'>PIT RB</div>
+        </div><div class="cell team-drew" data-team="drew">
+          <div class="cell-top"><span class="ov">#112</span></div>
+          <div class="cell-team">DREW</div>
+          
+        </div><div class="cell team-shawno" data-team="shawno">
+          <div class="cell-top"><span class="ov">#113</span></div>
+          <div class="cell-team">SHAWN O</div>
+          
+        </div><div class="cell team-mark" data-team="mark">
+          <div class="cell-top"><span class="ov">#114</span></div>
+          <div class="cell-team">MARK</div>
+          
+        </div><div class="cell team-joey is-keeper" data-team="joey">
+          <div class="cell-top"><span class="ov">#115</span><span class="tag tag-keeper">KEEPER</span></div>
+          <div class="cell-team">JOEY</div>
+          <div class='kp-player'>Jake Ferguson</div><div class='kp-pos'>DAL TE</div>
+        </div><div class="cell team-steve" data-team="steve">
+          <div class="cell-top"><span class="ov">#116</span></div>
+          <div class="cell-team">STEVE</div>
+          
+        </div><div class="cell team-deamer" data-team="deamer">
+          <div class="cell-top"><span class="ov">#117</span></div>
+          <div class="cell-team">DEAMER</div>
+          
+        </div><div class="cell team-roldi" data-team="roldi">
+          <div class="cell-top"><span class="ov">#118</span></div>
+          <div class="cell-team">ROLDI</div>
+          
+        </div><div class="cell team-shawno is-traded" data-team="shawno">
+          <div class="cell-top"><span class="ov">#119</span><span class="tag tag-traded" title="Willy's R10 traded to Shawn O for Shawn O's R6 (Odunze trade)">TRADE</span></div>
+          <div class="cell-team">SHAWN O</div>
+          <div class='via'>via WILLY</div>
+        </div><div class="cell team-papo is-keeper" data-team="papo">
+          <div class="cell-top"><span class="ov">#120</span><span class="tag tag-keeper">KEEPER</span></div>
+          <div class="cell-team">ADRIAN</div>
+          <div class='kp-player'>Luther Burden III</div><div class='kp-pos'>CHI WR</div>
+        </div></div>
+    </div>
+
+    <div class="round-row">
+      <div class="round-label"><span class="rnum">RD 11</span><span class="rdir">→</span></div>
+      <div class="round-cells"><div class="cell team-papo is-keeper" data-team="papo">
+          <div class="cell-top"><span class="ov">#121</span><span class="tag tag-keeper">KEEPER</span></div>
+          <div class="cell-team">ADRIAN</div>
+          <div class='kp-player'>Jaxson Dart</div><div class='kp-pos'>NYG QB</div>
+        </div><div class="cell team-willy" data-team="willy">
+          <div class="cell-top"><span class="ov">#122</span></div>
+          <div class="cell-team">WILLY</div>
+          
+        </div><div class="cell team-roldi" data-team="roldi">
+          <div class="cell-top"><span class="ov">#123</span></div>
+          <div class="cell-team">ROLDI</div>
+          
+        </div><div class="cell team-deamer" data-team="deamer">
+          <div class="cell-top"><span class="ov">#124</span></div>
+          <div class="cell-team">DEAMER</div>
+          
+        </div><div class="cell team-steve" data-team="steve">
+          <div class="cell-top"><span class="ov">#125</span></div>
+          <div class="cell-team">STEVE</div>
+          
+        </div><div class="cell team-joey" data-team="joey">
+          <div class="cell-top"><span class="ov">#126</span></div>
+          <div class="cell-team">JOEY</div>
+          
+        </div><div class="cell team-mark" data-team="mark">
+          <div class="cell-top"><span class="ov">#127</span></div>
+          <div class="cell-team">MARK</div>
+          
+        </div><div class="cell team-shawno" data-team="shawno">
+          <div class="cell-top"><span class="ov">#128</span></div>
+          <div class="cell-team">SHAWN O</div>
+          
+        </div><div class="cell team-drew is-keeper" data-team="drew">
+          <div class="cell-top"><span class="ov">#129</span><span class="tag tag-keeper">KEEPER</span></div>
+          <div class="cell-team">DREW</div>
+          <div class='kp-player'>Matthew Stafford</div><div class='kp-pos'>LAR QB</div>
+        </div><div class="cell team-big" data-team="big">
+          <div class="cell-top"><span class="ov">#130</span></div>
+          <div class="cell-team">BIG</div>
+          
+        </div><div class="cell team-christian" data-team="christian">
+          <div class="cell-top"><span class="ov">#131</span></div>
+          <div class="cell-team">CHRISTIAN</div>
+          
+        </div><div class="cell team-robinson" data-team="robinson">
+          <div class="cell-top"><span class="ov">#132</span></div>
+          <div class="cell-team">SHAWN R</div>
+          
+        </div></div>
+    </div>
+
+    <div class="round-row">
+      <div class="round-label"><span class="rnum">RD 12</span><span class="rdir">←</span></div>
+      <div class="round-cells"><div class="cell team-robinson" data-team="robinson">
+          <div class="cell-top"><span class="ov">#133</span></div>
+          <div class="cell-team">SHAWN R</div>
+          
+        </div><div class="cell team-christian" data-team="christian">
+          <div class="cell-top"><span class="ov">#134</span></div>
+          <div class="cell-team">CHRISTIAN</div>
+          
+        </div><div class="cell team-big" data-team="big">
+          <div class="cell-top"><span class="ov">#135</span></div>
+          <div class="cell-team">BIG</div>
+          
+        </div><div class="cell team-drew" data-team="drew">
+          <div class="cell-top"><span class="ov">#136</span></div>
+          <div class="cell-team">DREW</div>
+          
+        </div><div class="cell team-shawno" data-team="shawno">
+          <div class="cell-top"><span class="ov">#137</span></div>
+          <div class="cell-team">SHAWN O</div>
+          
+        </div><div class="cell team-mark is-keeper" data-team="mark">
+          <div class="cell-top"><span class="ov">#138</span><span class="tag tag-keeper">KEEPER</span></div>
+          <div class="cell-team">MARK</div>
+          <div class='kp-player'>Adonai Mitchell</div><div class='kp-pos'>NYJ WR</div>
+        </div><div class="cell team-joey" data-team="joey">
+          <div class="cell-top"><span class="ov">#139</span></div>
+          <div class="cell-team">JOEY</div>
+          
+        </div><div class="cell team-steve" data-team="steve">
+          <div class="cell-top"><span class="ov">#140</span></div>
+          <div class="cell-team">STEVE</div>
+          
+        </div><div class="cell team-deamer" data-team="deamer">
+          <div class="cell-top"><span class="ov">#141</span></div>
+          <div class="cell-team">DEAMER</div>
+          
+        </div><div class="cell team-roldi" data-team="roldi">
+          <div class="cell-top"><span class="ov">#142</span></div>
+          <div class="cell-team">ROLDI</div>
+          
+        </div><div class="cell team-joey is-traded" data-team="joey">
+          <div class="cell-top"><span class="ov">#143</span><span class="tag tag-traded" title="Willy's R12 traded to Joey for Joey's R4 (Pickens trade)">TRADE</span></div>
+          <div class="cell-team">JOEY</div>
+          <div class='via'>via WILLY</div>
+        </div><div class="cell team-papo" data-team="papo">
+          <div class="cell-top"><span class="ov">#144</span></div>
+          <div class="cell-team">ADRIAN</div>
+          
+        </div></div>
+    </div>
+
+    <div class="round-row">
+      <div class="round-label"><span class="rnum">RD 13</span><span class="rdir">→</span></div>
+      <div class="round-cells"><div class="cell team-papo" data-team="papo">
+          <div class="cell-top"><span class="ov">#145</span></div>
+          <div class="cell-team">ADRIAN</div>
+          
+        </div><div class="cell team-willy" data-team="willy">
+          <div class="cell-top"><span class="ov">#146</span></div>
+          <div class="cell-team">WILLY</div>
+          
+        </div><div class="cell team-roldi" data-team="roldi">
+          <div class="cell-top"><span class="ov">#147</span></div>
+          <div class="cell-team">ROLDI</div>
+          
+        </div><div class="cell team-deamer" data-team="deamer">
+          <div class="cell-top"><span class="ov">#148</span></div>
+          <div class="cell-team">DEAMER</div>
+          
+        </div><div class="cell team-steve" data-team="steve">
+          <div class="cell-top"><span class="ov">#149</span></div>
+          <div class="cell-team">STEVE</div>
+          
+        </div><div class="cell team-joey" data-team="joey">
+          <div class="cell-top"><span class="ov">#150</span></div>
+          <div class="cell-team">JOEY</div>
+          
+        </div><div class="cell team-mark" data-team="mark">
+          <div class="cell-top"><span class="ov">#151</span></div>
+          <div class="cell-team">MARK</div>
+          
+        </div><div class="cell team-shawno" data-team="shawno">
+          <div class="cell-top"><span class="ov">#152</span></div>
+          <div class="cell-team">SHAWN O</div>
+          
+        </div><div class="cell team-drew" data-team="drew">
+          <div class="cell-top"><span class="ov">#153</span></div>
+          <div class="cell-team">DREW</div>
+          
+        </div><div class="cell team-big" data-team="big">
+          <div class="cell-top"><span class="ov">#154</span></div>
+          <div class="cell-team">BIG</div>
+          
+        </div><div class="cell team-christian" data-team="christian">
+          <div class="cell-top"><span class="ov">#155</span></div>
+          <div class="cell-team">CHRISTIAN</div>
+          
+        </div><div class="cell team-robinson" data-team="robinson">
+          <div class="cell-top"><span class="ov">#156</span></div>
+          <div class="cell-team">SHAWN R</div>
+          
+        </div></div>
+    </div>
+
+    <div class="round-row">
+      <div class="round-label"><span class="rnum">RD 14</span><span class="rdir">←</span></div>
+      <div class="round-cells"><div class="cell team-robinson is-keeper" data-team="robinson">
+          <div class="cell-top"><span class="ov">#157</span><span class="tag tag-keeper">KEEPER</span></div>
+          <div class="cell-team">SHAWN R</div>
+          <div class='kp-player'>Romeo Doubs</div><div class='kp-pos'>NE WR</div>
+        </div><div class="cell team-christian" data-team="christian">
+          <div class="cell-top"><span class="ov">#158</span></div>
+          <div class="cell-team">CHRISTIAN</div>
+          
+        </div><div class="cell team-big" data-team="big">
+          <div class="cell-top"><span class="ov">#159</span></div>
+          <div class="cell-team">BIG</div>
+          
+        </div><div class="cell team-drew" data-team="drew">
+          <div class="cell-top"><span class="ov">#160</span></div>
+          <div class="cell-team">DREW</div>
+          
+        </div><div class="cell team-shawno" data-team="shawno">
+          <div class="cell-top"><span class="ov">#161</span></div>
+          <div class="cell-team">SHAWN O</div>
+          
+        </div><div class="cell team-mark" data-team="mark">
+          <div class="cell-top"><span class="ov">#162</span></div>
+          <div class="cell-team">MARK</div>
+          
+        </div><div class="cell team-joey" data-team="joey">
+          <div class="cell-top"><span class="ov">#163</span></div>
+          <div class="cell-team">JOEY</div>
+          
+        </div><div class="cell team-steve" data-team="steve">
+          <div class="cell-top"><span class="ov">#164</span></div>
+          <div class="cell-team">STEVE</div>
+          
+        </div><div class="cell team-deamer" data-team="deamer">
+          <div class="cell-top"><span class="ov">#165</span></div>
+          <div class="cell-team">DEAMER</div>
+          
+        </div><div class="cell team-roldi" data-team="roldi">
+          <div class="cell-top"><span class="ov">#166</span></div>
+          <div class="cell-team">ROLDI</div>
+          
+        </div><div class="cell team-willy" data-team="willy">
+          <div class="cell-top"><span class="ov">#167</span></div>
+          <div class="cell-team">WILLY</div>
+          
+        </div><div class="cell team-papo" data-team="papo">
+          <div class="cell-top"><span class="ov">#168</span></div>
+          <div class="cell-team">ADRIAN</div>
+          
+        </div></div>
+    </div>
+
+    <div class="round-row">
+      <div class="round-label"><span class="rnum">RD 15</span><span class="rdir">→</span></div>
+      <div class="round-cells"><div class="cell team-shawno is-traded" data-team="shawno">
+          <div class="cell-top"><span class="ov">#169</span><span class="tag tag-traded" title="Papo's R15 traded to Shawn O for Shawn O's R5">TRADE</span></div>
+          <div class="cell-team">SHAWN O</div>
+          <div class='via'>via ADRIAN</div>
+        </div><div class="cell team-willy" data-team="willy">
+          <div class="cell-top"><span class="ov">#170</span></div>
+          <div class="cell-team">WILLY</div>
+          
+        </div><div class="cell team-roldi" data-team="roldi">
+          <div class="cell-top"><span class="ov">#171</span></div>
+          <div class="cell-team">ROLDI</div>
+          
+        </div><div class="cell team-deamer" data-team="deamer">
+          <div class="cell-top"><span class="ov">#172</span></div>
+          <div class="cell-team">DEAMER</div>
+          
+        </div><div class="cell team-steve" data-team="steve">
+          <div class="cell-top"><span class="ov">#173</span></div>
+          <div class="cell-team">STEVE</div>
+          
+        </div><div class="cell team-joey" data-team="joey">
+          <div class="cell-top"><span class="ov">#174</span></div>
+          <div class="cell-team">JOEY</div>
+          
+        </div><div class="cell team-mark" data-team="mark">
+          <div class="cell-top"><span class="ov">#175</span></div>
+          <div class="cell-team">MARK</div>
+          
+        </div><div class="cell team-shawno" data-team="shawno">
+          <div class="cell-top"><span class="ov">#176</span></div>
+          <div class="cell-team">SHAWN O</div>
+          
+        </div><div class="cell team-drew" data-team="drew">
+          <div class="cell-top"><span class="ov">#177</span></div>
+          <div class="cell-team">DREW</div>
+          
+        </div><div class="cell team-big" data-team="big">
+          <div class="cell-top"><span class="ov">#178</span></div>
+          <div class="cell-team">BIG</div>
+          
+        </div><div class="cell team-mark is-traded" data-team="mark">
+          <div class="cell-top"><span class="ov">#179</span><span class="tag tag-traded" title="Christian's R15 & R16 traded to Mark for Mark's R1 & R6 (Ja'Marr Chase deal)">TRADE</span></div>
+          <div class="cell-team">MARK</div>
+          <div class='via'>via CHRISTIAN</div>
+        </div><div class="cell team-robinson" data-team="robinson">
+          <div class="cell-top"><span class="ov">#180</span></div>
+          <div class="cell-team">SHAWN R</div>
+          
+        </div></div>
+    </div>
+
+    <div class="round-row">
+      <div class="round-label"><span class="rnum">RD 16</span><span class="rdir">←</span></div>
+      <div class="round-cells"><div class="cell team-robinson" data-team="robinson">
+          <div class="cell-top"><span class="ov">#181</span></div>
+          <div class="cell-team">SHAWN R</div>
+          
+        </div><div class="cell team-mark is-traded" data-team="mark">
+          <div class="cell-top"><span class="ov">#182</span><span class="tag tag-traded" title="Christian's R15 & R16 traded to Mark for Mark's R1 & R6 (Ja'Marr Chase deal)">TRADE</span></div>
+          <div class="cell-team">MARK</div>
+          <div class='via'>via CHRISTIAN</div>
+        </div><div class="cell team-big" data-team="big">
+          <div class="cell-top"><span class="ov">#183</span></div>
+          <div class="cell-team">BIG</div>
+          
+        </div><div class="cell team-drew" data-team="drew">
+          <div class="cell-top"><span class="ov">#184</span></div>
+          <div class="cell-team">DREW</div>
+          
+        </div><div class="cell team-shawno" data-team="shawno">
+          <div class="cell-top"><span class="ov">#185</span></div>
+          <div class="cell-team">SHAWN O</div>
+          
+        </div><div class="cell team-mark" data-team="mark">
+          <div class="cell-top"><span class="ov">#186</span></div>
+          <div class="cell-team">MARK</div>
+          
+        </div><div class="cell team-joey" data-team="joey">
+          <div class="cell-top"><span class="ov">#187</span></div>
+          <div class="cell-team">JOEY</div>
+          
+        </div><div class="cell team-steve" data-team="steve">
+          <div class="cell-top"><span class="ov">#188</span></div>
+          <div class="cell-team">STEVE</div>
+          
+        </div><div class="cell team-deamer" data-team="deamer">
+          <div class="cell-top"><span class="ov">#189</span></div>
+          <div class="cell-team">DEAMER</div>
+          
+        </div><div class="cell team-roldi" data-team="roldi">
+          <div class="cell-top"><span class="ov">#190</span></div>
+          <div class="cell-team">ROLDI</div>
+          
+        </div><div class="cell team-deamer is-traded" data-team="deamer">
+          <div class="cell-top"><span class="ov">#191</span><span class="tag tag-traded" title="Willy's R16 traded to Deamer for Deamer's R5 (RJ Harvey trade)">TRADE</span></div>
+          <div class="cell-team">DEAMER</div>
+          <div class='via'>via WILLY</div>
+        </div><div class="cell team-papo" data-team="papo">
+          <div class="cell-top"><span class="ov">#192</span></div>
+          <div class="cell-team">ADRIAN</div>
+          
+        </div></div>
+    </div>
+  </div>
+
+  <div class="panels-head">
+    <h2 id="panelsTitle">Select a team above</h2>
+    <p>See a team's full 16-pick draft slate — keepers, live picks, and trade sourcing.</p>
+  </div>
+  <div class="panels" id="panels">
+    
+    <div class="panel" id="panel-papo">
+      <h3>Adrian's Astounding Team <span class="owner">Adrian Torres</span></h3>
+      <table class="panel-table"><tbody><tr><td class='rd'>R1</td><td class='pk'>#1</td><td>Live pick</td></tr><tr><td class='rd'>R2</td><td class='pk'>#24</td><td>Live pick</td></tr><tr><td class='rd'>R3</td><td class='pk'>#25</td><td>Live pick</td></tr><tr><td class='rd'>R4</td><td class='pk'>#48</td><td>Live pick</td></tr><tr><td class='rd'>R5</td><td class='pk'>#49</td><td>Live pick</td></tr><tr><td class='rd'>R5</td><td class='pk'>#56</td><td>Live pick <span class='pill pill-t'>via SHAWN O</span></td></tr><tr><td class='rd'>R6</td><td class='pk'>#72</td><td>Live pick</td></tr><tr><td class='rd'>R7</td><td class='pk'>#73</td><td><strong>Chase Brown</strong> <span class='pospill'>CIN RB</span> <span class='pill pill-k'>KEEPER</span></td></tr><tr><td class='rd'>R9</td><td class='pk'>#97</td><td>Live pick</td></tr><tr><td class='rd'>R10</td><td class='pk'>#110</td><td>Live pick <span class='pill pill-t'>via CHRISTIAN</span></td></tr><tr><td class='rd'>R10</td><td class='pk'>#120</td><td><strong>Luther Burden III</strong> <span class='pospill'>CHI WR</span> <span class='pill pill-k'>KEEPER</span></td></tr><tr><td class='rd'>R11</td><td class='pk'>#121</td><td><strong>Jaxson Dart</strong> <span class='pospill'>NYG QB</span> <span class='pill pill-k'>KEEPER</span></td></tr><tr><td class='rd'>R12</td><td class='pk'>#144</td><td>Live pick</td></tr><tr><td class='rd'>R13</td><td class='pk'>#145</td><td>Live pick</td></tr><tr><td class='rd'>R14</td><td class='pk'>#168</td><td>Live pick</td></tr><tr><td class='rd'>R16</td><td class='pk'>#192</td><td>Live pick</td></tr></tbody></table>
+    </div>
+
+    <div class="panel" id="panel-willy">
+      <h3>Unsolicited Dak Pics <span class="owner">Will Matos</span></h3>
+      <table class="panel-table"><tbody><tr><td class='rd'>R1</td><td class='pk'>#2</td><td>Live pick</td></tr><tr><td class='rd'>R2</td><td class='pk'>#23</td><td>Live pick</td></tr><tr><td class='rd'>R3</td><td class='pk'>#26</td><td>Live pick</td></tr><tr><td class='rd'>R4</td><td class='pk'>#43</td><td>Live pick <span class='pill pill-t'>via JOEY</span></td></tr><tr><td class='rd'>R4</td><td class='pk'>#47</td><td>Live pick</td></tr><tr><td class='rd'>R5</td><td class='pk'>#50</td><td>Live pick</td></tr><tr><td class='rd'>R5</td><td class='pk'>#52</td><td>Live pick <span class='pill pill-t'>via DEAMER</span></td></tr><tr><td class='rd'>R6</td><td class='pk'>#65</td><td>Live pick <span class='pill pill-t'>via SHAWN O</span></td></tr><tr><td class='rd'>R6</td><td class='pk'>#71</td><td>Live pick</td></tr><tr><td class='rd'>R7</td><td class='pk'>#74</td><td>Live pick</td></tr><tr><td class='rd'>R8</td><td class='pk'>#95</td><td>Live pick</td></tr><tr><td class='rd'>R9</td><td class='pk'>#98</td><td><strong>Christian Watson</strong> <span class='pospill'>GB WR</span> <span class='pill pill-k'>KEEPER</span></td></tr><tr><td class='rd'>R11</td><td class='pk'>#122</td><td>Live pick</td></tr><tr><td class='rd'>R13</td><td class='pk'>#146</td><td>Live pick</td></tr><tr><td class='rd'>R14</td><td class='pk'>#167</td><td>Live pick</td></tr><tr><td class='rd'>R15</td><td class='pk'>#170</td><td>Live pick</td></tr></tbody></table>
+    </div>
+
+    <div class="panel" id="panel-roldi">
+      <h3>SleepyStoners <span class="owner">Mike Maroldo</span></h3>
+      <table class="panel-table"><tbody><tr><td class='rd'>R1</td><td class='pk'>#3</td><td>Live pick</td></tr><tr><td class='rd'>R2</td><td class='pk'>#22</td><td>Live pick</td></tr><tr><td class='rd'>R3</td><td class='pk'>#27</td><td><strong>Javonte Williams</strong> <span class='pospill'>DAL RB</span> <span class='pill pill-k'>KEEPER</span></td></tr><tr><td class='rd'>R4</td><td class='pk'>#46</td><td>Live pick</td></tr><tr><td class='rd'>R5</td><td class='pk'>#51</td><td>Live pick</td></tr><tr><td class='rd'>R6</td><td class='pk'>#70</td><td>Live pick</td></tr><tr><td class='rd'>R7</td><td class='pk'>#75</td><td>Live pick</td></tr><tr><td class='rd'>R8</td><td class='pk'>#94</td><td>Live pick</td></tr><tr><td class='rd'>R9</td><td class='pk'>#99</td><td>Live pick</td></tr><tr><td class='rd'>R10</td><td class='pk'>#118</td><td>Live pick</td></tr><tr><td class='rd'>R11</td><td class='pk'>#123</td><td>Live pick</td></tr><tr><td class='rd'>R12</td><td class='pk'>#142</td><td>Live pick</td></tr><tr><td class='rd'>R13</td><td class='pk'>#147</td><td>Live pick</td></tr><tr><td class='rd'>R14</td><td class='pk'>#166</td><td>Live pick</td></tr><tr><td class='rd'>R15</td><td class='pk'>#171</td><td>Live pick</td></tr><tr><td class='rd'>R16</td><td class='pk'>#190</td><td>Live pick</td></tr></tbody></table>
+    </div>
+
+    <div class="panel" id="panel-deamer">
+      <h3>Howie hinkie Sixersin6 <span class="owner">Pat Deamer</span></h3>
+      <table class="panel-table"><tbody><tr><td class='rd'>R1</td><td class='pk'>#4</td><td>Live pick</td></tr><tr><td class='rd'>R2</td><td class='pk'>#21</td><td>Live pick</td></tr><tr><td class='rd'>R3</td><td class='pk'>#28</td><td>Live pick</td></tr><tr><td class='rd'>R4</td><td class='pk'>#45</td><td>Live pick</td></tr><tr><td class='rd'>R6</td><td class='pk'>#69</td><td>Live pick</td></tr><tr><td class='rd'>R7</td><td class='pk'>#76</td><td>Live pick</td></tr><tr><td class='rd'>R8</td><td class='pk'>#93</td><td><strong>Bucky Irving</strong> <span class='pospill'>TB RB</span> <span class='pill pill-k'>KEEPER</span></td></tr><tr><td class='rd'>R9</td><td class='pk'>#100</td><td>Live pick</td></tr><tr><td class='rd'>R10</td><td class='pk'>#117</td><td>Live pick</td></tr><tr><td class='rd'>R11</td><td class='pk'>#124</td><td>Live pick</td></tr><tr><td class='rd'>R12</td><td class='pk'>#141</td><td>Live pick</td></tr><tr><td class='rd'>R13</td><td class='pk'>#148</td><td>Live pick</td></tr><tr><td class='rd'>R14</td><td class='pk'>#165</td><td>Live pick</td></tr><tr><td class='rd'>R15</td><td class='pk'>#172</td><td>Live pick</td></tr><tr><td class='rd'>R16</td><td class='pk'>#189</td><td>Live pick</td></tr><tr><td class='rd'>R16</td><td class='pk'>#191</td><td>Live pick <span class='pill pill-t'>via WILLY</span></td></tr></tbody></table>
+    </div>
+
+    <div class="panel" id="panel-steve">
+      <h3>Mr.reseed <span class="owner">Stephen Wenner</span></h3>
+      <table class="panel-table"><tbody><tr><td class='rd'>R1</td><td class='pk'>#5</td><td>Live pick</td></tr><tr><td class='rd'>R2</td><td class='pk'>#20</td><td>Live pick</td></tr><tr><td class='rd'>R3</td><td class='pk'>#29</td><td>Live pick</td></tr><tr><td class='rd'>R4</td><td class='pk'>#44</td><td>Live pick</td></tr><tr><td class='rd'>R5</td><td class='pk'>#53</td><td>Live pick</td></tr><tr><td class='rd'>R6</td><td class='pk'>#68</td><td>Live pick</td></tr><tr><td class='rd'>R7</td><td class='pk'>#77</td><td>Live pick</td></tr><tr><td class='rd'>R8</td><td class='pk'>#92</td><td>Live pick</td></tr><tr><td class='rd'>R9</td><td class='pk'>#101</td><td><strong>Drake Maye</strong> <span class='pospill'>NE QB</span> <span class='pill pill-k'>KEEPER</span></td></tr><tr><td class='rd'>R10</td><td class='pk'>#116</td><td>Live pick</td></tr><tr><td class='rd'>R11</td><td class='pk'>#125</td><td>Live pick</td></tr><tr><td class='rd'>R12</td><td class='pk'>#140</td><td>Live pick</td></tr><tr><td class='rd'>R13</td><td class='pk'>#149</td><td>Live pick</td></tr><tr><td class='rd'>R14</td><td class='pk'>#164</td><td>Live pick</td></tr><tr><td class='rd'>R15</td><td class='pk'>#173</td><td>Live pick</td></tr><tr><td class='rd'>R16</td><td class='pk'>#188</td><td>Live pick</td></tr></tbody></table>
+    </div>
+
+    <div class="panel" id="panel-joey">
+      <h3>Team Yahoo <span class="owner">Joey Visconti</span></h3>
+      <table class="panel-table"><tbody><tr><td class='rd'>R1</td><td class='pk'>#6</td><td>Live pick</td></tr><tr><td class='rd'>R2</td><td class='pk'>#19</td><td>Live pick</td></tr><tr><td class='rd'>R3</td><td class='pk'>#30</td><td><strong>George Pickens</strong> <span class='pospill'>DAL WR</span> <span class='pill pill-k'>KEEPER</span></td></tr><tr><td class='rd'>R5</td><td class='pk'>#54</td><td>Live pick</td></tr><tr><td class='rd'>R6</td><td class='pk'>#67</td><td>Live pick</td></tr><tr><td class='rd'>R7</td><td class='pk'>#78</td><td>Live pick</td></tr><tr><td class='rd'>R8</td><td class='pk'>#91</td><td>Live pick</td></tr><tr><td class='rd'>R9</td><td class='pk'>#102</td><td>Live pick</td></tr><tr><td class='rd'>R10</td><td class='pk'>#115</td><td><strong>Jake Ferguson</strong> <span class='pospill'>DAL TE</span> <span class='pill pill-k'>KEEPER</span></td></tr><tr><td class='rd'>R11</td><td class='pk'>#126</td><td>Live pick</td></tr><tr><td class='rd'>R12</td><td class='pk'>#139</td><td>Live pick</td></tr><tr><td class='rd'>R12</td><td class='pk'>#143</td><td>Live pick <span class='pill pill-t'>via WILLY</span></td></tr><tr><td class='rd'>R13</td><td class='pk'>#150</td><td>Live pick</td></tr><tr><td class='rd'>R14</td><td class='pk'>#163</td><td>Live pick</td></tr><tr><td class='rd'>R15</td><td class='pk'>#174</td><td>Live pick</td></tr><tr><td class='rd'>R16</td><td class='pk'>#187</td><td>Live pick</td></tr></tbody></table>
+    </div>
+
+    <div class="panel" id="panel-mark">
+      <h3>OVO Mark <span class="owner">Mark Scarpa</span></h3>
+      <table class="panel-table"><tbody><tr><td class='rd'>R2</td><td class='pk'>#18</td><td>Live pick</td></tr><tr><td class='rd'>R3</td><td class='pk'>#31</td><td>Live pick</td></tr><tr><td class='rd'>R4</td><td class='pk'>#42</td><td>Live pick</td></tr><tr><td class='rd'>R5</td><td class='pk'>#55</td><td>Live pick</td></tr><tr><td class='rd'>R7</td><td class='pk'>#79</td><td>Live pick</td></tr><tr><td class='rd'>R8</td><td class='pk'>#90</td><td>Live pick</td></tr><tr><td class='rd'>R9</td><td class='pk'>#103</td><td>Live pick</td></tr><tr><td class='rd'>R10</td><td class='pk'>#114</td><td>Live pick</td></tr><tr><td class='rd'>R11</td><td class='pk'>#127</td><td>Live pick</td></tr><tr><td class='rd'>R12</td><td class='pk'>#138</td><td><strong>Adonai Mitchell</strong> <span class='pospill'>NYJ WR</span> <span class='pill pill-k'>KEEPER</span></td></tr><tr><td class='rd'>R13</td><td class='pk'>#151</td><td>Live pick</td></tr><tr><td class='rd'>R14</td><td class='pk'>#162</td><td>Live pick</td></tr><tr><td class='rd'>R15</td><td class='pk'>#175</td><td>Live pick</td></tr><tr><td class='rd'>R15</td><td class='pk'>#179</td><td>Live pick <span class='pill pill-t'>via CHRISTIAN</span></td></tr><tr><td class='rd'>R16</td><td class='pk'>#182</td><td>Live pick <span class='pill pill-t'>via CHRISTIAN</span></td></tr><tr><td class='rd'>R16</td><td class='pk'>#186</td><td>Live pick</td></tr></tbody></table>
+    </div>
+
+    <div class="panel" id="panel-shawno">
+      <h3>Team S ONeill <span class="owner">Shawn O'Neill</span></h3>
+      <table class="panel-table"><tbody><tr><td class='rd'>R1</td><td class='pk'>#8</td><td>Live pick</td></tr><tr><td class='rd'>R2</td><td class='pk'>#17</td><td><strong>Jaxon Smith-Njigba</strong> <span class='pospill'>SEA WR</span> <span class='pill pill-k'>KEEPER</span></td></tr><tr><td class='rd'>R3</td><td class='pk'>#32</td><td>Live pick</td></tr><tr><td class='rd'>R4</td><td class='pk'>#41</td><td>Live pick</td></tr><tr><td class='rd'>R7</td><td class='pk'>#80</td><td><strong>Colston Loveland</strong> <span class='pospill'>CHI TE</span> <span class='pill pill-k'>KEEPER</span></td></tr><tr><td class='rd'>R8</td><td class='pk'>#89</td><td>Live pick</td></tr><tr><td class='rd'>R9</td><td class='pk'>#104</td><td>Live pick</td></tr><tr><td class='rd'>R10</td><td class='pk'>#113</td><td>Live pick</td></tr><tr><td class='rd'>R10</td><td class='pk'>#119</td><td>Live pick <span class='pill pill-t'>via WILLY</span></td></tr><tr><td class='rd'>R11</td><td class='pk'>#128</td><td>Live pick</td></tr><tr><td class='rd'>R12</td><td class='pk'>#137</td><td>Live pick</td></tr><tr><td class='rd'>R13</td><td class='pk'>#152</td><td>Live pick</td></tr><tr><td class='rd'>R14</td><td class='pk'>#161</td><td>Live pick</td></tr><tr><td class='rd'>R15</td><td class='pk'>#169</td><td>Live pick <span class='pill pill-t'>via ADRIAN</span></td></tr><tr><td class='rd'>R15</td><td class='pk'>#176</td><td>Live pick</td></tr><tr><td class='rd'>R16</td><td class='pk'>#185</td><td>Live pick</td></tr></tbody></table>
+    </div>
+
+    <div class="panel" id="panel-drew">
+      <h3>Seed <span class="owner">Andrew O'Neill</span></h3>
+      <table class="panel-table"><tbody><tr><td class='rd'>R1</td><td class='pk'>#9</td><td>Live pick</td></tr><tr><td class='rd'>R2</td><td class='pk'>#16</td><td>Live pick</td></tr><tr><td class='rd'>R3</td><td class='pk'>#33</td><td>Live pick</td></tr><tr><td class='rd'>R4</td><td class='pk'>#40</td><td>Live pick</td></tr><tr><td class='rd'>R5</td><td class='pk'>#57</td><td>Live pick</td></tr><tr><td class='rd'>R6</td><td class='pk'>#64</td><td>Live pick</td></tr><tr><td class='rd'>R7</td><td class='pk'>#81</td><td>Live pick</td></tr><tr><td class='rd'>R8</td><td class='pk'>#88</td><td><strong>Jayden Daniels</strong> <span class='pospill'>WSH QB</span> <span class='pill pill-k'>KEEPER</span></td></tr><tr><td class='rd'>R9</td><td class='pk'>#105</td><td>Live pick</td></tr><tr><td class='rd'>R10</td><td class='pk'>#112</td><td>Live pick</td></tr><tr><td class='rd'>R11</td><td class='pk'>#129</td><td><strong>Matthew Stafford</strong> <span class='pospill'>LAR QB</span> <span class='pill pill-k'>KEEPER</span></td></tr><tr><td class='rd'>R12</td><td class='pk'>#136</td><td>Live pick</td></tr><tr><td class='rd'>R13</td><td class='pk'>#153</td><td>Live pick</td></tr><tr><td class='rd'>R14</td><td class='pk'>#160</td><td>Live pick</td></tr><tr><td class='rd'>R15</td><td class='pk'>#177</td><td>Live pick</td></tr><tr><td class='rd'>R16</td><td class='pk'>#184</td><td>Live pick</td></tr></tbody></table>
+    </div>
+
+    <div class="panel" id="panel-big">
+      <h3>Walsh My Balls <span class="owner">John Walsh</span></h3>
+      <table class="panel-table"><tbody><tr><td class='rd'>R1</td><td class='pk'>#10</td><td>Live pick</td></tr><tr><td class='rd'>R2</td><td class='pk'>#15</td><td>Live pick</td></tr><tr><td class='rd'>R3</td><td class='pk'>#34</td><td>Live pick</td></tr><tr><td class='rd'>R4</td><td class='pk'>#39</td><td><strong>Brock Bowers</strong> <span class='pospill'>LV TE</span> <span class='pill pill-k'>KEEPER</span></td></tr><tr><td class='rd'>R5</td><td class='pk'>#58</td><td>Live pick</td></tr><tr><td class='rd'>R6</td><td class='pk'>#63</td><td>Live pick</td></tr><tr><td class='rd'>R7</td><td class='pk'>#82</td><td>Live pick</td></tr><tr><td class='rd'>R8</td><td class='pk'>#87</td><td>Live pick</td></tr><tr><td class='rd'>R9</td><td class='pk'>#106</td><td>Live pick</td></tr><tr><td class='rd'>R10</td><td class='pk'>#111</td><td><strong>Rico Dowdle</strong> <span class='pospill'>PIT RB</span> <span class='pill pill-k'>KEEPER</span></td></tr><tr><td class='rd'>R11</td><td class='pk'>#130</td><td>Live pick</td></tr><tr><td class='rd'>R12</td><td class='pk'>#135</td><td>Live pick</td></tr><tr><td class='rd'>R13</td><td class='pk'>#154</td><td>Live pick</td></tr><tr><td class='rd'>R14</td><td class='pk'>#159</td><td>Live pick</td></tr><tr><td class='rd'>R15</td><td class='pk'>#178</td><td>Live pick</td></tr><tr><td class='rd'>R16</td><td class='pk'>#183</td><td>Live pick</td></tr></tbody></table>
+    </div>
+
+    <div class="panel" id="panel-christian">
+      <h3>THE MANager <span class="owner">Christian Maiden</span></h3>
+      <table class="panel-table"><tbody><tr><td class='rd'>R1</td><td class='pk'>#7</td><td>Live pick <span class='pill pill-t'>via MARK</span></td></tr><tr><td class='rd'>R1</td><td class='pk'>#11</td><td>Live pick</td></tr><tr><td class='rd'>R2</td><td class='pk'>#14</td><td>Live pick</td></tr><tr><td class='rd'>R3</td><td class='pk'>#35</td><td>Live pick</td></tr><tr><td class='rd'>R4</td><td class='pk'>#38</td><td>Live pick</td></tr><tr><td class='rd'>R5</td><td class='pk'>#59</td><td>Live pick</td></tr><tr><td class='rd'>R6</td><td class='pk'>#62</td><td><strong>Cam Skattebo</strong> <span class='pospill'>NYG RB</span> <span class='pill pill-k'>KEEPER</span></td></tr><tr><td class='rd'>R6</td><td class='pk'>#66</td><td>Live pick <span class='pill pill-t'>via MARK</span></td></tr><tr><td class='rd'>R7</td><td class='pk'>#83</td><td>Live pick</td></tr><tr><td class='rd'>R8</td><td class='pk'>#86</td><td><strong>Alec Pierce</strong> <span class='pospill'>IND WR</span> <span class='pill pill-k'>KEEPER</span></td></tr><tr><td class='rd'>R8</td><td class='pk'>#96</td><td>Live pick <span class='pill pill-t'>via ADRIAN</span></td></tr><tr><td class='rd'>R9</td><td class='pk'>#107</td><td><strong>Kyle Monangai</strong> <span class='pospill'>CHI RB</span> <span class='pill pill-k'>KEEPER</span></td></tr><tr><td class='rd'>R11</td><td class='pk'>#131</td><td>Live pick</td></tr><tr><td class='rd'>R12</td><td class='pk'>#134</td><td>Live pick</td></tr><tr><td class='rd'>R13</td><td class='pk'>#155</td><td>Live pick</td></tr><tr><td class='rd'>R14</td><td class='pk'>#158</td><td>Live pick</td></tr></tbody></table>
+    </div>
+
+    <div class="panel" id="panel-robinson">
+      <h3>YN NUT <span class="owner">Shawn Robinson</span></h3>
+      <table class="panel-table"><tbody><tr><td class='rd'>R1</td><td class='pk'>#12</td><td>Live pick</td></tr><tr><td class='rd'>R2</td><td class='pk'>#13</td><td>Live pick</td></tr><tr><td class='rd'>R3</td><td class='pk'>#36</td><td>Live pick</td></tr><tr><td class='rd'>R4</td><td class='pk'>#37</td><td>Live pick</td></tr><tr><td class='rd'>R5</td><td class='pk'>#60</td><td>Live pick</td></tr><tr><td class='rd'>R6</td><td class='pk'>#61</td><td><strong>Michael Pittman Jr.</strong> <span class='pospill'>PIT WR</span> <span class='pill pill-k'>KEEPER</span></td></tr><tr><td class='rd'>R7</td><td class='pk'>#84</td><td>Live pick</td></tr><tr><td class='rd'>R8</td><td class='pk'>#85</td><td>Live pick</td></tr><tr><td class='rd'>R9</td><td class='pk'>#108</td><td>Live pick</td></tr><tr><td class='rd'>R10</td><td class='pk'>#109</td><td>Live pick</td></tr><tr><td class='rd'>R11</td><td class='pk'>#132</td><td>Live pick</td></tr><tr><td class='rd'>R12</td><td class='pk'>#133</td><td>Live pick</td></tr><tr><td class='rd'>R13</td><td class='pk'>#156</td><td>Live pick</td></tr><tr><td class='rd'>R14</td><td class='pk'>#157</td><td><strong>Romeo Doubs</strong> <span class='pospill'>NE WR</span> <span class='pill pill-k'>KEEPER</span></td></tr><tr><td class='rd'>R15</td><td class='pk'>#180</td><td>Live pick</td></tr><tr><td class='rd'>R16</td><td class='pk'>#181</td><td>Live pick</td></tr></tbody></table>
+    </div>
+  </div>
+
+  <div class="trades-note">
+    <h3>Offseason Pick Trades</h3>
+    <ul>
+      <li><strong>Ja'Marr Chase deal:</strong> Mark sent his R1 &amp; R6 to Christian in exchange for Christian's R15 &amp; R16.</li>
+      <li>Christian's R10 ↔ Papo's R8.</li>
+      <li>Papo's R15 ↔ Shawn O's R5.</li>
+      <li><strong>Odunze trade:</strong> Shawn O's R6 ↔ Willy's R10.</li>
+      <li><strong>Pickens trade:</strong> Willy's R12 ↔ Joey's R4.</li>
+      <li><strong>RJ Harvey trade:</strong> Willy's R16 ↔ Deamer's R5.</li>
+    </ul>
+  </div>
+</main>
+
+<footer>BIRD GANG FANTASY FOOTBALL · DRAFT BOARD GENERATED FROM LEAGUE PICKS &amp; KEEPERS SHEET</footer>
+
+<script>
+function setFocus(team) {
+  const board = document.getElementById('board');
+  const chips = document.querySelectorAll('.tchip');
+  const panels = document.getElementById('panels');
+  const panelsTitle = document.getElementById('panelsTitle');
+  const allPanels = document.querySelectorAll('.panel');
+
+  chips.forEach(c => c.classList.remove('active'));
+
+  if (!team) {
+    board.classList.remove('focused');
+    document.querySelector('.tchip.reset').classList.add('active');
+    panels.classList.remove('show');
+    panelsTitle.textContent = 'Select a team above';
+    return;
+  }
+
+  document.querySelector(`.tchip[data-team="${team}"]`).classList.add('active');
+  board.classList.add('focused');
+  document.querySelectorAll('.cell').forEach(cell => {
+    cell.classList.toggle('focus-match', cell.dataset.team === team);
+  });
+
+  panels.classList.add('show');
+  allPanels.forEach(p => p.style.display = (p.id === 'panel-' + team) ? 'block' : 'none');
+  panelsTitle.textContent = document.querySelector('#panel-' + team + ' h3').textContent;
+
+  document.getElementById('panels').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+</script>
+
+</body>
+</html>
