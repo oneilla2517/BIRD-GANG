@@ -342,6 +342,8 @@
   .acc-body{max-height:0; overflow:hidden; transition:max-height .25s ease;}
   .acc-body-inner{padding:0 20px 20px; font-size:0.9rem; color:#3d423f;}
   .acc-body-inner ul{padding-left:20px;} .acc-body-inner li{margin-bottom:8px;}
+  .acc-body-inner ol{padding-left:20px;} .acc-body-inner ol li{margin-bottom:8px;}
+  .acc-body-inner ol ol{margin-top:8px; padding-left:22px;} .acc-body-inner ol ol li{margin-bottom:6px; color:#5b6360;}
   .acc-body-inner strong{color:var(--midnight);}
 
   /* ===== PAYOUTS ===== */
@@ -753,11 +755,23 @@ const rulebook = [
       <li><strong>Off-season trading:</strong> ESPN doesn't allow in-season draft-pick trading, so all pick trades process manually in the off-season. Teams may trade players for future picks only until the day before the draft. On draft day itself, trades are allowed but must be even pick-for-pick swaps so every team leaves the draft with a full set of picks.</li>
     </ul>`},
   {title:'Draft Order', body:`
-    <ul>
-      <li>The <strong>Toilet Bowl winner</strong> picks their draft position first, ahead of everyone else.</li>
-      <li>The other 5 Toilet Bowl teams enter a <strong>weighted lottery</strong> — 300 balls split 8% / 12% / 16% / 24% / 40%, best to worst consolation-bracket record.</li>
-      <li>Playoff teams are seeded by final standing, including consolation games: Champion = 1st overall pick, Runner-up = 2nd. Semifinal losers play each other for 3rd/4th (winner gets 3rd). Quarterfinal losers play for 5th/6th, and so on down the bracket — the losers of the 9th/10th place game get 9th and 10th, etc.</li>
-    </ul>`},
+    <ol>
+      <li>The <strong>Toilet Bowl winner</strong> chooses their draft position first, ahead of everyone else.</li>
+      <li>The remaining <strong>5 Toilet Bowl teams</strong> enter a <strong>weighted lottery</strong> — 300 balls split 8% / 12% / 16% / 24% / 40%, best to worst record in the consolation bracket.
+        <ol type="i">
+          <li>The lottery order then dictates the pick order: whoever wins the lottery chooses their draft slot first, then the 2nd lottery winner chooses theirs, and so on down the line.</li>
+        </ol>
+      </li>
+      <li>Playoff teams are seeded by final standing, including consolation games:
+        <ol type="i">
+          <li>Championship winner = 1st overall</li>
+          <li>Runner-up = 2nd</li>
+          <li>Losers of the semifinals play for 3rd/4th (winner gets 3rd)</li>
+          <li>Quarterfinal losers play for 5th/6th, etc.</li>
+          <li>Losers of the 9th/10th place game get 9th and 10th, etc.</li>
+        </ol>
+      </li>
+    </ol>`},
   {title:'Punishments & Fines', body:`
     <ul>
       <li><strong>Jackass Rule:</strong> You must start a full lineup every week. Any mistake — an injured player, a bye week, anything — is a <strong>$5 fine per mistake</strong>. A player ruled out before kickoff still counts as a strike if he's in your active lineup.</li>
