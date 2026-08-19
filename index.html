@@ -226,6 +226,21 @@
   .rival-panel-head{display:flex; align-items:center; gap:16px; border-bottom:2px solid var(--bone-dim); padding-bottom:18px; margin-bottom:18px;}
   .rival-panel-head .crest{width:56px;height:56px;font-size:1.1rem;}
   .callouts{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:22px;}
+  .draft-promo-card{
+    display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;
+    background:linear-gradient(120deg, var(--midnight) 0%, var(--midnight-dark) 100%);
+    border-radius:var(--radius); padding:26px 30px; text-decoration:none; box-shadow:var(--shadow);
+    border:1px solid rgba(200,169,81,0.35); transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .draft-promo-card:hover{transform:translateY(-2px); box-shadow:0 12px 30px rgba(2,32,35,0.28);}
+  .draft-promo-eyebrow{font-family:'JetBrains Mono'; font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold); margin-bottom:8px;}
+  .draft-promo-text h2{font-family:'Oswald'; font-weight:700; font-size:clamp(1.3rem,3vw,1.7rem); color:var(--bone); margin:0 0 8px;}
+  .draft-promo-text p{color:var(--silver); font-size:0.9rem; line-height:1.55; max-width:560px; margin:0;}
+  .draft-promo-cta{
+    flex-shrink:0; font-family:'Oswald'; font-weight:600; font-size:0.9rem; color:var(--midnight-dark);
+    background:var(--gold); padding:12px 22px; border-radius:24px; white-space:nowrap;
+  }
+  @media (max-width:640px){ .draft-promo-card{flex-direction:column; align-items:flex-start;} }
   .callout{border-radius:8px; padding:14px 16px;}
   .callout.rival{background:#fbeaea; border:1px solid #edc9c9;}
   .callout.cupcake{background:#eaf5ee; border:1px solid #c9e6d1;}
@@ -355,6 +370,7 @@
     </a>
     <div class="nav-links">
       <a href="#standings">Standings</a>
+      <a href="draft-board.html">2026 Draft Board</a>
       <a href="#recap2025">2025 Recap</a>
       <a href="#fame">Hall of Fame</a>
       <a href="#records">Records</a>
@@ -407,6 +423,17 @@
       <p>Down in the muck, <strong>Papo</strong> won the consolation bracket — earning the privilege of picking his draft position first next season. Small mercies.</p>
     </div>
   </div>
+</section>
+
+<section id="draftboard-promo">
+  <a href="draft-board.html" class="draft-promo-card">
+    <div class="draft-promo-text">
+      <div class="draft-promo-eyebrow">On Deck · 2026 Season</div>
+      <h2>See the Full Draft Board</h2>
+      <p>16 rounds, full snake order, every keeper slotted into its round — plus the offseason pick trades already worked in, so you know exactly when you're actually on the clock.</p>
+    </div>
+    <div class="draft-promo-cta">View Draft Board →</div>
+  </a>
 </section>
 
 <section id="standings">
