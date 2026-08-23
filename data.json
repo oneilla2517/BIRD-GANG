@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-08-20T22:14:07.490921+00:00",
+  "lastUpdated": "2026-08-23T00:32:24.708138+00:00",
   "teams": {
     "drew": {
       "wins": 0,
@@ -11,14 +11,6 @@
       "finalStanding": 0
     },
     "mark": {
-      "wins": 0,
-      "losses": 0,
-      "ties": 0,
-      "pointsFor": 0.0,
-      "standing": 0,
-      "finalStanding": 0
-    },
-    "christian": {
       "wins": 0,
       "losses": 0,
       "ties": 0,
@@ -74,23 +66,7 @@
       "standing": 0,
       "finalStanding": 0
     },
-    "robinson": {
-      "wins": 0,
-      "losses": 0,
-      "ties": 0,
-      "pointsFor": 0.0,
-      "standing": 0,
-      "finalStanding": 0
-    },
     "deamer": {
-      "wins": 0,
-      "losses": 0,
-      "ties": 0,
-      "pointsFor": 0.0,
-      "standing": 0,
-      "finalStanding": 0
-    },
-    "shawno": {
       "wins": 0,
       "losses": 0,
       "ties": 0,
