@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-09-03T06:35:11.475812+00:00",
+  "lastUpdated": "2026-09-03T12:18:10.977622+00:00",
   "teams": {
     "drew": {
       "wins": 0,
@@ -49,14 +49,6 @@
       "pointsFor": 0.0,
       "standing": 6,
       "finalStanding": 6
-    },
-    "willy": {
-      "wins": 0,
-      "losses": 0,
-      "ties": 0,
-      "pointsFor": 0.0,
-      "standing": 3,
-      "finalStanding": 3
     },
     "deamer": {
       "wins": 0,
@@ -437,16 +429,7 @@
       "week": 1,
       "teamId": "mark",
       "score": 0.0,
-      "oppId": "willy",
-      "oppScore": 0.0,
-      "isPlayoff": false
-    },
-    {
-      "season": 2026,
-      "week": 1,
-      "teamId": "willy",
-      "score": 0.0,
-      "oppId": "mark",
+      "oppId": null,
       "oppScore": 0.0,
       "isPlayoff": false
     },
@@ -509,16 +492,7 @@
       "week": 2,
       "teamId": "mark",
       "score": 0.0,
-      "oppId": "willy",
-      "oppScore": 0.0,
-      "isPlayoff": false
-    },
-    {
-      "season": 2026,
-      "week": 2,
-      "teamId": "willy",
-      "score": 0.0,
-      "oppId": "mark",
+      "oppId": null,
       "oppScore": 0.0,
       "isPlayoff": false
     },
@@ -581,16 +555,7 @@
       "week": 3,
       "teamId": "mark",
       "score": 0.0,
-      "oppId": "willy",
-      "oppScore": 0.0,
-      "isPlayoff": false
-    },
-    {
-      "season": 2026,
-      "week": 3,
-      "teamId": "willy",
-      "score": 0.0,
-      "oppId": "mark",
+      "oppId": null,
       "oppScore": 0.0,
       "isPlayoff": false
     },
@@ -653,16 +618,7 @@
       "week": 4,
       "teamId": "mark",
       "score": 0.0,
-      "oppId": "willy",
-      "oppScore": 0.0,
-      "isPlayoff": false
-    },
-    {
-      "season": 2026,
-      "week": 4,
-      "teamId": "willy",
-      "score": 0.0,
-      "oppId": "mark",
+      "oppId": null,
       "oppScore": 0.0,
       "isPlayoff": false
     },
@@ -725,16 +681,7 @@
       "week": 5,
       "teamId": "mark",
       "score": 0.0,
-      "oppId": "willy",
-      "oppScore": 0.0,
-      "isPlayoff": false
-    },
-    {
-      "season": 2026,
-      "week": 5,
-      "teamId": "willy",
-      "score": 0.0,
-      "oppId": "mark",
+      "oppId": null,
       "oppScore": 0.0,
       "isPlayoff": false
     },
@@ -797,16 +744,7 @@
       "week": 6,
       "teamId": "mark",
       "score": 0.0,
-      "oppId": "willy",
-      "oppScore": 0.0,
-      "isPlayoff": false
-    },
-    {
-      "season": 2026,
-      "week": 6,
-      "teamId": "willy",
-      "score": 0.0,
-      "oppId": "mark",
+      "oppId": null,
       "oppScore": 0.0,
       "isPlayoff": false
     },
@@ -869,16 +807,7 @@
       "week": 7,
       "teamId": "mark",
       "score": 0.0,
-      "oppId": "willy",
-      "oppScore": 0.0,
-      "isPlayoff": false
-    },
-    {
-      "season": 2026,
-      "week": 7,
-      "teamId": "willy",
-      "score": 0.0,
-      "oppId": "mark",
+      "oppId": null,
       "oppScore": 0.0,
       "isPlayoff": false
     },
@@ -941,16 +870,7 @@
       "week": 8,
       "teamId": "mark",
       "score": 0.0,
-      "oppId": "willy",
-      "oppScore": 0.0,
-      "isPlayoff": false
-    },
-    {
-      "season": 2026,
-      "week": 8,
-      "teamId": "willy",
-      "score": 0.0,
-      "oppId": "mark",
+      "oppId": null,
       "oppScore": 0.0,
       "isPlayoff": false
     },
@@ -1013,16 +933,7 @@
       "week": 9,
       "teamId": "mark",
       "score": 0.0,
-      "oppId": "willy",
-      "oppScore": 0.0,
-      "isPlayoff": false
-    },
-    {
-      "season": 2026,
-      "week": 9,
-      "teamId": "willy",
-      "score": 0.0,
-      "oppId": "mark",
+      "oppId": null,
       "oppScore": 0.0,
       "isPlayoff": false
     },
@@ -1085,16 +996,7 @@
       "week": 10,
       "teamId": "mark",
       "score": 0.0,
-      "oppId": "willy",
-      "oppScore": 0.0,
-      "isPlayoff": false
-    },
-    {
-      "season": 2026,
-      "week": 10,
-      "teamId": "willy",
-      "score": 0.0,
-      "oppId": "mark",
+      "oppId": null,
       "oppScore": 0.0,
       "isPlayoff": false
     },
@@ -1157,16 +1059,7 @@
       "week": 11,
       "teamId": "mark",
       "score": 0.0,
-      "oppId": "willy",
-      "oppScore": 0.0,
-      "isPlayoff": false
-    },
-    {
-      "season": 2026,
-      "week": 11,
-      "teamId": "willy",
-      "score": 0.0,
-      "oppId": "mark",
+      "oppId": null,
       "oppScore": 0.0,
       "isPlayoff": false
     },
@@ -1229,16 +1122,7 @@
       "week": 12,
       "teamId": "mark",
       "score": 0.0,
-      "oppId": "willy",
-      "oppScore": 0.0,
-      "isPlayoff": false
-    },
-    {
-      "season": 2026,
-      "week": 12,
-      "teamId": "willy",
-      "score": 0.0,
-      "oppId": "mark",
+      "oppId": null,
       "oppScore": 0.0,
       "isPlayoff": false
     },
@@ -1301,16 +1185,7 @@
       "week": 13,
       "teamId": "mark",
       "score": 0.0,
-      "oppId": "willy",
-      "oppScore": 0.0,
-      "isPlayoff": false
-    },
-    {
-      "season": 2026,
-      "week": 13,
-      "teamId": "willy",
-      "score": 0.0,
-      "oppId": "mark",
+      "oppId": null,
       "oppScore": 0.0,
       "isPlayoff": false
     },
@@ -1373,16 +1248,7 @@
       "week": 14,
       "teamId": "mark",
       "score": 0.0,
-      "oppId": "willy",
-      "oppScore": 0.0,
-      "isPlayoff": false
-    },
-    {
-      "season": 2026,
-      "week": 14,
-      "teamId": "willy",
-      "score": 0.0,
-      "oppId": "mark",
+      "oppId": null,
       "oppScore": 0.0,
       "isPlayoff": false
     },
@@ -1445,16 +1311,7 @@
       "week": 15,
       "teamId": "mark",
       "score": 0.0,
-      "oppId": "willy",
-      "oppScore": 0.0,
-      "isPlayoff": false
-    },
-    {
-      "season": 2026,
-      "week": 15,
-      "teamId": "willy",
-      "score": 0.0,
-      "oppId": "mark",
+      "oppId": null,
       "oppScore": 0.0,
       "isPlayoff": false
     },
@@ -1517,16 +1374,7 @@
       "week": 16,
       "teamId": "mark",
       "score": 0.0,
-      "oppId": "willy",
-      "oppScore": 0.0,
-      "isPlayoff": false
-    },
-    {
-      "season": 2026,
-      "week": 16,
-      "teamId": "willy",
-      "score": 0.0,
-      "oppId": "mark",
+      "oppId": null,
       "oppScore": 0.0,
       "isPlayoff": false
     },
@@ -1589,16 +1437,7 @@
       "week": 17,
       "teamId": "mark",
       "score": 0.0,
-      "oppId": "willy",
-      "oppScore": 0.0,
-      "isPlayoff": false
-    },
-    {
-      "season": 2026,
-      "week": 17,
-      "teamId": "willy",
-      "score": 0.0,
-      "oppId": "mark",
+      "oppId": null,
       "oppScore": 0.0,
       "isPlayoff": false
     },
@@ -1661,16 +1500,7 @@
       "week": 18,
       "teamId": "mark",
       "score": 0.0,
-      "oppId": "willy",
-      "oppScore": 0.0,
-      "isPlayoff": false
-    },
-    {
-      "season": 2026,
-      "week": 18,
-      "teamId": "willy",
-      "score": 0.0,
-      "oppId": "mark",
+      "oppId": null,
       "oppScore": 0.0,
       "isPlayoff": false
     },
