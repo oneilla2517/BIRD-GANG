@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-09-28T02:10:27.453023+00:00",
+  "lastUpdated": "2026-09-28T10:14:28.295524+00:00",
   "teams": {
     "drew": {
       "wins": 1,
@@ -520,23 +520,23 @@
       "teamId": "drew",
       "score": 101.5,
       "oppId": null,
-      "oppScore": 124.2,
+      "oppScore": 138.8,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 3,
       "teamId": "roldi",
-      "score": 162.7,
+      "score": 168.3,
       "oppId": null,
-      "oppScore": 182.0,
+      "oppScore": 162.0,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 3,
       "teamId": "steve",
-      "score": 71.8,
+      "score": 76.3,
       "oppId": "joey",
       "oppScore": 146.7,
       "isPlayoff": false
@@ -547,7 +547,7 @@
       "teamId": "joey",
       "score": 146.7,
       "oppId": "steve",
-      "oppScore": 71.8,
+      "oppScore": 76.3,
       "isPlayoff": false
     },
     {
@@ -556,7 +556,7 @@
       "teamId": "mark",
       "score": 107.3,
       "oppId": null,
-      "oppScore": 130.3,
+      "oppScore": 138.9,
       "isPlayoff": false
     },
     {
@@ -583,23 +583,23 @@
       "teamId": "drew",
       "score": 101.5,
       "oppId": null,
-      "oppScore": 124.2,
+      "oppScore": 138.8,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 4,
       "teamId": "roldi",
-      "score": 162.7,
+      "score": 168.3,
       "oppId": null,
-      "oppScore": 182.0,
+      "oppScore": 162.0,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 4,
       "teamId": "steve",
-      "score": 71.8,
+      "score": 76.3,
       "oppId": "joey",
       "oppScore": 146.7,
       "isPlayoff": false
@@ -610,7 +610,7 @@
       "teamId": "joey",
       "score": 146.7,
       "oppId": "steve",
-      "oppScore": 71.8,
+      "oppScore": 76.3,
       "isPlayoff": false
     },
     {
@@ -619,7 +619,7 @@
       "teamId": "mark",
       "score": 107.3,
       "oppId": null,
-      "oppScore": 130.3,
+      "oppScore": 138.9,
       "isPlayoff": false
     },
     {
@@ -646,23 +646,23 @@
       "teamId": "drew",
       "score": 101.5,
       "oppId": null,
-      "oppScore": 124.2,
+      "oppScore": 138.8,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 5,
       "teamId": "roldi",
-      "score": 162.7,
+      "score": 168.3,
       "oppId": null,
-      "oppScore": 182.0,
+      "oppScore": 162.0,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 5,
       "teamId": "steve",
-      "score": 71.8,
+      "score": 76.3,
       "oppId": "joey",
       "oppScore": 146.7,
       "isPlayoff": false
@@ -673,7 +673,7 @@
       "teamId": "joey",
       "score": 146.7,
       "oppId": "steve",
-      "oppScore": 71.8,
+      "oppScore": 76.3,
       "isPlayoff": false
     },
     {
@@ -682,7 +682,7 @@
       "teamId": "mark",
       "score": 107.3,
       "oppId": null,
-      "oppScore": 130.3,
+      "oppScore": 138.9,
       "isPlayoff": false
     },
     {
@@ -709,23 +709,23 @@
       "teamId": "drew",
       "score": 101.5,
       "oppId": null,
-      "oppScore": 124.2,
+      "oppScore": 138.8,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 6,
       "teamId": "roldi",
-      "score": 162.7,
+      "score": 168.3,
       "oppId": null,
-      "oppScore": 182.0,
+      "oppScore": 162.0,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 6,
       "teamId": "steve",
-      "score": 71.8,
+      "score": 76.3,
       "oppId": "joey",
       "oppScore": 146.7,
       "isPlayoff": false
@@ -736,7 +736,7 @@
       "teamId": "joey",
       "score": 146.7,
       "oppId": "steve",
-      "oppScore": 71.8,
+      "oppScore": 76.3,
       "isPlayoff": false
     },
     {
@@ -745,7 +745,7 @@
       "teamId": "mark",
       "score": 107.3,
       "oppId": null,
-      "oppScore": 130.3,
+      "oppScore": 138.9,
       "isPlayoff": false
     },
     {
@@ -772,23 +772,23 @@
       "teamId": "drew",
       "score": 101.5,
       "oppId": null,
-      "oppScore": 124.2,
+      "oppScore": 138.8,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 7,
       "teamId": "roldi",
-      "score": 162.7,
+      "score": 168.3,
       "oppId": null,
-      "oppScore": 182.0,
+      "oppScore": 162.0,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 7,
       "teamId": "steve",
-      "score": 71.8,
+      "score": 76.3,
       "oppId": "joey",
       "oppScore": 146.7,
       "isPlayoff": false
@@ -799,7 +799,7 @@
       "teamId": "joey",
       "score": 146.7,
       "oppId": "steve",
-      "oppScore": 71.8,
+      "oppScore": 76.3,
       "isPlayoff": false
     },
     {
@@ -808,7 +808,7 @@
       "teamId": "mark",
       "score": 107.3,
       "oppId": null,
-      "oppScore": 130.3,
+      "oppScore": 138.9,
       "isPlayoff": false
     },
     {
@@ -835,23 +835,23 @@
       "teamId": "drew",
       "score": 101.5,
       "oppId": null,
-      "oppScore": 124.2,
+      "oppScore": 138.8,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 8,
       "teamId": "roldi",
-      "score": 162.7,
+      "score": 168.3,
       "oppId": null,
-      "oppScore": 182.0,
+      "oppScore": 162.0,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 8,
       "teamId": "steve",
-      "score": 71.8,
+      "score": 76.3,
       "oppId": "joey",
       "oppScore": 146.7,
       "isPlayoff": false
@@ -862,7 +862,7 @@
       "teamId": "joey",
       "score": 146.7,
       "oppId": "steve",
-      "oppScore": 71.8,
+      "oppScore": 76.3,
       "isPlayoff": false
     },
     {
@@ -871,7 +871,7 @@
       "teamId": "mark",
       "score": 107.3,
       "oppId": null,
-      "oppScore": 130.3,
+      "oppScore": 138.9,
       "isPlayoff": false
     },
     {
@@ -898,23 +898,23 @@
       "teamId": "drew",
       "score": 101.5,
       "oppId": null,
-      "oppScore": 124.2,
+      "oppScore": 138.8,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 9,
       "teamId": "roldi",
-      "score": 162.7,
+      "score": 168.3,
       "oppId": null,
-      "oppScore": 182.0,
+      "oppScore": 162.0,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 9,
       "teamId": "steve",
-      "score": 71.8,
+      "score": 76.3,
       "oppId": "joey",
       "oppScore": 146.7,
       "isPlayoff": false
@@ -925,7 +925,7 @@
       "teamId": "joey",
       "score": 146.7,
       "oppId": "steve",
-      "oppScore": 71.8,
+      "oppScore": 76.3,
       "isPlayoff": false
     },
     {
@@ -934,7 +934,7 @@
       "teamId": "mark",
       "score": 107.3,
       "oppId": null,
-      "oppScore": 130.3,
+      "oppScore": 138.9,
       "isPlayoff": false
     },
     {
@@ -961,23 +961,23 @@
       "teamId": "drew",
       "score": 101.5,
       "oppId": null,
-      "oppScore": 124.2,
+      "oppScore": 138.8,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 10,
       "teamId": "roldi",
-      "score": 162.7,
+      "score": 168.3,
       "oppId": null,
-      "oppScore": 182.0,
+      "oppScore": 162.0,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 10,
       "teamId": "steve",
-      "score": 71.8,
+      "score": 76.3,
       "oppId": "joey",
       "oppScore": 146.7,
       "isPlayoff": false
@@ -988,7 +988,7 @@
       "teamId": "joey",
       "score": 146.7,
       "oppId": "steve",
-      "oppScore": 71.8,
+      "oppScore": 76.3,
       "isPlayoff": false
     },
     {
@@ -997,7 +997,7 @@
       "teamId": "mark",
       "score": 107.3,
       "oppId": null,
-      "oppScore": 130.3,
+      "oppScore": 138.9,
       "isPlayoff": false
     },
     {
@@ -1024,23 +1024,23 @@
       "teamId": "drew",
       "score": 101.5,
       "oppId": null,
-      "oppScore": 124.2,
+      "oppScore": 138.8,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 11,
       "teamId": "roldi",
-      "score": 162.7,
+      "score": 168.3,
       "oppId": null,
-      "oppScore": 182.0,
+      "oppScore": 162.0,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 11,
       "teamId": "steve",
-      "score": 71.8,
+      "score": 76.3,
       "oppId": "joey",
       "oppScore": 146.7,
       "isPlayoff": false
@@ -1051,7 +1051,7 @@
       "teamId": "joey",
       "score": 146.7,
       "oppId": "steve",
-      "oppScore": 71.8,
+      "oppScore": 76.3,
       "isPlayoff": false
     },
     {
@@ -1060,7 +1060,7 @@
       "teamId": "mark",
       "score": 107.3,
       "oppId": null,
-      "oppScore": 130.3,
+      "oppScore": 138.9,
       "isPlayoff": false
     },
     {
@@ -1087,23 +1087,23 @@
       "teamId": "drew",
       "score": 101.5,
       "oppId": null,
-      "oppScore": 124.2,
+      "oppScore": 138.8,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 12,
       "teamId": "roldi",
-      "score": 162.7,
+      "score": 168.3,
       "oppId": null,
-      "oppScore": 182.0,
+      "oppScore": 162.0,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 12,
       "teamId": "steve",
-      "score": 71.8,
+      "score": 76.3,
       "oppId": "joey",
       "oppScore": 146.7,
       "isPlayoff": false
@@ -1114,7 +1114,7 @@
       "teamId": "joey",
       "score": 146.7,
       "oppId": "steve",
-      "oppScore": 71.8,
+      "oppScore": 76.3,
       "isPlayoff": false
     },
     {
@@ -1123,7 +1123,7 @@
       "teamId": "mark",
       "score": 107.3,
       "oppId": null,
-      "oppScore": 130.3,
+      "oppScore": 138.9,
       "isPlayoff": false
     },
     {
@@ -1150,23 +1150,23 @@
       "teamId": "drew",
       "score": 101.5,
       "oppId": null,
-      "oppScore": 124.2,
+      "oppScore": 138.8,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 13,
       "teamId": "roldi",
-      "score": 162.7,
+      "score": 168.3,
       "oppId": null,
-      "oppScore": 182.0,
+      "oppScore": 162.0,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 13,
       "teamId": "steve",
-      "score": 71.8,
+      "score": 76.3,
       "oppId": "joey",
       "oppScore": 146.7,
       "isPlayoff": false
@@ -1177,7 +1177,7 @@
       "teamId": "joey",
       "score": 146.7,
       "oppId": "steve",
-      "oppScore": 71.8,
+      "oppScore": 76.3,
       "isPlayoff": false
     },
     {
@@ -1186,7 +1186,7 @@
       "teamId": "mark",
       "score": 107.3,
       "oppId": null,
-      "oppScore": 130.3,
+      "oppScore": 138.9,
       "isPlayoff": false
     },
     {
@@ -1213,23 +1213,23 @@
       "teamId": "drew",
       "score": 101.5,
       "oppId": null,
-      "oppScore": 124.2,
+      "oppScore": 138.8,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 14,
       "teamId": "roldi",
-      "score": 162.7,
+      "score": 168.3,
       "oppId": null,
-      "oppScore": 182.0,
+      "oppScore": 162.0,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 14,
       "teamId": "steve",
-      "score": 71.8,
+      "score": 76.3,
       "oppId": "joey",
       "oppScore": 146.7,
       "isPlayoff": false
@@ -1240,7 +1240,7 @@
       "teamId": "joey",
       "score": 146.7,
       "oppId": "steve",
-      "oppScore": 71.8,
+      "oppScore": 76.3,
       "isPlayoff": false
     },
     {
@@ -1249,7 +1249,7 @@
       "teamId": "mark",
       "score": 107.3,
       "oppId": null,
-      "oppScore": 130.3,
+      "oppScore": 138.9,
       "isPlayoff": false
     },
     {
@@ -1276,23 +1276,23 @@
       "teamId": "drew",
       "score": 101.5,
       "oppId": null,
-      "oppScore": 124.2,
+      "oppScore": 138.8,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 15,
       "teamId": "roldi",
-      "score": 162.7,
+      "score": 168.3,
       "oppId": null,
-      "oppScore": 182.0,
+      "oppScore": 162.0,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 15,
       "teamId": "steve",
-      "score": 71.8,
+      "score": 76.3,
       "oppId": "joey",
       "oppScore": 146.7,
       "isPlayoff": false
@@ -1303,7 +1303,7 @@
       "teamId": "joey",
       "score": 146.7,
       "oppId": "steve",
-      "oppScore": 71.8,
+      "oppScore": 76.3,
       "isPlayoff": false
     },
     {
@@ -1312,7 +1312,7 @@
       "teamId": "mark",
       "score": 107.3,
       "oppId": null,
-      "oppScore": 130.3,
+      "oppScore": 138.9,
       "isPlayoff": false
     },
     {
@@ -1339,23 +1339,23 @@
       "teamId": "drew",
       "score": 101.5,
       "oppId": null,
-      "oppScore": 124.2,
+      "oppScore": 138.8,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 16,
       "teamId": "roldi",
-      "score": 162.7,
+      "score": 168.3,
       "oppId": null,
-      "oppScore": 182.0,
+      "oppScore": 162.0,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 16,
       "teamId": "steve",
-      "score": 71.8,
+      "score": 76.3,
       "oppId": "joey",
       "oppScore": 146.7,
       "isPlayoff": false
@@ -1366,7 +1366,7 @@
       "teamId": "joey",
       "score": 146.7,
       "oppId": "steve",
-      "oppScore": 71.8,
+      "oppScore": 76.3,
       "isPlayoff": false
     },
     {
@@ -1375,7 +1375,7 @@
       "teamId": "mark",
       "score": 107.3,
       "oppId": null,
-      "oppScore": 130.3,
+      "oppScore": 138.9,
       "isPlayoff": false
     },
     {
@@ -1402,23 +1402,23 @@
       "teamId": "drew",
       "score": 101.5,
       "oppId": null,
-      "oppScore": 124.2,
+      "oppScore": 138.8,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 17,
       "teamId": "roldi",
-      "score": 162.7,
+      "score": 168.3,
       "oppId": null,
-      "oppScore": 182.0,
+      "oppScore": 162.0,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 17,
       "teamId": "steve",
-      "score": 71.8,
+      "score": 76.3,
       "oppId": "joey",
       "oppScore": 146.7,
       "isPlayoff": false
@@ -1429,7 +1429,7 @@
       "teamId": "joey",
       "score": 146.7,
       "oppId": "steve",
-      "oppScore": 71.8,
+      "oppScore": 76.3,
       "isPlayoff": false
     },
     {
@@ -1438,7 +1438,7 @@
       "teamId": "mark",
       "score": 107.3,
       "oppId": null,
-      "oppScore": 130.3,
+      "oppScore": 138.9,
       "isPlayoff": false
     },
     {
@@ -1465,23 +1465,23 @@
       "teamId": "drew",
       "score": 101.5,
       "oppId": null,
-      "oppScore": 124.2,
+      "oppScore": 138.8,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 18,
       "teamId": "roldi",
-      "score": 162.7,
+      "score": 168.3,
       "oppId": null,
-      "oppScore": 182.0,
+      "oppScore": 162.0,
       "isPlayoff": false
     },
     {
       "season": 2026,
       "week": 18,
       "teamId": "steve",
-      "score": 71.8,
+      "score": 76.3,
       "oppId": "joey",
       "oppScore": 146.7,
       "isPlayoff": false
@@ -1492,7 +1492,7 @@
       "teamId": "joey",
       "score": 146.7,
       "oppId": "steve",
-      "oppScore": 71.8,
+      "oppScore": 76.3,
       "isPlayoff": false
     },
     {
@@ -1501,7 +1501,7 @@
       "teamId": "mark",
       "score": 107.3,
       "oppId": null,
-      "oppScore": 130.3,
+      "oppScore": 138.9,
       "isPlayoff": false
     },
     {
