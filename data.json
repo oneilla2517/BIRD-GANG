@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-10-29T03:04:59.248595+00:00",
+  "lastUpdated": "2026-10-29T10:30:09.528390+00:00",
   "teams": {
     "drew": {
       "wins": 1,
@@ -54,7 +54,7 @@
       "wins": 5,
       "losses": 2,
       "ties": 0,
-      "pointsFor": 922.3,
+      "pointsFor": 923.3,
       "standing": 5,
       "finalStanding": 5
     }
@@ -824,7 +824,7 @@
       "season": 2026,
       "week": 7,
       "teamId": "deamer",
-      "score": 144.1,
+      "score": 145.1,
       "oppId": null,
       "oppScore": 123.7,
       "isPlayoff": false
